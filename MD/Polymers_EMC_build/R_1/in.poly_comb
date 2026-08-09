@@ -1,0 +1,27 @@
+units           real          
+dimension       3
+boundary        p p p         
+atom_style      full     
+comm_style      tiled        
+newton          off
+
+bond_style      class2        
+angle_style     class2        
+dihedral_style  class2        
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0  
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5   
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000 
+                
+read_data	setup.data
+include		setup.params
+
+
+write_data      Polymer_R1.data
+
