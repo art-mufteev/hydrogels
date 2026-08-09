@@ -1,6 +1,5 @@
 # hydrogels
 
-```text
 hydrogels/
 ├── ML/
 │   ├── data/
@@ -18,4 +17,4 @@ hydrogels/
 │   ├── data/
 │   └── Polymers_EMC_build/
 └── README.md
-```
+
