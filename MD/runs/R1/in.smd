@@ -1,0 +1,115 @@
+clear
+
+units           real          
+dimension       3
+boundary        p p f         
+atom_style      full     
+comm_style      brick        
+newton          off
+
+bond_style      class2        
+angle_style     class2        
+dihedral_style  class2        
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0  
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5   
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000 
+
+read_restart    system_equilibrated_R1.restart
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+group           solvent type 5 6 7 8
+group           ions    type 7 8
+group           water   type 5 6
+group           mobile subtract all lower
+molecule        water_mol water.mol
+
+variable        smd_steps equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/100)
+	
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+group           excluded_types type 1 2 3 4 5 6 7 8
+group		polymer subtract all excluded_types
+region          pull_zone block INF INF INF INF 0.0 165.0 units box
+group           atoms_in_zone region pull_zone
+group           pull_layer intersect polymer atoms_in_zone
+group           smd_mobile subtract mobile pull_layer
+group           substrate_atoms type 1 2 3 4
+group           gel_atoms subtract all substrate_atoms
+fix		sNVT smd_mobile nvt temp 300.0 300.0 100.0
+fix             sNVE pull_layer nve
+
+compute         pol_rg polymer gyration  
+compute         pol_rmsd polymer msd     
+compute		E_int gel_atoms group/group substrate_atoms
+compute         T_layer pull_layer temp
+
+variable        z_com equal xcm(pull_layer,z)
+
+run             0 
+variable        z_start_tmp equal v_z_com
+variable        z_start string ${z_start_tmp}
+
+fix             smd_pull pull_layer smd cvel 10.0 -${v} tether NULL NULL 200 0.0
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+
+variable        E_bond     equal ebond
+variable        E_angle    equal eangle
+variable        E_dihed    equal edihed
+variable        E_poly_int equal ebond+eangle+edihed
+variable        force_z   equal f_smd_pull[3]
+variable        dist_z    equal f_smd_pull[6]
+variable        pmf_work  equal f_smd_pull[7]
+variable        rg           equal c_pol_rg        
+variable        rmsd         equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
+variable        e_inter      equal c_E_int
+variable        t_loc        equal c_T_layer
+
+fix             smd_output all print ${print_freq} "$(step) $(v_dist_z) $(v_force_z) $(v_pmf_work) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Dist_Z Force_Z PMF_Work Rg RMSD E_Interface E_Poly_Internal T_Local"
+
+thermo          1000
+thermo_style    custom step temp v_dist_z v_force_z v_pmf_work c_E_int pe
+timestep        0.25
+run             ${smd_steps}
+
+unfix           FREEZE
+unfix           sNVT
+unfix           sNVE
+unfix           smd_pull
+unfix           smd_output
+undump          smd_dump
+uncompute       pol_rg
+uncompute       pol_rmsd
+uncompute       E_int
+uncompute       T_layer
+variable        smd_steps delete
+variable        print_freq delete
+variable        dump_freq delete
+variable        z_com delete
+variable        z_start_tmp delete
+variable        z_start delete
+variable        dist_z delete
+variable        E_bond delete
+variable        E_angle delete
+variable        E_dihed delete
+variable        E_poly_int delete
+variable        force_z delete
+variable        pmf_work delete
+variable        rg delete
+variable        rmsd delete
+variable        e_inter delete
+variable        t_loc delete
