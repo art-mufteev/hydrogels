@@ -1,4 +1,0 @@
-model,best_y,y_opt,deviation_%,within_tolerance,monomers,fractions
-CLS,203.87721,204.12005615234375,0.118970975,True,n-Butyl acrylate + [2-(Acryloyloxy)ethyl]triethylammonium chloride + Phenyl acrylate + 2-(4-Chlorophenoxy)ethyl acrylate + 2-(4-Nitrophenoxy)ethyl acrylate,"[0.8036, 0.0978, 0.0643, 0.014, 0.0203]"
-SET,139.26584,139.58660888671875,0.22980016,True,Poly(ethylene glycol) methyl ether acrylate + Methacrylic acid + Vinylbenzyl trimethylammonium chloride + N-tert-Butylacrylamide,"[0.0004, 0.1357, 0.0752, 0.7887]"
-DS,165.35007,165.41476440429688,0.039112147,True,[2-(Acryloyloxy)ethyl]dimethylbenzylammonium chloride + [2-(Acryloyloxy)ethyl]triethylammonium chloride,"[0.439, 0.561]"
