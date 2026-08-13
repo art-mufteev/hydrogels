@@ -1,4 +1,0 @@
-model,best_y,y_opt,deviation_%,within_tolerance,monomers,fractions
-CLS,350.91968,392.27093505859375,10.541505,False,n-Butyl acrylate + n-Octyl acrylate + 2-Hydroxyethyl acrylate + [2-(Acryloyloxy)ethyl]trimethylammonium chloride + [2-(Acryloyloxy)ethyl]trimethylammonium methyl sulfate + 2-Phenoxyethyl acrylate,"[0.4691, 0.0195, 0.0327, 0.0153, 0.0103, 0.4532]"
-SET,258.0332,373.3649597167969,30.889818,False,Acrylic acid + 4-Methylbenzyl acrylate,"[0.9939, 0.0061]"
-DS,81.455734,372.39013671875,78.126236,False,Phenyl acrylate,[1.0]
