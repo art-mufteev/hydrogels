@@ -1,0 +1,33 @@
+indexFile index.ndx
+
+colvar {
+  name distZ
+  width 0.1
+  
+  distanceZ {
+    main {
+      indexGroup pull_layer
+    }
+    ref {
+      indexGroup lower
+    }
+  }
+  outputValue on
+  outputVelocity on
+  outputTotalForce on
+  outputAppliedForce on
+  
+}
+
+harmonic {
+  name pulling
+  colvars distZ
+  centers 0.0
+  targetCenters 37.5
+  targetNumSteps 150000
+  forceConstant 1.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+

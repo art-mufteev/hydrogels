@@ -1,0 +1,22 @@
+configuration {
+  step      1040811
+  dt 2.500000e-01
+  version 2025-04-30
+}
+
+colvar {
+  name distZ
+  x       96.164604137227
+  v    0.0001406405860962
+}
+
+restraint {
+  configuration {
+    step 1040811
+    name pulling
+firstStep       840811
+centers   1.21402692929534e+02
+accumulatedWork  2.34812012036564e+03
+  }
+}
+
