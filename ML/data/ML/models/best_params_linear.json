@@ -1,0 +1,91 @@
+{
+  "fractions_baseline_no": {
+    "model_type": "huber",
+    "alpha": 0.04136927864139707,
+    "epsilon": 1.247923443595171
+  },
+  "autocorr": {
+    "model_type": "lasso",
+    "alpha": 0.08872029436258264
+  },
+  "cffp_1024": {
+    "model_type": "elasticnet",
+    "alpha": 0.5645984955841493,
+    "l1_ratio": 0.37255125631148756
+  },
+  "cffp_128": {
+    "model_type": "lasso",
+    "alpha": 0.12423438404300544
+  },
+  "cffp_2048": {
+    "model_type": "lasso",
+    "alpha": 0.18169072332895325
+  },
+  "cffp_256": {
+    "model_type": "elasticnet",
+    "alpha": 0.6211986126683373,
+    "l1_ratio": 0.17038979311341185
+  },
+  "cffp_512": {
+    "model_type": "lasso",
+    "alpha": 0.25461926599755164
+  },
+  "eMFP128": {
+    "model_type": "elasticnet",
+    "alpha": 0.3470266988650412,
+    "l1_ratio": 0.0685260448662222
+  },
+  "eMFP16": {
+    "model_type": "lasso",
+    "alpha": 0.1738842932300133
+  },
+  "eMFP32": {
+    "model_type": "lasso",
+    "alpha": 0.158121514586269
+  },
+  "eMFP64": {
+    "model_type": "elasticnet",
+    "alpha": 0.5152172029945674,
+    "l1_ratio": 0.3748346662424004
+  },
+  "ffp_1024": {
+    "model_type": "huber",
+    "alpha": 622.5402742306082,
+    "epsilon": 1.9869908447180409
+  },
+  "ffp_128": {
+    "model_type": "elasticnet",
+    "alpha": 0.6888926718659942,
+    "l1_ratio": 0.057816376093562716
+  },
+  "ffp_2048": {
+    "model_type": "elasticnet",
+    "alpha": 0.5750952170087129,
+    "l1_ratio": 0.05438855225258081
+  },
+  "ffp_256": {
+    "model_type": "elasticnet",
+    "alpha": 0.25514084013852706,
+    "l1_ratio": 0.6269402691753007
+  },
+  "ffp_512": {
+    "model_type": "elasticnet",
+    "alpha": 0.6888926718659942,
+    "l1_ratio": 0.057816376093562716
+  },
+  "CLS_no": {
+    "model_type": "elasticnet",
+    "alpha": 0.0008695180603860177,
+    "l1_ratio": 0.17992405044187987
+  },
+  "SET_no": {
+    "model_type": "huber",
+    "alpha": 0.0026549484137133052,
+    "epsilon": 1.6861051379380696
+  },
+  "DS_no": {
+    "model_type": "huber",
+    "alpha": 4.08267595943527,
+    "epsilon": 1.852465533299212
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "fractions_baseline_no": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 30.398866293027048
+  },
+  "autocorr": {
+    "kernel_choice": "Matern",
+    "alpha": 0.09577399567226744,
+    "best_rmse": 31.02470152687576,
+    "matern_nu": 0.5
+  },
+  "cffp_1024": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.0019762189340280074,
+    "best_rmse": 38.56527480169099
+  },
+  "cffp_128": {
+    "kernel_choice": "Matern",
+    "alpha": 0.09577399567226744,
+    "best_rmse": 36.67006794167794,
+    "matern_nu": 0.5
+  },
+  "cffp_2048": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 39.04777909801535
+  },
+  "cffp_256": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 33.100687714843296
+  },
+  "cffp_512": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 38.45972127492478
+  },
+  "eMFP128": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.03542057196074355,
+    "best_rmse": 39.7395188226961
+  },
+  "eMFP16": {
+    "kernel_choice": "Matern",
+    "alpha": 0.0007523742884534858,
+    "best_rmse": 40.11882990409147,
+    "matern_nu": 2.5
+  },
+  "eMFP32": {
+    "kernel_choice": "Matern",
+    "alpha": 0.0007523742884534858,
+    "best_rmse": 58.668927344363894,
+    "matern_nu": 2.5
+  },
+  "eMFP64": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 54.95908525643451
+  },
+  "ffp_1024": {
+    "kernel_choice": "Matern",
+    "alpha": 0.0170624579144017,
+    "best_rmse": 54.488989667648674,
+    "matern_nu": 1.5
+  },
+  "ffp_128": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.0019762189340280074,
+    "best_rmse": 44.488893010671966
+  },
+  "ffp_2048": {
+    "kernel_choice": "Matern",
+    "alpha": 0.0170624579144017,
+    "best_rmse": 52.23833611490831,
+    "matern_nu": 1.5
+  },
+  "ffp_256": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 49.01968554967699
+  },
+  "ffp_512": {
+    "kernel_choice": "Matern",
+    "alpha": 0.0013140295806619725,
+    "best_rmse": 53.33432043243597,
+    "matern_nu": 1.5
+  },
+  "CLS_no": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 28.67752029176405
+  },
+  "SET_no": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.03542057196074355,
+    "best_rmse": 35.0200290367545
+  },
+  "DS_no": {
+    "kernel_choice": "RationalQuadratic",
+    "alpha": 0.000137832374550072,
+    "best_rmse": 34.384877396100975
+  }
+}
