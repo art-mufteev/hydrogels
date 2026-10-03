@@ -1,0 +1,11 @@
+run 
+
+1)	emc_linux_x86_64 build.emc
+
+1.5) change Z box from 40 / -40 to 160 / -160 A
+
+2)	mpirun -np 1 ./lmp -k on g 1 -sf kk -pk kokkos newton off -in in.comp
+
+2.5) transfer to runs folder for this polymer
+
+3) run full run 

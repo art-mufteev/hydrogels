@@ -1,0 +1,1918 @@
+LAMMPS (22 Jul 2025 - Update 4)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off
+#  mpirun -np 1 ./lmp -k on g 1 -sf kk -pk kokkos newton off -in in.endrun_smd_R1
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000
+
+variable v index 0.001 0.0005 0.00025 0.0001
+variable i loop 4
+label smd_loop
+
+    include in.smd
+clear
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000
+
+read_restart    system_equilibrated_CLSP1.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style full/kk from restart
+  orthogonal box = (0 0 -2) to (80.6296 82.864 224.5)
+  1 by 1 by 1 MPI processor grid
+  restoring pair style lj/class2/coul/long/kk from restart
+  restoring bond style class2/kk from restart
+  restoring angle style class2/kk from restart
+  restoring dihedral style class2/kk from restart
+  restoring improper style class2/kk from restart
+  99302 atoms
+  84984 bonds
+  111015 angles
+  134406 dihedrals
+  52237 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.085 seconds
+  read_restart CPU = 0.516 seconds
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+4701 atoms in group lower
+group           solvent type 5 6 7 8
+53450 atoms in group solvent
+group           ions    type 7 8
+185 atoms in group ions
+group           water   type 5 6
+53265 atoms in group water
+group           mobile subtract all lower
+94601 atoms in group mobile
+molecule        water_mol water.mol
+Read molecule template water_mol:
+# Water molecule. Original PCFF flexible geometry
+  1 molecules
+  0 fragments
+  0 bodies
+  3 atoms with max type 6
+  2 bonds with max type 4
+  1 angles with max type 6
+  0 dihedrals with max type 0
+  0 impropers with max type 0
+
+variable        smd_steps equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/100)
+
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+group           excluded_types type 1 2 3 4 5 6 7 8
+65162 atoms in group excluded_types
+group		polymer subtract all excluded_types
+34140 atoms in group polymer
+region          pull_zone block INF INF INF INF 65.0 165.0 units box
+group           atoms_in_zone region pull_zone
+59772 atoms in group atoms_in_zone
+group           pull_layer intersect polymer atoms_in_zone
+20929 atoms in group pull_layer
+group           smd_mobile subtract mobile pull_layer
+73672 atoms in group smd_mobile
+group           substrate_atoms type 1 2 3 4
+45852 atoms in group substrate_atoms
+group           gel_atoms subtract all substrate_atoms
+53450 atoms in group gel_atoms
+fix		sNVT smd_mobile nvt temp 300.0 300.0 100.0
+fix             sNVE pull_layer nve
+
+compute         pol_rg polymer gyration
+compute         pol_rmsd polymer msd
+compute		E_int gel_atoms group/group substrate_atoms
+compute         T_layer pull_layer temp
+
+variable        z_start equal xcm(pull_layer,z)
+variable        z_target equal v_z_start+30.0
+
+group2ndx index.ndx pull_layer lower
+Writing groups to index file index.ndx:
+ writing group pull_layer...done
+ writing group lower...done
+
+fix             pull all colvars none output colvars_out_${i}
+fix             pull all colvars none output colvars_out_1
+----------------------------------------------------------------------
+Initializing the collective variables module, version 2025-04-30 (patch 1).
+Please cite Fiorin et al, Mol Phys 2013:
+  https://doi.org/10.1080/00268976.2013.813594
+as well as all other papers listed below for individual features used.
+Summary of compile-time features available in this build:
+  - C++ language version: 201703
+  - Multiple replicas: available, but not (yet) enabled
+  - Lepton custom functions: available
+  - Tcl interpreter: not available
+Using LAMMPS interface, version "2025-03-31".
+Setting initial step number from MD engine: 841158
+
+fix_modify      pull config """
+indexFile index.ndx
+colvar {
+  name distZ
+  distanceZ {
+    main {
+      indexGroup pull_layer
+    }
+    ref {
+      dummyAtom (0.0, 0.0, 0.0)
+    }
+    axis (0.0, 0.0, 1.0)
+  }
+  outputValue on
+  outputVelocity on
+  outputAppliedForce on
+}
+harmonic {
+  name pulling
+  colvars distZ
+  centers ${z_start}
+  targetCenters ${z_target}
+  targetNumSteps ${smd_steps}
+  forceConstant 15.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+"""
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 1200 trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 1200 trajectory_smd_R1_1.lammpstrj id type xu yu zu q fx fy fz
+
+variable        E_bond     equal ebond
+variable        E_angle    equal eangle
+variable        E_dihed    equal edihed
+variable        E_poly_int equal ebond+eangle+edihed
+variable        rg         equal c_pol_rg
+variable        rmsd       equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
+variable        e_inter    equal c_E_int
+variable        t_loc      equal c_T_layer
+
+fix             smd_output all print ${print_freq} "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 120 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 120 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_1.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+
+thermo          1000
+thermo_style    custom step temp c_E_int pe
+timestep        0.25
+run             ${smd_steps}
+run             120000
+PPPM Kokkos initialization ...
+WARNING: System is not charge neutral, net charge = 3
+For more information see https://docs.lammps.org/err0029 (src/kspace.cpp:330)
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.24229168
+  grid = 54 54 270
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.0039656967
+  estimated relative force accuracy = 1.1942578e-05
+  using double precision cuFFT
+  3d grid and FFT values/proc = 1012112 787320
+Generated 120 of 120 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Unused restart file global fix info:
+  fix style: nvt, fix ID: fNVT
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 10000, page size: 1000000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 14, bins = 6 6 17
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) pair lj/class2/coul/long/kk, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (2) compute group/group, occasional
+      attributes: half, newton off
+      pair build: half/bin/newtoff
+      stencil: full/bin/3d
+      bin: standard
+WARNING: Fix STORE/ATOM not compatible with sending data in Kokkos communication (src/KOKKOS/comm_kokkos.cpp:799)
+WARNING: Fix with atom-based arrays not compatible with sending data in Kokkos communication, switching to classic exchange/border communication (src/KOKKOS/comm_kokkos.cpp:812)
+WARNING: Fix STORE/ATOM not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+----------------------------------------------------------------------
+Reading new configuration:
+# units = "" [default]
+# indexFile = "index.ndx"
+The following index groups are currently defined:
+  pull_layer (20929 atoms)
+  lower (4701 atoms)
+# smp = "cvcs" [default]
+# colvarsTrajFrequency = 100 [default]
+# colvarsRestartFrequency = 0 [default]
+# scriptedColvarForces = off [default]
+# scriptingAfterBiases = off [default]
+----------------------------------------------------------------------
+  Initializing a new collective variable.
+  # name = "distZ"
+    Initializing a new "distanceZ" component.
+    # name = "" [default]
+    # componentCoeff = 1 [default]
+    # componentExp = 1 [default]
+    # period = 0 [default]
+    # wrapAround = 0 [default]
+    # forceNoPBC = off [default]
+    # scalable = on [default]
+      Initializing atom group "main".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "pull_layer"
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 ) [default]
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "main" defined with 20929 atoms requested.
+      Initializing atom group "ref".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "" [default]
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 )
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "ref" defined with 0 atoms requested.
+    # axis = ( 0 , 0 , 1 )
+    # oneSiteSystemForce = off [default]
+    # oneSiteTotalForce = off [default]
+  All components initialized.
+  # timeStepFactor = 1 [default]
+  # width = 1 [default]
+  # lowerBoundary = 0 [default]
+  # upperBoundary = 1 [default]
+  # hardLowerBoundary = off [default]
+  # hardUpperBoundary = off [default]
+  # expandBoundaries = off [default]
+  # extendedLagrangian = off [default]
+  # outputValue = on
+  # outputVelocity = on
+  # outputTotalForce = off [default]
+  # outputAppliedForce = on
+  # subtractAppliedForce = off [default]
+  # runAve = off [default]
+  # corrFunc = off [default]
+----------------------------------------------------------------------
+Collective variables initialized, 1 in total.
+----------------------------------------------------------------------
+  Initializing a new "harmonic" instance.
+  # name = "pulling"
+  # colvars = { distZ }
+  # stepZeroData = off [default]
+  # outputEnergy = on
+  # outputFreq = 0 [default]
+  # timeStepFactor = 1 [default]
+  # writeTISamples = off [default]
+  # writeTIPMF = off [default]
+  # centers = { 92.5186 }
+  # targetCenters = { 122.519 }
+  Initial step for restraint change: 841158
+  # targetNumSteps = 120000
+  # targetNumStages = 0 [default]
+  # outputAccumulatedWork = on
+  # outputCenters = on
+  # forceConstant = 15
+  # decoupling = off [default]
+  # targetForceConstant = -1 [default]
+  The force constant for colvar "distZ" will be rescaled to 15 according to the specified width (1).
+----------------------------------------------------------------------
+Collective variables biases initialized, 1 in total.
+----------------------------------------------------------------------
+Collective variables module (re)initialized.
+----------------------------------------------------------------------
+Current simulation parameters: initial step = 841158, integration timestep = 0.25
+Updating atomic parameters (masses, charges, etc).
+Re-initialized atom group for variable "distZ":0/0. 20929 atoms: total mass = 133357, total charge = 67.9661.
+Re-initialized atom group for variable "distZ":0/1. 0 atoms: total mass = 1, total charge = 0.
+The final output state file will be "colvars_out_1.colvars.state".
+Per MPI rank memory allocation (min/avg/max) = 680.7 | 680.7 | 680.7 Mbytes
+   Step          Temp         c_E_int         PotEng    
+    841158   286.33208     -21985.405     -1051342.9    
+    842000   285.08307     -21839.729     -1051631.3    
+    843000   284.66359     -21880.482     -1052052.8    
+    844000   285.13646     -21987.468     -1051887.7    
+    845000   283.19198     -21963.452     -1051226.8    
+    846000   285.33487     -21917.842     -1051156.6    
+    847000   283.67151     -21953.856     -1051385.7    
+    848000   286.24745     -21979.077     -1051585.9    
+    849000   284.64633     -21828.957     -1051441.8    
+    850000   283.25823     -22002.492     -1051667.2    
+    851000   284.54775     -21885.43      -1051305.8    
+    852000   285.14421     -21891.378     -1051841.3    
+    853000   284.36541     -21927.265     -1051766.8    
+    854000   285.09306     -22008.279     -1051622.6    
+    855000   283.62426     -22097.77      -1051961.1    
+    856000   284.59449     -21926.251     -1051684.7    
+    857000   285.19834     -22004.862     -1051499.6    
+    858000   285.87237     -22026.912     -1051800.7    
+    859000   284.5201      -22172.981     -1051472.7    
+    860000   285.60264     -21995.208     -1051384.4    
+    861000   285.74331     -22004.906     -1051829.7    
+    862000   284.74842     -22037.058     -1051512.4    
+    863000   284.41097     -21893.352     -1050950.5    
+    864000   284.82033     -21884.536     -1051641.5    
+    865000   285.58031     -21801.861     -1051465.5    
+    866000   284.5924      -21760.92      -1051353.2    
+    867000   284.25363     -21775.227     -1051079.4    
+    868000   285.14098     -21872.534     -1050974.7    
+    869000   284.26        -21738.118     -1050768      
+    870000   285.67027     -21831.55      -1051166.5    
+    871000   285.3642      -21872.746     -1051003.8    
+    872000   283.78772     -21738.025     -1050911.2    
+    873000   284.40051     -21781.765     -1051103.4    
+    874000   285.86808     -21780.756     -1051021.7    
+    875000   285.70198     -21730.823     -1050484.5    
+    876000   283.91241     -21847.745     -1050694      
+    877000   284.52049     -21642.242     -1050421.6    
+    878000   285.92293     -21649.924     -1050962.8    
+    879000   284.24098     -21546.745     -1050409.5    
+    880000   284.86102     -21645.414     -1050808.9    
+    881000   283.80915     -21472.421     -1050516.6    
+    882000   286.08694     -21631.486     -1050712.2    
+    883000   285.36869     -21508.538     -1050863.7    
+    884000   284.53294     -21457.568     -1050052.5    
+    885000   284.27743     -21390.26      -1050642.2    
+    886000   286.01896     -21460.306     -1050605.3    
+    887000   284.62072     -21452.717     -1050598.1    
+    888000   284.80285     -21562.836     -1050347      
+    889000   285.19732     -21460.382     -1050034.5    
+    890000   284.46436     -21413.072     -1049800.9    
+    891000   284.39459     -21323.459     -1050226.2    
+    892000   284.75855     -21226.422     -1049710.4    
+    893000   285.35619     -21194.359     -1050215.3    
+    894000   285.23293     -21304.596     -1050094.3    
+    895000   284.2091      -21198.233     -1050165.1    
+    896000   285.16065     -21153.503     -1049695.9    
+    897000   284.05026     -21185.814     -1049877.6    
+    898000   284.36485     -21135.528     -1050004.2    
+    899000   285.65126     -21116.611     -1049670.4    
+    900000   283.9958      -21265.331     -1049773.3    
+    901000   285.80322     -21171.225     -1049705.5    
+    902000   284.41361     -21275.932     -1049426.9    
+    903000   285.62405     -21303.152     -1049717.1    
+    904000   285.60178     -21315.261     -1049154.3    
+    905000   284.4902      -21299.887     -1049342.4    
+    906000   284.9542      -21178.744     -1049533.7    
+    907000   285.15148     -20986.3       -1049219.1    
+    908000   285.48417     -21068.979     -1049184      
+    909000   284.462       -21093.436     -1049307      
+    910000   285.56184     -21052.639     -1049171.1    
+    911000   285.3674      -21078.436     -1048720.8    
+    912000   283.8972      -20970.237     -1048274.3    
+    913000   284.4434      -20843.304     -1048617      
+    914000   285.74117     -20799.582     -1048229.8    
+    915000   284.88373     -20929.926     -1048239.2    
+    916000   285.68599     -20786.594     -1048890.9    
+    917000   284.37568     -20807.179     -1048627.2    
+    918000   285.28195     -20809.015     -1048334.3    
+    919000   284.48636     -20820.622     -1048821.3    
+    920000   285.43173     -20857.959     -1048298.7    
+    921000   286.08111     -20876.6       -1048326.8    
+    922000   284.91119     -20822.043     -1048476.3    
+    923000   286.1119      -20938.766     -1048104.9    
+    924000   285.28466     -20752.071     -1048230.8    
+    925000   284.0047      -20748.497     -1047737.3    
+    926000   286.07186     -20751.722     -1048191.6    
+    927000   285.30148     -20727.778     -1048123.1    
+    928000   285.7821      -20531.338     -1047726.2    
+    929000   285.54155     -20617.004     -1048080.6    
+    930000   285.36843     -20670.385     -1047576.3    
+    931000   284.33584     -20704.947     -1047693.1    
+    932000   286.55743     -20569.044     -1047778.9    
+    933000   286.06759     -20647.826     -1047917.1    
+    934000   284.66863     -20578.874     -1047533.6    
+    935000   285.81163     -20516.418     -1047327.1    
+    936000   284.87141     -20560.893     -1047372.3    
+    937000   286.30858     -20493.627     -1047544.1    
+    938000   285.23557     -20532.21      -1047368.3    
+    939000   283.75803     -20442.713     -1046967      
+    940000   284.64451     -20423.701     -1046901.4    
+    941000   283.92075     -20442.356     -1047196.9    
+    942000   284.58533     -20286.289     -1047297.4    
+    943000   285.52944     -20264.967     -1047377.3    
+    944000   283.5616      -20314.03      -1047186.7    
+    945000   285.51237     -20299.699     -1047094.9    
+    946000   285.14037     -20262.433     -1046984.9    
+    947000   285.58269     -20423.712     -1047597.2    
+    948000   285.35363     -20268.548     -1046998.4    
+    949000   285.85953     -20464.472     -1047673.7    
+    950000   285.68785     -20419.491     -1047203.2    
+    951000   285.68206     -20472.215     -1047003.3    
+    952000   283.33524     -20372.419     -1047150.1    
+    953000   284.50784     -20329.512     -1046799.7    
+    954000   285.1293      -20360.561     -1046841.3    
+    955000   284.43605     -20177.466     -1046761.9    
+    956000   285.84828     -20241.197     -1046520.7    
+    957000   284.528       -20246.891     -1046830.8    
+    958000   285.07652     -20319.048     -1046461.8    
+    959000   285.22856     -20417.664     -1047184.3    
+    960000   285.08686     -20185.907     -1046575.8    
+    961000   285.4796      -20537.067     -1046711.4    
+    961158   285.98981     -20507.343     -1046896.5    
+Saving collective variables state to "colvars_out_1.colvars.state".
+Loop time of 22085.8 on 1 procs for 120000 steps with 99302 atoms
+
+Performance: 0.117 ns/day, 204.498 hours/ns, 5.433 timesteps/s, 539.543 katom-step/s
+436.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 170.93     | 170.93     | 170.93     |   0.0 |  0.77
+Bond    | 8513.4     | 8513.4     | 8513.4     |   0.0 | 38.55
+Kspace  | 2295.6     | 2295.6     | 2295.6     |   0.0 | 10.39
+Neigh   | 353.12     | 353.12     | 353.12     |   0.0 |  1.60
+Comm    | 43.967     | 43.967     | 43.967     |   0.0 |  0.20
+Output  | 573.21     | 573.21     | 573.21     |   0.0 |  2.60
+Modify  | 10108      | 10108      | 10108      |   0.0 | 45.77
+Other   |            | 27.21      |            |       |  0.12
+
+Nlocal:          99302 ave       99302 max       99302 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          79856 ave       79856 max       79856 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    5.68894e+07 ave 5.68894e+07 max 5.68894e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  1.01116e+08 ave 1.01116e+08 max 1.01116e+08 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1.0111565e+08
+Ave neighs/atom = 1018.264
+Ave special neighs/atom = 3.9475338
+Neighbor list builds = 1835
+Dangerous builds = 0
+
+    next v
+    next i
+
+    jump in.endrun_smd_R1 smd_loop
+
+    include in.smd
+clear
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000
+
+read_restart    system_equilibrated_CLSP1.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style full/kk from restart
+  orthogonal box = (0 0 -2) to (80.6296 82.864 224.5)
+  1 by 1 by 1 MPI processor grid
+  restoring pair style lj/class2/coul/long/kk from restart
+  restoring bond style class2/kk from restart
+  restoring angle style class2/kk from restart
+  restoring dihedral style class2/kk from restart
+  restoring improper style class2/kk from restart
+  99302 atoms
+  84984 bonds
+  111015 angles
+  134406 dihedrals
+  52237 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.074 seconds
+  read_restart CPU = 0.173 seconds
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+4701 atoms in group lower
+group           solvent type 5 6 7 8
+53450 atoms in group solvent
+group           ions    type 7 8
+185 atoms in group ions
+group           water   type 5 6
+53265 atoms in group water
+group           mobile subtract all lower
+94601 atoms in group mobile
+molecule        water_mol water.mol
+Read molecule template water_mol:
+# Water molecule. Original PCFF flexible geometry
+  1 molecules
+  0 fragments
+  0 bodies
+  3 atoms with max type 6
+  2 bonds with max type 4
+  1 angles with max type 6
+  0 dihedrals with max type 0
+  0 impropers with max type 0
+
+variable        smd_steps equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/100)
+
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+group           excluded_types type 1 2 3 4 5 6 7 8
+65162 atoms in group excluded_types
+group		polymer subtract all excluded_types
+34140 atoms in group polymer
+region          pull_zone block INF INF INF INF 65.0 165.0 units box
+group           atoms_in_zone region pull_zone
+59772 atoms in group atoms_in_zone
+group           pull_layer intersect polymer atoms_in_zone
+20929 atoms in group pull_layer
+group           smd_mobile subtract mobile pull_layer
+73672 atoms in group smd_mobile
+group           substrate_atoms type 1 2 3 4
+45852 atoms in group substrate_atoms
+group           gel_atoms subtract all substrate_atoms
+53450 atoms in group gel_atoms
+fix		sNVT smd_mobile nvt temp 300.0 300.0 100.0
+fix             sNVE pull_layer nve
+
+compute         pol_rg polymer gyration
+compute         pol_rmsd polymer msd
+compute		E_int gel_atoms group/group substrate_atoms
+compute         T_layer pull_layer temp
+
+variable        z_start equal xcm(pull_layer,z)
+variable        z_target equal v_z_start+30.0
+
+group2ndx index.ndx pull_layer lower
+Writing groups to index file index.ndx:
+ writing group pull_layer...done
+ writing group lower...done
+
+fix             pull all colvars none output colvars_out_${i}
+fix             pull all colvars none output colvars_out_2
+----------------------------------------------------------------------
+Initializing the collective variables module, version 2025-04-30 (patch 1).
+Please cite Fiorin et al, Mol Phys 2013:
+  https://doi.org/10.1080/00268976.2013.813594
+as well as all other papers listed below for individual features used.
+Summary of compile-time features available in this build:
+  - C++ language version: 201703
+  - Multiple replicas: available, but not (yet) enabled
+  - Lepton custom functions: available
+  - Tcl interpreter: not available
+Using LAMMPS interface, version "2025-03-31".
+Setting initial step number from MD engine: 841158
+
+fix_modify      pull config """
+indexFile index.ndx
+colvar {
+  name distZ
+  distanceZ {
+    main {
+      indexGroup pull_layer
+    }
+    ref {
+      dummyAtom (0.0, 0.0, 0.0)
+    }
+    axis (0.0, 0.0, 1.0)
+  }
+  outputValue on
+  outputVelocity on
+  outputAppliedForce on
+}
+harmonic {
+  name pulling
+  colvars distZ
+  centers ${z_start}
+  targetCenters ${z_target}
+  targetNumSteps ${smd_steps}
+  forceConstant 15.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+"""
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 2400 trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 2400 trajectory_smd_R1_2.lammpstrj id type xu yu zu q fx fy fz
+
+variable        E_bond     equal ebond
+variable        E_angle    equal eangle
+variable        E_dihed    equal edihed
+variable        E_poly_int equal ebond+eangle+edihed
+variable        rg         equal c_pol_rg
+variable        rmsd       equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
+variable        e_inter    equal c_E_int
+variable        t_loc      equal c_T_layer
+
+fix             smd_output all print ${print_freq} "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 240 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 240 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_2.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+
+thermo          1000
+thermo_style    custom step temp c_E_int pe
+timestep        0.25
+run             ${smd_steps}
+run             240000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Colvars module (Fiorin2013, plus other works listed for specific features)
+
+
+% Colvars module:
+% Colvars-LAMMPS interface:
+% Harmonic colvar bias implementation:
+% Optimal rotation via flexible fitting:
+% distanceZ colvar component:
+
+@article{Fiorin2013,
+  author = {Fiorin, Giacomo and Klein, Michael L.{} and H\'enin, J\'er\^ome},
+  title = {Using collective variables to drive molecular dynamics simulations},
+  journal = {Mol. Phys.},
+  year = {2013},
+  volume = {111},
+  number = {22-23},
+  pages = {3345--3362},
+  publisher = {Taylor & Francis},
+  doi = {10.1080/00268976.2013.813594},
+  url = {https://doi.org/10.1080/00268976.2013.813594}
+}
+
+
+% LAMMPS engine:
+
+@article{Thompson2022,
+  title = {{LAMMPS} - a flexible simulation tool for particle-based materials modeling at the atomic, meso, and continuum scales},
+  author = {Thompson, Aidan P. and Aktulga, H. Metin and Berger, Richard and Bolintineanu, Dan S. and Brown, W. Michael and Crozier, Paul S. and {in't Veld}, Pieter J. and Kohlmeyer, Axel and Moore, Stan G. and Nguyen, Trung Dac and Shan, Ray and Stevens, Mark J. and Tranchida, Julien and Trott, Christian and Plimpton, Steven J.},
+  journal = {Comp. Phys. Comm.},
+  volume = {271},
+  pages = {108171},
+  year = {2022},
+  doi = {10.1016/j.cpc.2021.108171},
+  url = {https://doi.org/10.1016/j.cpc.2021.108171}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+PPPM Kokkos initialization ...
+WARNING: System is not charge neutral, net charge = 3
+For more information see https://docs.lammps.org/err0029 (src/kspace.cpp:330)
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.24229168
+  grid = 54 54 270
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.0039656967
+  estimated relative force accuracy = 1.1942578e-05
+  using double precision cuFFT
+  3d grid and FFT values/proc = 1012112 787320
+Generated 120 of 120 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Unused restart file global fix info:
+  fix style: nvt, fix ID: fNVT
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 10000, page size: 1000000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 14, bins = 6 6 17
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) pair lj/class2/coul/long/kk, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (2) compute group/group, occasional
+      attributes: half, newton off
+      pair build: half/bin/newtoff
+      stencil: full/bin/3d
+      bin: standard
+WARNING: Fix STORE/ATOM not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+----------------------------------------------------------------------
+Reading new configuration:
+# units = "" [default]
+# indexFile = "index.ndx"
+The following index groups are currently defined:
+  pull_layer (20929 atoms)
+  lower (4701 atoms)
+# smp = "cvcs" [default]
+# colvarsTrajFrequency = 100 [default]
+# colvarsRestartFrequency = 0 [default]
+# scriptedColvarForces = off [default]
+# scriptingAfterBiases = off [default]
+----------------------------------------------------------------------
+  Initializing a new collective variable.
+  # name = "distZ"
+    Initializing a new "distanceZ" component.
+    # name = "" [default]
+    # componentCoeff = 1 [default]
+    # componentExp = 1 [default]
+    # period = 0 [default]
+    # wrapAround = 0 [default]
+    # forceNoPBC = off [default]
+    # scalable = on [default]
+      Initializing atom group "main".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "pull_layer"
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 ) [default]
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "main" defined with 20929 atoms requested.
+      Initializing atom group "ref".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "" [default]
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 )
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "ref" defined with 0 atoms requested.
+    # axis = ( 0 , 0 , 1 )
+    # oneSiteSystemForce = off [default]
+    # oneSiteTotalForce = off [default]
+  All components initialized.
+  # timeStepFactor = 1 [default]
+  # width = 1 [default]
+  # lowerBoundary = 0 [default]
+  # upperBoundary = 1 [default]
+  # hardLowerBoundary = off [default]
+  # hardUpperBoundary = off [default]
+  # expandBoundaries = off [default]
+  # extendedLagrangian = off [default]
+  # outputValue = on
+  # outputVelocity = on
+  # outputTotalForce = off [default]
+  # outputAppliedForce = on
+  # subtractAppliedForce = off [default]
+  # runAve = off [default]
+  # corrFunc = off [default]
+----------------------------------------------------------------------
+Collective variables initialized, 1 in total.
+----------------------------------------------------------------------
+  Initializing a new "harmonic" instance.
+  # name = "pulling"
+  # colvars = { distZ }
+  # stepZeroData = off [default]
+  # outputEnergy = on
+  # outputFreq = 0 [default]
+  # timeStepFactor = 1 [default]
+  # writeTISamples = off [default]
+  # writeTIPMF = off [default]
+  # centers = { 92.5186 }
+  # targetCenters = { 122.519 }
+  Initial step for restraint change: 841158
+  # targetNumSteps = 240000
+  # targetNumStages = 0 [default]
+  # outputAccumulatedWork = on
+  # outputCenters = on
+  # forceConstant = 15
+  # decoupling = off [default]
+  # targetForceConstant = -1 [default]
+  The force constant for colvar "distZ" will be rescaled to 15 according to the specified width (1).
+----------------------------------------------------------------------
+Collective variables biases initialized, 1 in total.
+----------------------------------------------------------------------
+Collective variables module (re)initialized.
+----------------------------------------------------------------------
+Current simulation parameters: initial step = 841158, integration timestep = 0.25
+Updating atomic parameters (masses, charges, etc).
+Re-initialized atom group for variable "distZ":0/0. 20929 atoms: total mass = 133357, total charge = 67.9661.
+Re-initialized atom group for variable "distZ":0/1. 0 atoms: total mass = 1, total charge = 0.
+The final output state file will be "colvars_out_2.colvars.state".
+Per MPI rank memory allocation (min/avg/max) = 680.7 | 680.7 | 680.7 Mbytes
+   Step          Temp         c_E_int         PotEng    
+    841158   286.33208     -21985.405     -1051342.9    
+    842000   285.08305     -21839.72      -1051631.3    
+    843000   284.66301     -21880.436     -1052052.7    
+    844000   285.11838     -21987.918     -1051882.1    
+    845000   283.15984     -21959.214     -1051224      
+    846000   285.46596     -21967.689     -1051194.1    
+    847000   284.48842     -22044.917     -1051547.9    
+    848000   286.67484     -21973.316     -1051424.8    
+    849000   284.95984     -22022.027     -1051637.3    
+    850000   284.72361     -22079.342     -1051370.8    
+    851000   284.88449     -22086.677     -1051590      
+    852000   285.18095     -22025.714     -1051699.1    
+    853000   284.05078     -22100.1       -1052037.9    
+    854000   284.48589     -22059.569     -1051500.9    
+    855000   285.73737     -21900.144     -1051873      
+    856000   283.92398     -22042.535     -1051653.2    
+    857000   284.61839     -22064.76      -1051380.7    
+    858000   284.4125      -22177.159     -1051747.5    
+    859000   285.41941     -22215.943     -1051389.9    
+    860000   285.2393      -22083.988     -1051716.5    
+    861000   285.28533     -22184.234     -1051800.1    
+    862000   286.18485     -21951.493     -1051643.5    
+    863000   284.15981     -21991.792     -1051955.9    
+    864000   284.67007     -22015.34      -1051425.5    
+    865000   285.57362     -21908.311     -1051666      
+    866000   285.3474      -22038.511     -1051567.1    
+    867000   285.53972     -21957.67      -1051371.7    
+    868000   284.54307     -21933.434     -1051606.1    
+    869000   284.77898     -21885.91      -1051124.4    
+    870000   285.08608     -21915.023     -1051603.9    
+    871000   285.48319     -21871.061     -1051409.3    
+    872000   285.61485     -21933.758     -1051089.1    
+    873000   285.73475     -21765.868     -1051667.7    
+    874000   284.97341     -21813.41      -1050917.2    
+    875000   285.54235     -21837.782     -1051093.7    
+    876000   286.13166     -21671.514     -1051222.1    
+    877000   286.10977     -21763.05      -1050956.6    
+    878000   283.83127     -21708.913     -1051048.9    
+    879000   285.6789      -21661.952     -1050976.9    
+    880000   285.37982     -21705.547     -1051070.8    
+    881000   285.7154      -21657.549     -1050834.6    
+    882000   284.61003     -21730.613     -1050634.1    
+    883000   284.71948     -21706.043     -1051203.7    
+    884000   285.47886     -21556.551     -1050946.1    
+    885000   284.58454     -21609.433     -1051184      
+    886000   286.26116     -21741.909     -1050833.7    
+    887000   284.87998     -21739.978     -1051081.2    
+    888000   284.82224     -21637.716     -1050383.1    
+    889000   285.34547     -21729.622     -1050889.4    
+    890000   284.6108      -21695.17      -1050576.4    
+    891000   284.71735     -21719.274     -1050914.5    
+    892000   285.13102     -21673.116     -1050518.7    
+    893000   284.28318     -21636.971     -1050512.4    
+    894000   284.56232     -21633.429     -1050411      
+    895000   284.8441      -21636.036     -1050689.7    
+    896000   285.00147     -21497.017     -1050681.1    
+    897000   285.06074     -21541.26      -1050402.2    
+    898000   286.29281     -21618.225     -1050211.3    
+    899000   284.79649     -21564.825     -1050228.4    
+    900000   284.69464     -21598.474     -1050717.4    
+    901000   284.88389     -21646.292     -1050348.6    
+    902000   285.21555     -21411.417     -1050478.3    
+    903000   285.19882     -21447.405     -1050179      
+    904000   283.21675     -21307.651     -1050064.9    
+    905000   285.34945     -21435.365     -1050108.4    
+    906000   284.90894     -21396.94      -1050284.4    
+    907000   284.6808      -21349.702     -1050008.1    
+    908000   284.70234     -21458.621     -1050463.7    
+    909000   285.94036     -21400.065     -1050389.1    
+    910000   284.9502      -21306.914     -1050104.1    
+    911000   283.21494     -21352.782     -1049990.6    
+    912000   285.54405     -21556.863     -1050115.2    
+    913000   285.24066     -21365.247     -1050336.8    
+    914000   284.44318     -21324.804     -1050229.2    
+    915000   285.42067     -21301.843     -1050077.9    
+    916000   284.12503     -21224.297     -1050174.6    
+    917000   284.84502     -21285.959     -1050159.8    
+    918000   285.22844     -21223.553     -1050146.3    
+    919000   284.88294     -21201.397     -1050311.3    
+    920000   285.6627      -21304.74      -1049912.6    
+    921000   284.79705     -21196.465     -1050124.7    
+    922000   285.00466     -21192.971     -1049780.7    
+    923000   285.45766     -21273.816     -1050360      
+    924000   284.95099     -21245.786     -1050099.1    
+    925000   285.25914     -21261.229     -1050663.1    
+    926000   284.40343     -21281.914     -1049813.8    
+    927000   284.06045     -21307.458     -1050006.3    
+    928000   283.92575     -21197.694     -1049878.2    
+    929000   284.66558     -21243.449     -1049905.7    
+    930000   284.81045     -21325.811     -1050282.2    
+    931000   285.66779     -21334.05      -1049719.9    
+    932000   285.29643     -21282.414     -1050142.6    
+    933000   283.66449     -21229.531     -1049997.6    
+    934000   284.5963      -21253.526     -1050036      
+    935000   285.96299     -21326.011     -1050385.2    
+    936000   286.58228     -21297.133     -1050875.4    
+    937000   284.99654     -21343.05      -1049939.9    
+    938000   286.42282     -21381.314     -1049750.7    
+    939000   285.46432     -21252.038     -1049829      
+    940000   285.7502      -21340.235     -1050020.2    
+    941000   285.98494     -21166.022     -1049768      
+    942000   285.50115     -21251.927     -1050139.5    
+    943000   285.49624     -21151.416     -1050195.6    
+    944000   286.08856     -21103.313     -1049922.8    
+    945000   285.43239     -21327.058     -1050278.5    
+    946000   285.03129     -21334.747     -1049544.1    
+    947000   283.63919     -21275.45      -1049831.1    
+    948000   285.21177     -21135.508     -1049610.5    
+    949000   285.2216      -21123.886     -1049583.9    
+    950000   285.20735     -21294.785     -1049898.2    
+    951000   285.5869      -21115.952     -1049638.8    
+    952000   284.17461     -21226.663     -1049439.9    
+    953000   284.05012     -21285.262     -1050120.1    
+    954000   286.3537      -21300.79      -1050181.6    
+    955000   284.70719     -21364.568     -1049704.3    
+    956000   284.66581     -21255.746     -1049175.5    
+    957000   283.70051     -21308.788     -1049635.8    
+    958000   284.49824     -21173.193     -1049189.2    
+    959000   285.23251     -21166.05      -1049611.6    
+    960000   284.72248     -21208.392     -1048965.2    
+    961000   284.45355     -21282.142     -1049362.4    
+    962000   284.74408     -21293.195     -1049068.4    
+    963000   284.28545     -21144.588     -1049195.7    
+    964000   285.02042     -21183.051     -1049549      
+    965000   285.11689     -21153.506     -1048997.6    
+    966000   284.63441     -21197.233     -1049419.2    
+    967000   284.03069     -21195.077     -1048967.3    
+    968000   283.74292     -21149.801     -1049392.6    
+    969000   283.99414     -21114.341     -1048835.2    
+    970000   283.92961     -21212.731     -1049002.1    
+    971000   284.92661     -20977.064     -1048912.1    
+    972000   284.76725     -21110.967     -1049263.7    
+    973000   283.59673     -20984.689     -1048747.4    
+    974000   284.71125     -21124.41      -1048824      
+    975000   283.67454     -21087.968     -1049078.5    
+    976000   283.70552     -21041.402     -1049175.6    
+    977000   285.58632     -20942.57      -1049243.7    
+    978000   283.8683      -21073.194     -1049289.2    
+    979000   285.18688     -21038.862     -1048835.2    
+    980000   283.72926     -20954.701     -1048946.7    
+    981000   285.68631     -20942.255     -1048901      
+    982000   283.40778     -20849.574     -1048680.4    
+    983000   285.02497     -20781.334     -1048727.4    
+    984000   284.59918     -20886.4       -1048898.8    
+    985000   284.16895     -20819.349     -1048806      
+    986000   284.81917     -20840.516     -1048610      
+    987000   283.94019     -20840.887     -1048557.3    
+    988000   284.97213     -20886.808     -1048531      
+    989000   284.52306     -20915.224     -1048693.2    
+    990000   285.03629     -20689.441     -1048321.4    
+    991000   284.92911     -20759.88      -1048854.4    
+    992000   284.01243     -20807.374     -1048188.4    
+    993000   283.53497     -20763.371     -1048092.1    
+    994000   284.1335      -20711.151     -1048371      
+    995000   285.43228     -20769.857     -1048271.9    
+    996000   282.95066     -20634.825     -1048201      
+    997000   284.19003     -20676.454     -1048097.3    
+    998000   284.72843     -20605.587     -1047988      
+    999000   283.38866     -20677.608     -1048079.4    
+   1000000   284.94246     -20781.67      -1048462      
+   1001000   285.7565      -20608.813     -1047983.1    
+   1002000   284.96756     -20626.884     -1047933.6    
+   1003000   284.29538     -20659.341     -1048046.9    
+   1004000   285.1606      -20552.086     -1047759.8    
+   1005000   284.28985     -20779.489     -1048172.1    
+   1006000   285.04841     -20569.002     -1048097.4    
+   1007000   285.30194     -20659.268     -1047861.9    
+   1008000   284.44928     -20611.624     -1047802      
+   1009000   285.26676     -20596.135     -1047863.1    
+   1010000   284.74757     -20529.606     -1047682.6    
+   1011000   285.94626     -20646.599     -1048058.6    
+   1012000   285.29949     -20643.822     -1047922.9    
+   1013000   285.34424     -20654.38      -1047562      
+   1014000   283.70543     -20591.078     -1047747.8    
+   1015000   283.97652     -20537.097     -1047245.8    
+   1016000   284.64234     -20471.016     -1047466.6    
+   1017000   284.80789     -20512.815     -1047332      
+   1018000   283.89668     -20541.622     -1047349.7    
+   1019000   284.81757     -20478.27      -1047094.6    
+   1020000   284.64018     -20375.442     -1047456.8    
+   1021000   284.19842     -20537.226     -1047576.7    
+   1022000   284.49346     -20335.517     -1047391.7    
+   1023000   285.26202     -20261.032     -1047092      
+   1024000   284.85859     -20318.489     -1047553.6    
+   1025000   285.64934     -20286.147     -1047206.5    
+   1026000   284.78876     -20517.899     -1046944.1    
+   1027000   284.02652     -20322.713     -1046972.2    
+   1028000   284.40124     -20347.983     -1047579      
+   1029000   283.53319     -20226.26      -1046505.4    
+   1030000   283.70798     -20424.357     -1046967.5    
+   1031000   285.51018     -20366.507     -1046746.5    
+   1032000   283.60947     -20284.152     -1046800.4    
+   1033000   286.48241     -20443.385     -1047097.8    
+   1034000   284.16437     -20363.375     -1047006.2    
+   1035000   284.58891     -20454.469     -1046745.9    
+   1036000   283.19745     -20402.303     -1046933.8    
+   1037000   284.36605     -20423.234     -1046705.7    
+   1038000   283.92039     -20473.822     -1047064.2    
+   1039000   283.97269     -20352.602     -1046815.5    
+   1040000   285.57827     -20463.62      -1047153.3    
+   1041000   283.80311     -20431.795     -1047062.5    
+   1042000   283.73151     -20417.654     -1047308.2    
+   1043000   284.44469     -20350.406     -1046796      
+   1044000   283.32982     -20512.614     -1046825      
+   1045000   284.41762     -20473.588     -1046460.2    
+   1046000   283.97882     -20330.913     -1046814.5    
+   1047000   284.15881     -20352.479     -1046407      
+   1048000   285.31414     -20372.687     -1046516.4    
+   1049000   283.69156     -20234.896     -1046528.9    
+   1050000   285.01277     -20311.209     -1046163.2    
+   1051000   284.75184     -20439.03      -1046654.9    
+   1052000   284.59201     -20473.555     -1046640.4    
+   1053000   285.3101      -20529.098     -1046330.2    
+   1054000   284.1596      -20456.295     -1046698      
+   1055000   284.73426     -20458.748     -1046616.8    
+   1056000   285.49316     -20346.453     -1046445.7    
+   1057000   284.19564     -20275.059     -1046660.5    
+   1058000   283.61122     -20382.986     -1046353.6    
+   1059000   285.57523     -20234.417     -1046736.2    
+   1060000   285.17176     -20313.066     -1047039.6    
+   1061000   286.04265     -20438.436     -1046797.3    
+   1062000   284.72266     -20440.005     -1046716.6    
+   1063000   285.35903     -20447.519     -1046912.9    
+   1064000   286.79361     -20457.135     -1046575.5    
+   1065000   284.77294     -20430.6       -1046810      
+   1066000   283.76077     -20433.03      -1046591.6    
+   1067000   283.92965     -20451.601     -1046822.2    
+   1068000   284.98122     -20394.133     -1046585.4    
+   1069000   285.48309     -20510.495     -1047388.6    
+   1070000   284.9526      -20576.801     -1046933.1    
+   1071000   284.6087      -20489.844     -1046760.7    
+   1072000   283.81442     -20502.824     -1046831.7    
+   1073000   285.01951     -20561.944     -1047190.6    
+   1074000   284.73174     -20510.623     -1047063.3    
+   1075000   284.0458      -20599.121     -1047018.3    
+   1076000   285.08248     -20553.819     -1047186.5    
+   1077000   284.08482     -20651.456     -1047183      
+   1078000   285.69847     -20589.057     -1047058.2    
+   1079000   284.77156     -20698.214     -1047496.2    
+   1080000   285.40747     -20551.743     -1047016.6    
+   1081000   284.21619     -20631.106     -1047383.7    
+   1081158   284.68651     -20683.147     -1047492.6    
+Saving collective variables state to "colvars_out_2.colvars.state".
+Loop time of 38190.1 on 1 procs for 240000 steps with 99302 atoms
+
+Performance: 0.136 ns/day, 176.806 hours/ns, 6.284 timesteps/s, 624.049 katom-step/s
+492.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 221.09     | 221.09     | 221.09     |   0.0 |  0.58
+Bond    | 17192      | 17192      | 17192      |   0.0 | 45.02
+Kspace  | 5245.2     | 5245.2     | 5245.2     |   0.0 | 13.73
+Neigh   | 709.49     | 709.49     | 709.49     |   0.0 |  1.86
+Comm    | 105.49     | 105.49     | 105.49     |   0.0 |  0.28
+Output  | 1453.9     | 1453.9     | 1453.9     |   0.0 |  3.81
+Modify  | 13146      | 13146      | 13146      |   0.0 | 34.42
+Other   |            | 116.7      |            |       |  0.31
+
+Nlocal:          99302 ave       99302 max       99302 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          78042 ave       78042 max       78042 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    5.66154e+07 ave 5.66154e+07 max 5.66154e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  1.00732e+08 ave 1.00732e+08 max 1.00732e+08 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1.0073159e+08
+Ave neighs/atom = 1014.3964
+Ave special neighs/atom = 3.9475338
+Neighbor list builds = 3684
+Dangerous builds = 0
+
+    next v
+    next i
+
+    jump in.endrun_smd_R1 smd_loop
+
+    include in.smd
+clear
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000
+
+read_restart    system_equilibrated_CLSP1.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style full/kk from restart
+  orthogonal box = (0 0 -2) to (80.6296 82.864 224.5)
+  1 by 1 by 1 MPI processor grid
+  restoring pair style lj/class2/coul/long/kk from restart
+  restoring bond style class2/kk from restart
+  restoring angle style class2/kk from restart
+  restoring dihedral style class2/kk from restart
+  restoring improper style class2/kk from restart
+  99302 atoms
+  84984 bonds
+  111015 angles
+  134406 dihedrals
+  52237 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.100 seconds
+  read_restart CPU = 0.215 seconds
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+4701 atoms in group lower
+group           solvent type 5 6 7 8
+53450 atoms in group solvent
+group           ions    type 7 8
+185 atoms in group ions
+group           water   type 5 6
+53265 atoms in group water
+group           mobile subtract all lower
+94601 atoms in group mobile
+molecule        water_mol water.mol
+Read molecule template water_mol:
+# Water molecule. Original PCFF flexible geometry
+  1 molecules
+  0 fragments
+  0 bodies
+  3 atoms with max type 6
+  2 bonds with max type 4
+  1 angles with max type 6
+  0 dihedrals with max type 0
+  0 impropers with max type 0
+
+variable        smd_steps equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/100)
+
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+group           excluded_types type 1 2 3 4 5 6 7 8
+65162 atoms in group excluded_types
+group		polymer subtract all excluded_types
+34140 atoms in group polymer
+region          pull_zone block INF INF INF INF 65.0 165.0 units box
+group           atoms_in_zone region pull_zone
+59772 atoms in group atoms_in_zone
+group           pull_layer intersect polymer atoms_in_zone
+20929 atoms in group pull_layer
+group           smd_mobile subtract mobile pull_layer
+73672 atoms in group smd_mobile
+group           substrate_atoms type 1 2 3 4
+45852 atoms in group substrate_atoms
+group           gel_atoms subtract all substrate_atoms
+53450 atoms in group gel_atoms
+fix		sNVT smd_mobile nvt temp 300.0 300.0 100.0
+fix             sNVE pull_layer nve
+
+compute         pol_rg polymer gyration
+compute         pol_rmsd polymer msd
+compute		E_int gel_atoms group/group substrate_atoms
+compute         T_layer pull_layer temp
+
+variable        z_start equal xcm(pull_layer,z)
+variable        z_target equal v_z_start+30.0
+
+group2ndx index.ndx pull_layer lower
+Writing groups to index file index.ndx:
+ writing group pull_layer...done
+ writing group lower...done
+
+fix             pull all colvars none output colvars_out_${i}
+fix             pull all colvars none output colvars_out_3
+----------------------------------------------------------------------
+Initializing the collective variables module, version 2025-04-30 (patch 1).
+Please cite Fiorin et al, Mol Phys 2013:
+  https://doi.org/10.1080/00268976.2013.813594
+as well as all other papers listed below for individual features used.
+Summary of compile-time features available in this build:
+  - C++ language version: 201703
+  - Multiple replicas: available, but not (yet) enabled
+  - Lepton custom functions: available
+  - Tcl interpreter: not available
+Using LAMMPS interface, version "2025-03-31".
+Setting initial step number from MD engine: 841158
+
+fix_modify      pull config """
+indexFile index.ndx
+colvar {
+  name distZ
+  distanceZ {
+    main {
+      indexGroup pull_layer
+    }
+    ref {
+      dummyAtom (0.0, 0.0, 0.0)
+    }
+    axis (0.0, 0.0, 1.0)
+  }
+  outputValue on
+  outputVelocity on
+  outputAppliedForce on
+}
+harmonic {
+  name pulling
+  colvars distZ
+  centers ${z_start}
+  targetCenters ${z_target}
+  targetNumSteps ${smd_steps}
+  forceConstant 15.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+"""
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 4800 trajectory_smd_R1_$i.lammpstrj id type xu yu zu q fx fy fz
+dump            smd_dump all custom 4800 trajectory_smd_R1_3.lammpstrj id type xu yu zu q fx fy fz
+
+variable        E_bond     equal ebond
+variable        E_angle    equal eangle
+variable        E_dihed    equal edihed
+variable        E_poly_int equal ebond+eangle+edihed
+variable        rg         equal c_pol_rg
+variable        rmsd       equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
+variable        e_inter    equal c_E_int
+variable        t_loc      equal c_T_layer
+
+fix             smd_output all print ${print_freq} "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 480 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+fix             smd_output all print 480 "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_R1_3.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+
+thermo          1000
+thermo_style    custom step temp c_E_int pe
+timestep        0.25
+run             ${smd_steps}
+run             480000
+PPPM Kokkos initialization ...
+WARNING: System is not charge neutral, net charge = 3
+For more information see https://docs.lammps.org/err0029 (src/kspace.cpp:330)
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.24229168
+  grid = 54 54 270
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.0039656967
+  estimated relative force accuracy = 1.1942578e-05
+  using double precision cuFFT
+  3d grid and FFT values/proc = 1012112 787320
+Generated 120 of 120 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Unused restart file global fix info:
+  fix style: nvt, fix ID: fNVT
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 10000, page size: 1000000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 14, bins = 6 6 17
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) pair lj/class2/coul/long/kk, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (2) compute group/group, occasional
+      attributes: half, newton off
+      pair build: half/bin/newtoff
+      stencil: full/bin/3d
+      bin: standard
+WARNING: Fix STORE/ATOM not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+----------------------------------------------------------------------
+Reading new configuration:
+# units = "" [default]
+# indexFile = "index.ndx"
+The following index groups are currently defined:
+  pull_layer (20929 atoms)
+  lower (4701 atoms)
+# smp = "cvcs" [default]
+# colvarsTrajFrequency = 100 [default]
+# colvarsRestartFrequency = 0 [default]
+# scriptedColvarForces = off [default]
+# scriptingAfterBiases = off [default]
+----------------------------------------------------------------------
+  Initializing a new collective variable.
+  # name = "distZ"
+    Initializing a new "distanceZ" component.
+    # name = "" [default]
+    # componentCoeff = 1 [default]
+    # componentExp = 1 [default]
+    # period = 0 [default]
+    # wrapAround = 0 [default]
+    # forceNoPBC = off [default]
+    # scalable = on [default]
+      Initializing atom group "main".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "pull_layer"
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 ) [default]
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "main" defined with 20929 atoms requested.
+      Initializing atom group "ref".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "" [default]
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 )
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "ref" defined with 0 atoms requested.
+    # axis = ( 0 , 0 , 1 )
+    # oneSiteSystemForce = off [default]
+    # oneSiteTotalForce = off [default]
+  All components initialized.
+  # timeStepFactor = 1 [default]
+  # width = 1 [default]
+  # lowerBoundary = 0 [default]
+  # upperBoundary = 1 [default]
+  # hardLowerBoundary = off [default]
+  # hardUpperBoundary = off [default]
+  # expandBoundaries = off [default]
+  # extendedLagrangian = off [default]
+  # outputValue = on
+  # outputVelocity = on
+  # outputTotalForce = off [default]
+  # outputAppliedForce = on
+  # subtractAppliedForce = off [default]
+  # runAve = off [default]
+  # corrFunc = off [default]
+----------------------------------------------------------------------
+Collective variables initialized, 1 in total.
+----------------------------------------------------------------------
+  Initializing a new "harmonic" instance.
+  # name = "pulling"
+  # colvars = { distZ }
+  # stepZeroData = off [default]
+  # outputEnergy = on
+  # outputFreq = 0 [default]
+  # timeStepFactor = 1 [default]
+  # writeTISamples = off [default]
+  # writeTIPMF = off [default]
+  # centers = { 92.5186 }
+  # targetCenters = { 122.519 }
+  Initial step for restraint change: 841158
+  # targetNumSteps = 480000
+  # targetNumStages = 0 [default]
+  # outputAccumulatedWork = on
+  # outputCenters = on
+  # forceConstant = 15
+  # decoupling = off [default]
+  # targetForceConstant = -1 [default]
+  The force constant for colvar "distZ" will be rescaled to 15 according to the specified width (1).
+----------------------------------------------------------------------
+Collective variables biases initialized, 1 in total.
+----------------------------------------------------------------------
+Collective variables module (re)initialized.
+----------------------------------------------------------------------
+Current simulation parameters: initial step = 841158, integration timestep = 0.25
+Updating atomic parameters (masses, charges, etc).
+Re-initialized atom group for variable "distZ":0/0. 20929 atoms: total mass = 133357, total charge = 67.9661.
+Re-initialized atom group for variable "distZ":0/1. 0 atoms: total mass = 1, total charge = 0.
+The final output state file will be "colvars_out_3.colvars.state".
+Per MPI rank memory allocation (min/avg/max) = 680.7 | 680.7 | 680.7 Mbytes
+   Step          Temp         c_E_int         PotEng    
+    841158   286.33208     -21985.405     -1051342.9    
+    842000   285.08303     -21839.719     -1051631.3    
+    843000   284.66272     -21880.417     -1052052.6    
+    844000   285.10804     -21986.486     -1051878.9    
+    845000   283.2525      -21972.75      -1051253.1    
+    846000   286.13798     -22042.815     -1051489.6    
+    847000   284.76417     -21953.099     -1051534.5    
+    848000   287.15911     -21982.696     -1051837.8    
+    849000   285.03309     -21950.356     -1051935.6    
+    850000   285.17998     -21785.488     -1051451.4    
+    851000   284.40276     -21871.945     -1051503.7    
+    852000   283.80049     -21989.243     -1051740.4    
+    853000   284.7636      -22133.636     -1051572.3    
+    854000   286.21327     -22001.895     -1051283.4    
+    855000   284.44295     -22036.229     -1051559.5    
+    856000   284.88231     -21909.822     -1051268.8    
+    857000   285.98373     -21977.976     -1051458.5    
+    858000   284.65294     -21851.135     -1051355.4    
+    859000   285.60348     -21862.531     -1051773.3    
+    860000   284.79924     -21898.773     -1051786.8    
+    861000   285.37338     -21951.187     -1051406.9    
+    862000   284.61743     -21972.37      -1051654.9    
+    863000   285.52132     -21928.977     -1051856.1    
+    864000   285.1678      -21889.884     -1051405.6    
+    865000   283.74416     -21912.029     -1051581.7    
+    866000   284.94557     -21994.996     -1051342.6    
+    867000   285.88309     -21970.735     -1051706.5    
+    868000   284.7661      -21979.924     -1051847.9    
+    869000   286.73657     -21956.226     -1051764.9    
+    870000   283.94477     -21891.206     -1051535.8    
+    871000   285.68072     -22019.016     -1051252.4    
+    872000   284.81666     -22006.836     -1051538.2    
+    873000   284.14843     -21887.081     -1051921.5    
+    874000   284.14618     -22033.633     -1050946.1    
+    875000   285.17897     -22091.417     -1051479.2    
+    876000   285.64125     -21989.839     -1051834.1    
+    877000   285.51288     -22090.591     -1051163.6    
+    878000   284.59425     -22064.942     -1051352.8    
+    879000   284.84108     -21964.155     -1051164.1    
+    880000   283.99702     -21980.189     -1051500.7    
+    881000   285.10439     -21999.36      -1051356      
+    882000   285.28932     -21861.518     -1051436      
+    883000   283.44619     -22005.052     -1051629.7    
+    884000   284.43184     -21995.654     -1051353.7    
+    885000   283.96799     -21940.833     -1050817.6    
+    886000   285.43305     -21764.53      -1051193      
+    887000   285.91501     -21860.63      -1051711.3    
+    888000   286.31734     -21803.433     -1050989.6    
+    889000   285.13514     -21819.585     -1051124.6    
+    890000   285.69478     -21679.873     -1051011.6    
+    891000   284.27691     -21682.025     -1050607.6    
+    892000   285.32848     -21756.236     -1051130.7    
+    893000   284.66087     -21777.926     -1051297.1    
+    894000   285.17036     -21860.924     -1051037.4    
+    895000   284.5952      -21646.862     -1051244.3    
+    896000   284.65304     -21791.422     -1051061.7    
+    897000   284.74287     -21667.598     -1051208.7    
+    898000   285.23971     -21700.782     -1050801.1    
+    899000   285.49503     -21724.561     -1050891.3    
+    900000   284.55675     -21714.366     -1051261.1    
+    901000   285.55071     -21797.44      -1050921.5    
+    902000   285.06367     -21672.962     -1051091.1    
+    903000   285.10572     -21950.359     -1051305.3    
+    904000   284.91241     -21928.471     -1050869.4    
+    905000   286.86478     -21840.589     -1050680.2    
+    906000   285.26631     -21784.512     -1050979.1    
+    907000   285.11163     -21859.632     -1051341.8    
+    908000   285.02463     -21920.708     -1051547.8    
+    909000   284.90555     -21704.751     -1050903.7    
+    910000   286.26007     -21748.649     -1050927.4    
+    911000   284.76046     -21720.84      -1051035.5    
+    912000   284.57348     -21726.968     -1050667.3    
+    913000   285.05471     -21759.919     -1050816.2    
+    914000   285.24521     -21872.795     -1051221.4    
+    915000   284.65537     -21783.854     -1050843.4    
+    916000   286.68773     -21754.77      -1051409.8    
+    917000   284.60965     -21848.892     -1051340.5    
+    918000   285.12021     -21705.356     -1050860.4    
+    919000   285.0101      -21763.896     -1050867.9    
+    920000   283.27679     -21769.868     -1050933.4    
+    921000   285.13553     -21656.106     -1050768.2    
+    922000   284.87881     -21620.657     -1051037.7    
+    923000   283.09002     -21618.543     -1050632.3    
+    924000   285.12607     -21589.404     -1050924.5    
+    925000   285.36799     -21631.232     -1051574.4    
+    926000   284.18518     -21747.11      -1050660.3    
+    927000   284.00128     -21604.969     -1051004.3    
+    928000   285.00545     -21498.499     -1050964.1    
+    929000   283.83441     -21502.975     -1050498.1    
+    930000   284.0977      -21646.983     -1050625.5    
+    931000   285.32813     -21470.345     -1050551.1    
+    932000   284.26234     -21604.712     -1050875.1    
+    933000   286.14503     -21551.46      -1051027.4    
+    934000   283.26972     -21722.668     -1051017.2    
+    935000   285.15157     -21590.486     -1050946      
+    936000   284.94783     -21562.03      -1050983.8    
+    937000   284.73976     -21488.238     -1051266.2    
+    938000   285.38594     -21503.916     -1050765.7    
+    939000   284.7205      -21633.734     -1051180.5    
+    940000   284.51283     -21509.62      -1050925.2    
+    941000   284.66773     -21633.568     -1050848      
+    942000   285.98419     -21621.079     -1050674.1    
+    943000   284.84895     -21649.963     -1050885.3    
+    944000   285.53357     -21591.704     -1050644.3    
+    945000   285.73018     -21582.09      -1051016.4    
+    946000   284.07929     -21723.471     -1050481.2    
+    947000   284.59932     -21615.018     -1051252.2    
+    948000   284.84423     -21585.477     -1050765.5    
+    949000   284.0841      -21614.12      -1050748      
+    950000   286.23525     -21592.088     -1050984.3    
+    951000   283.81385     -21661.511     -1050956.2    
+    952000   284.30388     -21613.053     -1050650.6    
+    953000   284.87908     -21662.694     -1051037.3    
+    954000   283.93972     -21657.593     -1050796.7    
+    955000   284.49126     -21805.756     -1050708.2    
+    956000   284.72136     -21725.772     -1051073.9    
+    957000   284.99458     -21609.416     -1050715.7    
+    958000   285.65901     -21693.061     -1051122.4    
+    959000   285.45433     -21605.001     -1050972.5    
+    960000   284.59505     -21653.718     -1050809.1    
+    961000   285.80628     -21724.227     -1050856.9    
+    962000   284.63765     -21622.501     -1050914.3    
+    963000   285.29279     -21590.545     -1050716.4    
+    964000   284.90774     -21606.256     -1050901.6    
+    965000   284.45027     -21562.156     -1050815.7    
+    966000   285.30139     -21647.451     -1050275.3    
+    967000   284.51152     -21597.088     -1050712.4    
+    968000   284.86095     -21577.066     -1050608.3    
+    969000   285.48328     -21495.249     -1051006.7    
+    970000   284.4037      -21667.245     -1050605.9    
+    971000   285.06492     -21652.394     -1050611.8    
+    972000   284.77799     -21580.661     -1051357.6    
+    973000   284.38685     -21529.531     -1050525.7    
+    974000   285.1511      -21476.051     -1050763.1    
+    975000   284.17736     -21602.535     -1050531.9    
+    976000   284.85614     -21622.628     -1050377.9    
+    977000   283.56162     -21546.833     -1050694.3    
+    978000   285.13084     -21600.427     -1050457.6    
+    979000   284.23895     -21393.575     -1050620.3    
+    980000   284.72115     -21437.678     -1050681      
+    981000   283.85664     -21403.29      -1050013.4    
+    982000   286.84134     -21502.143     -1050610.6    
+    983000   285.3136      -21386.622     -1050647.1    
+    984000   286.1718      -21352.992     -1050869.9    
+    985000   284.90829     -21488.894     -1050724.8    
+    986000   285.10848     -21471.742     -1050314.3    
+    987000   285.83351     -21446.925     -1050566.2    
+    988000   284.33382     -21595.374     -1050754.2    
+    989000   285.69028     -21597.149     -1050361.4    
+    990000   283.01052     -21589.007     -1050201.7    
+    991000   285.47407     -21552.478     -1050320.8    
+    992000   283.804       -21432.408     -1050324.3    
+    993000   284.76035     -21520.748     -1050130.8    
+    994000   285.58647     -21435.524     -1050303.6    
+    995000   284.00247     -21393.173     -1050453.6    
+    996000   286.29928     -21487.511     -1050513      
+    997000   284.19131     -21453.067     -1050297.6    
+    998000   284.15959     -21558.931     -1050087.5    
+    999000   285.96832     -21604.883     -1050363.7    
+   1000000   285.3244      -21475.515     -1050662.4    
+   1001000   285.39104     -21476.85      -1050221.4    
+   1002000   285.70785     -21381.555     -1049704      
+   1003000   284.65009     -21448.436     -1050048.4    
+   1004000   285.10885     -21391.93      -1050368.2    
+   1005000   284.47263     -21407.357     -1050141.1    
+   1006000   284.3959      -21373.332     -1049674.9    
+   1007000   284.40664     -21368.392     -1050385.4    
+   1008000   285.34872     -21348.184     -1050336.7    
+   1009000   285.78526     -21311.259     -1049600.6    
+   1010000   285.33611     -21417.461     -1050208.1    
+   1011000   285.17348     -21366.386     -1049997.3    
+   1012000   283.86646     -21386.743     -1049786.5    
+   1013000   285.57019     -21443.374     -1049620.5    
+   1014000   284.39964     -21507.426     -1049881.5    
+   1015000   285.69406     -21409.131     -1049805.7    
+   1016000   283.05054     -21406.356     -1049827.4    
+   1017000   284.3609      -21452.608     -1049569.3    
+   1018000   284.72011     -21403.906     -1050149.3    
+   1019000   283.78233     -21448.035     -1050172.6    
+   1020000   285.31408     -21377.079     -1049994.2    
+   1021000   284.30644     -21486.308     -1050089      
+   1022000   284.42733     -21256.976     -1049404.8    
+   1023000   284.1196      -21348.754     -1049855.3    
+   1024000   282.88344     -21511.821     -1049893.4    
+   1025000   285.6271      -21509.671     -1049754.1    
+   1026000   284.64884     -21483.432     -1049421      
+   1027000   284.32022     -21336.164     -1049894.4    
+   1028000   285.51311     -21302.007     -1049460.8    
+   1029000   284.43673     -21372.069     -1049773.2    
+   1030000   285.06866     -21265.797     -1049869.2    
+   1031000   285.85281     -21392.086     -1049475.9    
+   1032000   284.53107     -21344.221     -1049678.9    
+   1033000   285.42613     -21290.327     -1049593      
+   1034000   284.87479     -21239.917     -1049520.5    
+   1035000   284.54768     -21243.254     -1049551.5    
+   1036000   285.75746     -21260.886     -1049199.3    
+   1037000   283.84977     -21267.31      -1049082.5    
+   1038000   285.20088     -21316.569     -1049730.5    
+   1039000   285.6205      -21184.993     -1049637.2    
+   1040000   284.79569     -21205.389     -1049494.7    
+   1041000   285.72485     -21359.288     -1049943.2    
+   1042000   285.19894     -21274.354     -1049573      
+   1043000   286.89861     -21308.052     -1049657.3    
+   1044000   284.78961     -21228.53      -1049693      
+   1045000   285.44473     -21229.506     -1049389.5    
+   1046000   285.32514     -21239.44      -1048731.8    
+   1047000   285.71532     -21328.351     -1049212.3    
+   1048000   285.69059     -21258.953     -1049336.1    
+   1049000   285.47076     -21449.769     -1049560.2    
+   1050000   285.53477     -21277.451     -1049174.5    
+   1051000   285.42192     -21276.427     -1049542.6    
+   1052000   286.62616     -21175.416     -1049408.4    
+   1053000   284.72566     -21120.562     -1049144.7    
+   1054000   286.31939     -21223.658     -1049204.8    
+   1055000   284.99544     -21086.752     -1049257.8    
+   1056000   286.6239      -21210.981     -1049430.8    
+   1057000   284.63654     -21284.751     -1049335.2    
+   1058000   284.99315     -21162.771     -1049226.3    
+   1059000   285.85534     -21305.5       -1049410      
+   1060000   285.86608     -21352.685     -1049578.2    
+   1061000   286.72722     -21203.855     -1049399      
+   1062000   285.42391     -21319.314     -1049416.1    
+   1063000   284.52684     -21251.177     -1049198.5    
+   1064000   285.60894     -21187.186     -1049117.3    
+   1065000   284.8989      -21092.516     -1049004      
+   1066000   284.68757     -21208.447     -1049443.9    
+   1067000   285.7003      -21208.279     -1049053.8    
+   1068000   285.08261     -21237.189     -1049234.1    
+   1069000   285.51803     -21330.227     -1049430.3    
+   1070000   286.38966     -21283.158     -1049288.2    
+   1071000   284.91749     -21201.988     -1049067.4    
+   1072000   285.17351     -21253.048     -1049202.4    
+   1073000   284.44676     -21179.885     -1049345.6    
+   1074000   286.10687     -21224.854     -1049283.5    
+   1075000   285.77536     -21209.251     -1049117.9    
+   1076000   285.64539     -21225.413     -1049644.3    
+   1077000   286.46924     -21143.182     -1049385.3    
+   1078000   284.26897     -21290.571     -1049129.9    
+   1079000   285.83776     -21125.162     -1049206.9    
+   1080000   285.05547     -21146.368     -1049107.2    
+   1081000   284.49066     -21034.797     -1048957.9    
+   1082000   285.93201     -21131.513     -1049071.3    
+   1083000   284.22099     -21070.819     -1049143.3    
+   1084000   285.38844     -21129.987     -1049316.6    
+   1085000   284.46486     -21124.793     -1048814.7    
+   1086000   285.55518     -20944.17      -1049036.2    
+   1087000   285.80164     -20981.728     -1049212.5    
+   1088000   283.67906     -21103.908     -1048822.3    
+   1089000   285.06338     -21286.655     -1048826.5    
+   1090000   285.68117     -21176.976     -1048409.7    
+   1091000   284.81928     -21059.418     -1048597.4    
+   1092000   285.33502     -21239.349     -1048724.2    
+   1093000   286.18886     -21159.837     -1048700.2    
+   1094000   285.33853     -21072.646     -1049138.5    
+   1095000   285.99576     -21114.446     -1048965.2    
+   1096000   284.57221     -20984.657     -1048892.2    
+   1097000   284.99435     -20875.086     -1049039.4    
+   1098000   285.62793     -20917.54      -1048938.1    
+   1099000   284.39024     -20919.793     -1048746.8    
+   1100000   285.95026     -20913.552     -1048523      
+   1101000   284.29016     -20930.711     -1048673.4    
+   1102000   284.69377     -20964.571     -1048604.3    
+   1103000   286.42614     -20928.814     -1048755.5    
+   1104000   285.38064     -20901.867     -1049030.6    
+   1105000   285.25107     -20883.762     -1049130.3    
+   1106000   285.57813     -20946.549     -1048429.6    
+   1107000   284.38492     -20879.995     -1048617.7    
+   1108000   285.44769     -21038.328     -1048617      
+   1109000   284.98403     -20975.421     -1049050.2    
+   1110000   285.44841     -20850.519     -1048942.3    
+   1111000   285.52931     -20921.519     -1048352.4    
+   1112000   284.5686      -21095.61      -1048716      
+   1113000   284.54407     -20877.465     -1048245.3    
+   1114000   284.8897      -21054.016     -1048597.6    
+   1115000   284.68465     -20898.359     -1048594.6    
+   1116000   286.08341     -20844.011     -1048742.7    
+   1117000   285.4841      -20918.662     -1048544.9    
+   1118000   285.78867     -20928.233     -1048662.1    
+   1119000   286.43016     -21001.361     -1048479.3    
+   1120000   284.8006      -20865.748     -1048619.1    
+   1121000   286.46127     -20844.113     -1048548.6    
+   1122000   284.57062     -20904.113     -1048211      
+   1123000   285.93106     -20947.666     -1048571.9    
+   1124000   284.59106     -21024.032     -1047905.7    
+   1125000   284.49529     -20923.156     -1048301      
+   1126000   285.21475     -21032.313     -1048088.8    
+   1127000   285.43393     -20932.878     -1048220.2    
+   1128000   284.56285     -20846.834     -1048500.4    
+   1129000   284.57904     -20706.288     -1047812.8    
+   1130000   285.78177     -20856.471     -1047981      
+   1131000   285.46805     -20779.064     -1048042.3    
+   1132000   285.23209     -20715.683     -1048188.1    
+   1133000   284.72921     -20729.198     -1047430.2    
+   1134000   285.21867     -20832.26      -1048259.8    
+   1135000   285.86934     -20722.219     -1047939.1    
+   1136000   283.93725     -20716.109     -1047839.3    
+   1137000   284.63951     -20803.78      -1047769.5    
+   1138000   285.41677     -20768.648     -1047854.9    
+   1139000   284.85955     -20815.445     -1048072.1    
+   1140000   284.53598     -20797.101     -1047752.3    
+   1141000   285.46644     -20791.336     -1048139.3    
+   1142000   286.6075      -20676.466     -1048109.9    
+   1143000   285.79171     -20700.933     -1048551      
+   1144000   285.43147     -20759.664     -1048009.1    
+   1145000   285.15521     -20679.045     -1047668.9    
+   1146000   285.6659      -20803.56      -1048285.1    
+   1147000   286.38882     -20834.975     -1047919.7    
+   1148000   285.69698     -20777.006     -1048513.9    
+   1149000   285.46224     -20803.471     -1047977.2    
+   1150000   286.04565     -20718.65      -1047665.6    
+   1151000   287.01363     -20732.612     -1048398.7    
+   1152000   284.70401     -20742.746     -1047794.4    
+   1153000   284.73613     -20751.693     -1047425.2    
+   1154000   284.56838     -20772.053     -1048041.6    
+   1155000   285.29776     -20724.651     -1047819.5    
+   1156000   285.94729     -20707.601     -1048147.5    
+   1157000   285.29071     -20699.92      -1048147      
+   1158000   285.26244     -20787.567     -1047627      
+   1159000   283.89533     -20957.105     -1047669.5    
+   1160000   285.58844     -20833.211     -1047819      
+   1161000   285.79337     -20998.846     -1047812.8    
+   1162000   285.98872     -21012.09      -1047213.2    
+   1163000   284.29426     -20939.689     -1047385.6    
+   1164000   285.43332     -20871.6       -1047504.3    
+   1165000   285.32818     -20839.648     -1047443.5    
+   1166000   284.54724     -20852.316     -1047398.2    
+   1167000   286.187       -20869.65      -1047196.5    
+   1168000   285.6981      -21022.277     -1047590.2    
+   1169000   284.61411     -20947.165     -1047664.7    
+   1170000   286.02295     -20922.549     -1047447.9    
+   1171000   284.92818     -20872.788     -1047563.5    
+   1172000   286.63846     -20923.881     -1047320.4    
+   1173000   285.46033     -20931.489     -1047605.7    
+   1174000   285.08154     -20911.418     -1047573.7    
+   1175000   284.69999     -20854.114     -1047693.8    
+   1176000   284.71845     -20932.661     -1047264.7    
+   1177000   284.9363      -20903.183     -1047698.9    
+   1178000   286.12362     -20900.577     -1047570.7    
+   1179000   284.70452     -20852.175     -1047737.5    
+   1180000   285.94749     -20807.634     -1047773.9    
+   1181000   286.12431     -20934.135     -1047340.1    
+   1182000   284.46199     -21046.054     -1047143.8    
+   1183000   285.44005     -21154.745     -1047378.8    
+   1184000   285.52913     -20905.365     -1047124.1    
+   1185000   285.46683     -21061.899     -1047499.3    
+   1186000   285.41836     -20926.875     -1047561.5    
+   1187000   285.94062     -20862.98      -1047492.3    
+   1188000   286.01535     -21017.052     -1047723.8    
+   1189000   285.56002     -21037.843     -1047522.1    
+   1190000   284.29394     -20973.252     -1047137.9    
+   1191000   284.76821     -20947.745     -1047681.6    
+   1192000   285.37223     -20917.464     -1047202.8    
+   1193000   284.72323     -21109.653     -1047646.2    
+   1194000   286.47046     -21015.855     -1047300.5    
+   1195000   286.22895     -21119.353     -1047723.7    
+   1196000   285.44717     -21115.259     -1047814.1    
+   1197000   286.10877     -20926.47      -1047487.8    
+   1198000   285.00971     -20937.933     -1047874.1    
+   1199000   285.22106     -21168.666     -1047468.4    
+   1200000   284.81494     -21055.7       -1047459.6    
+   1201000   284.60129     -20922.499     -1047831.1    
+   1202000   286.26326     -20993.914     -1047652.8    
+   1203000   285.22017     -21207.592     -1047638.4    
+   1204000   286.27831     -21187.466     -1048289.8    
+   1205000   285.3887      -21146.758     -1047614.1    
+   1206000   285.89731     -21070.047     -1047137.5    
+   1207000   284.94666     -21101.228     -1047265.4    
+   1208000   285.1311      -21100.364     -1047819.8    
+   1209000   285.84282     -20966.06      -1047825.9    
+   1210000   285.58188     -21048.523     -1047289.1    
+   1211000   284.7593      -21029.734     -1047868.5    
+   1212000   284.56233     -21117.304     -1047497.9    
+   1213000   285.74863     -21103.12      -1047230.4    
+   1214000   284.54529     -21072.076     -1047549.8    
+   1215000   285.35372     -21060.555     -1047472      
+   1216000   284.17897     -21148.866     -1047190.9    
+   1217000   285.46811     -21028.238     -1047629.5    
+   1218000   285.98188     -20846.478     -1047641.6    
+   1219000   285.29013     -21038.873     -1047802.6    
+   1220000   285.75499     -21089.868     -1047773.7    
+   1221000   285.64252     -21106.501     -1047297.6    
+   1222000   284.67477     -21138.632     -1047719.4    
+   1223000   285.40722     -20986.183     -1047310.7    
+   1224000   284.825       -21015.132     -1047487.7    
+   1225000   285.2008      -20912.005     -1047396.3    
+   1226000   285.86769     -20991.11      -1047602.2    
+   1227000   285.90157     -21082.33      -1047756.9    
+   1228000   284.33492     -21286.799     -1048002.3    
+   1229000   285.14926     -21040.594     -1047520.9    
+   1230000   285.79075     -21128.01      -1047743.4    
+   1231000   284.45358     -21083.406     -1047911.1    
+   1232000   285.98955     -21073         -1047668.3    
+   1233000   284.26382     -21132.398     -1047754.3    
+   1234000   285.70915     -21264.788     -1047907.9    
+   1235000   285.41858     -21178.174     -1047787.4    
+   1236000   283.59821     -21304.236     -1048041.7    
+   1237000   285.62917     -21261.612     -1048018.6    
+   1238000   284.00177     -21293.015     -1048022.5    
+   1239000   285.60765     -21393.601     -1047889.8    
+   1240000   284.87903     -21349.522     -1047908.8    
+   1241000   285.567       -21261.559     -1047459      
+   1242000   285.68578     -21221.998     -1048238.1    
+   1243000   287.00101     -21137.447     -1048082.3    
+   1244000   284.32899     -21289.697     -1048051.3    
+   1245000   284.75602     -21521.874     -1047458.3    
+   1246000   286.13905     -21484.541     -1047924.5    
+   1247000   285.44115     -21498.941     -1048011.8    
+   1248000   286.14961     -21638.77      -1048109.6    
+   1249000   285.26802     -21514.341     -1047941.2    
+   1250000   285.7862      -21441.182     -1047518.2    
+   1251000   284.84517     -21416.503     -1047706.5    
+   1252000   286.43057     -21378.42      -1047992.8    
+   1253000   286.53912     -21445.648     -1047560.7    
+   1254000   285.35511     -21524.046     -1048003.7    
+   1255000   286.56974     -21455.258     -1047800      
+   1256000   285.85787     -21418.26      -1047877.5    
+   1257000   285.80158     -21400.557     -1048248      
+   1258000   283.61381     -21567.324     -1048304.4    
+   1259000   286.18868     -21502.727     -1048193.6    
+   1260000   284.96395     -21676.587     -1047987.1    
+   1261000   284.85655     -21491.807     -1048301.3    
+   1262000   285.82321     -21519.663     -1047911.7    
+   1263000   285.82935     -21368.542     -1048220.3    
+   1264000   283.86814     -21415.749     -1048137.5    
+   1265000   286.19675     -21461.911     -1048267.3    
+   1266000   286.03002     -21397.99      -1047735.6    
+   1267000   285.37422     -21513.891     -1048096.5    
+   1268000   286.74458     -21328.244     -1047672.4    
+   1269000   285.64387     -21358.688     -1047780.1    
+   1270000   285.2285      -21381.354     -1047698.4    
+   1271000   285.99653     -21308.43      -1047743.2    
+   1272000   284.93457     -21423.302     -1047694.3    
+   1273000   284.63666     -21608.943     -1047655.2    
+   1274000   285.69264     -21705.161     -1048096      
+ERROR on proc 0: Bond atoms missing at step 1274805
+For more information see https://docs.lammps.org/err0005 (src/KOKKOS/neigh_bond_kokkos.cpp:262)
