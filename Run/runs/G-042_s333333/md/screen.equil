@@ -381,4 +381,66 @@ Per MPI rank memory allocation (min/avg/max) = 655.9 | 655.9 | 655.9 Mbytes
      23785   9.4084984      36198.386      57864.209     -17476.894      251.15372     -1121785.9     -1530.1045    
 Loop time of 821.645 on 1 procs for 10000 steps with 99814 atoms
 
-Performance: 0.105 ns
+Performance: 0.105 ns/day, 228.235 hours/ns, 12.171 timesteps/s, 1.215 Matom-step/s
+100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 6.7889     | 6.7889     | 6.7889     |   0.0 |  0.83
+Bond    | 683.73     | 683.73     | 683.73     |   0.0 | 83.21
+Kspace  | 67.907     | 67.907     | 67.907     |   0.0 |  8.26
+Neigh   | 1.0353     | 1.0353     | 1.0353     |   0.0 |  0.13
+Comm    | 1.5981     | 1.5981     | 1.5981     |   0.0 |  0.19
+Output  | 0.0018811  | 0.0018811  | 0.0018811  |   0.0 |  0.00
+Modify  | 59.649     | 59.649     | 59.649     |   0.0 |  7.26
+Other   |            | 0.9385     |            |       |  0.11
+
+Nlocal:          99814 ave       99814 max       99814 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          80363 ave       80363 max       80363 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    6.24791e+07 ave 6.24791e+07 max 6.24791e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 62479134
+Ave neighs/atom = 625.95562
+Ave special neighs/atom = 4.0756407
+Neighbor list builds = 6
+Dangerous builds = 0
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 23785
+  Time step     : 0.25
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+Per MPI rank memory allocation (min/avg/max) = 655.9 | 655.9 | 655.9 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed        E_impro         PotEng         Press     
+     23785   9.4084984      36198.386      57864.209     -17476.894      251.15372     -1121785.9     -1530.1045    
+     24000   9.5795501      36212.032      57814.289     -17463.07       253.47625     -1121759.8     -1524.685     
+     24500   9.6051779      36279.459      57823.872     -17484.567      250.18142     -1121774.5     -1491.7125    
+     25000   9.3788914      36232.972      57854.312     -17474.951      249.88209     -1121841.1     -1539.5199    
+     25500   9.6783956      36231.642      57883.191     -17494.509      245.14555     -1121827       -1499.1442    
+     26000   9.4527735      36144.686      57835.866     -17484.142      244.96667     -1121891       -1528.2877    
+     26500   9.5258538      36221.647      57805.196     -17494.002      248.06776     -1121914.6     -1423.1571    
+     27000   9.4947477      36188.645      57814.601     -17470.444      246.95052     -1121943.4     -1440.2577    
+     27500   9.4245552      36175.612      57832.85      -17469.372      245.07335     -1122006.1     -1483.3224    
+     28000   9.5703751      36210.387      57781.14      -17482.557      247.58869     -1122030.6     -1464.7948    
+     28500   9.4904437      36168.191      57782.88      -17473.247      245.98486     -1122094.2     -1442.2799    
+     29000   9.5015301      36144.956      57795.263     -17485.436      242.15617     -1122121.2     -1445.3875    
+     29500   9.5372455      36119.113      57803.415     -17492.982      242.70673     -1122150.3     -1426.1829    
+     30000   9.5429042      36126.415      57782.913     -17487.876      239.25728     -1122198.8     -1390.1572    
+     30500   9.5826529      36199.076      57786.5       -17519.997      239.10442     -1122244.9     -1368.6947    
+     31000   9.4693777      36089.992      57835.693     -17500.234      239.64538     -1122277       -1376.9992    
+     31500   9.5700354      36155.505      57786.465     -17476.566      242.68239     -1122313.4     -1373.973     
+     32000   9.5266332      36141.536      57750.842     -17508.118      243.26115     -1122361.9  
