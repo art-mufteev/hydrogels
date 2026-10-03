@@ -1,0 +1,38 @@
+ML/data/DL/Deep_poly_datasets_Ts.h5
+ML/data/DL/latent_db_all.h5
+ML/data/DL/latent_db.h5
+ML/data/DL/Deep_poly_datasets_Val.h5
+ML/runs/MLP_SET_mse/events.out.tfevents.1789942017.art-Pulse-GL76-11UEK.5389.23
+ML/runs/MLP_SET_mse/events.out.tfevents.1789856932.art-Pulse-GL76-11UEK.299207.20
+ML/runs/MLP_DS_mse/events.out.tfevents.1789859768.art-Pulse-GL76-11UEK.299207.35
+ML/runs/MLP_DS_mse/events.out.tfevents.1789946439.art-Pulse-GL76-11UEK.5389.38
+ML/runs/MTM_DS_mt/events.out.tfevents.1790663699.art-Pulse-GL76-11UEK.1408159.50
+ML/runs/MTM_DS_mt/events.out.tfevents.1790705441.art-Pulse-GL76-11UEK.1408159.120
+ML/runs/MTM_SET_mt/events.out.tfevents.1790659292.art-Pulse-GL76-11UEK.1408159.30
+ML/runs/MTM_SET_mt/events.out.tfevents.1790699611.art-Pulse-GL76-11UEK.1408159.95
+ML/runs/MLP_CLS_mse/events.out.tfevents.1789837097.art-Pulse-GL76-11UEK.43322.35
+ML/runs/MLP_CLS_mse/events.out.tfevents.1789850079.art-Pulse-GL76-11UEK.299207.5
+ML/runs/MTM_CLS_mt/events.out.tfevents.1790653589.art-Pulse-GL76-11UEK.1408159.10
+MD/Polymers_EMC_build/R_1_all/R1_3/lmp
+MD/Polymers_EMC_build/R_1_all/R1_1/lmp
+MD/Polymers_EMC_build/R_1_all/R1_2/lmp
+MD/Polymers_EMC_build/G_42_all/G42_2/lmp
+MD/Polymers_EMC_build/G_42_all/G42_3/lmp
+MD/Polymers_EMC_build/G_42_all/G42_1/lmp
+MD/runs/G42_all/G42_2/lmp
+MD/runs/G42_all/G42_3/trajectory_stabilization_G42.lammpstrj.gz
+MD/runs/G42_all/G42_3/lmp
+MD/runs/G42_all/G42_1/trajectory_stabilization_G42.lammpstrj.gz
+MD/runs/G42_all/G42_1/lmp
+MD/runs/R1_all/R1_3/trajectory_smd_R1_4.lammpstrj
+MD/runs/R1_all/R1_3/trajectory_smd_R1_1.lammpstrj
+MD/runs/R1_all/R1_3/lmp
+MD/runs/R1_all/R1_1/lmp
+MD/runs/R1_all/R1_2/lmp
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_1.lammpstrj
+MD/runs/CLSP1_GPU (Copy)/lmp
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_3.lammpstrj
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_2.lammpstrj
+MD/runs/R1 (Copy)/trajectory_smd_R1_4.lammpstrj
+MD/runs/R1 (Copy)/trajectory_smd_R1_1.lammpstrj
+MD/runs/R1 (Copy)/lmp
