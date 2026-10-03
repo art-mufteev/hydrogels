@@ -1,0 +1,449 @@
+monomers:
+  MA:
+    name: Methyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OC
+    M: 86.09
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OC'
+  EA:
+    name: Ethyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCC
+    M: 100.117
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC'
+  M003:
+    name: n-Propyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCC
+    M: 114.144
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCC'
+  M004:
+    name: iso-Propyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OC(C)C
+    M: 114.144
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OC(C)C'
+  BA:
+    name: n-Butyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCCC
+    M: 128.171
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCC'
+  M006:
+    name: iso-Butyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCC(C)C
+    M: 128.171
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC(C)C'
+  M007:
+    name: sec-Butyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OC(C)CC
+    M: 128.171
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OC(C)CC'
+  M008:
+    name: tert-Butyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OC(C)(C)C
+    M: 128.171
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OC(C)(C)C'
+  M009:
+    name: n-Hexyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCCCCC
+    M: 156.225
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCCCC'
+  M010:
+    name: 2-Ethylhexyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCC(CC)CCCC
+    M: 184.279
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC(CC)CCCC'
+  M011:
+    name: n-Octyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCCCCCCC
+    M: 184.279
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCCCCCC'
+  M012:
+    name: Lauryl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCCCCCCCCCCC
+    M: 240.387
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCCCCCCCCCC'
+  M013:
+    name: Stearyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCCCCCCCCCCCCCCCCCC
+    M: 324.549
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCCCCCCCCCCCCCCCC'
+  M014:
+    name: Benzyl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCc1ccccc1
+    M: 162.188
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCc1ccccc1'
+  M015:
+    name: Tetrahydrofurfuryl acrylate
+    family: Alkyl Acrylates
+    smiles: C=CC(=O)OCC1CCCO1
+    M: 156.181
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC1CCCO1'
+  HEA:
+    name: 2-Hydroxyethyl acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCCO
+    M: 116.116
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCO'
+  M017:
+    name: 2-Hydroxypropyl acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCC(C)O
+    M: 130.143
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC(C)O'
+  M018:
+    name: 2-Hydroxybutyl acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCC(O)CC
+    M: 144.17
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC(O)CC'
+  M019:
+    name: 4-Hydroxybutyl acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCCCCO
+    M: 144.17
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCCCO'
+  M020:
+    name: Poly(ethylene glycol) methyl ether acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC
+    M: 1099.309
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC'
+  M021:
+    name: Poly(ethylene glycol) acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO
+    M: 1085.282
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO'
+  M022:
+    name: Glycerol monomethacrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=C(C)C(=O)OCC(O)CO
+    M: 160.169
+    charge: 0
+    emc_chemistry: '*CC(*)(C)C(=O)OCC(O)CO'
+  M023:
+    name: 2,3-Dihydroxypropyl acrylate
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)OCC(O)CO
+    M: 146.142
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCC(O)CO'
+  M024:
+    name: N-(2-Hydroxypropyl) methacrylamide
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=C(C)C(=O)NCC(C)O
+    M: 143.186
+    charge: 0
+    emc_chemistry: '*CC(*)(C)C(=O)NCC(C)O'
+  M025:
+    name: N-(2-hydroxyethyl) acrylamide
+    family: Hydrophilic/Hydroxy Acrylates
+    smiles: C=CC(=O)NCCO
+    M: 115.132
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCCO'
+  AA:
+    name: Acrylic acid
+    family: Carboxylic Acid Acrylates
+    smiles: C=CC(=O)[O-]
+    M: 71.055
+    charge: -1
+    emc_chemistry: '*CC(*)C(=O)[O-]'
+  MAA:
+    name: Methacrylic acid
+    family: Carboxylic Acid Acrylates
+    smiles: C=C(C)C(=O)[O-]
+    M: 85.082
+    charge: -1
+    emc_chemistry: '*CC(*)(C)C(=O)[O-]'
+  CBEA:
+    name: Carboxyethyl acrylate
+    family: Carboxylic Acid Acrylates
+    smiles: C=CC(=O)OCCC(=O)[O-]
+    M: 143.118
+    charge: -1
+    emc_chemistry: '*CC(*)C(=O)OCCC(=O)[O-]'
+  M029:
+    name: 2-(Acryloyloxy)propanoic acid
+    family: Carboxylic Acid Acrylates
+    smiles: C=CC(=O)OC(C)C(=O)[O-]
+    M: 143.118
+    charge: -1
+    emc_chemistry: '*CC(*)C(=O)OC(C)C(=O)[O-]'
+  M030:
+    name: 4-(Acryloyloxy)butanoic acid
+    family: Carboxylic Acid Acrylates
+    smiles: C=CC(=O)OCCCC(=O)[O-]
+    M: 157.145
+    charge: -1
+    emc_chemistry: '*CC(*)C(=O)OCCCC(=O)[O-]'
+  M031:
+    name: 2-Carboxyethyl methacrylate
+    family: Carboxylic Acid Acrylates
+    smiles: C=C(C)C(=O)OCCC(=O)[O-]
+    M: 157.145
+    charge: -1
+    emc_chemistry: '*CC(*)(C)C(=O)OCCC(=O)[O-]'
+  M032:
+    name: Maleic anhydride
+    family: Carboxylic Acid Acrylates
+    smiles: O=C1C=CC(=O)O1
+    M: 98.057
+    charge: 0
+    emc_chemistry: null
+  M033:
+    name: Itaconic acid
+    family: Carboxylic Acid Acrylates
+    smiles: C=C(CC(=O)[O-])C(=O)[O-]
+    M: 128.083
+    charge: -2
+    emc_chemistry: null
+  M034:
+    name: 2-Acrylamido-2-methylpropane sulfonic acid (AMPS)
+    family: Carboxylic Acid Acrylates
+    smiles: C=CC(=O)NC(C)(C)CS(=O)(=O)O
+    M: 207.251
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NC(C)(C)CS(=O)(=O)O'
+  ATAC:
+    name: '[2-(Acryloyloxy)ethyl]trimethylammonium chloride'
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCC[N+](C)(C)C
+    M: 158.221
+    charge: 1
+    emc_chemistry: '*CC(*)C(=O)OCC[N+](C)(C)C'
+  M036:
+    name: '[2-(Acryloyloxy)ethyl]trimethylammonium methyl sulfate'
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCCC[N+](C)(C)C
+    M: 172.248
+    charge: 1
+    emc_chemistry: '*CC(*)C(=O)OCCC[N+](C)(C)C'
+  M037:
+    name: '[2-(Acryloyloxy)ethyl]trimethylammonium bromide'
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCCC[N+](C)(C)C
+    M: 172.248
+    charge: 1
+    emc_chemistry: '*CC(*)C(=O)OCCC[N+](C)(C)C'
+  M038:
+    name: '[2-(Methacryloyloxy)ethyl]trimethylammonium chloride'
+    family: Cationic Acrylates
+    smiles: C=C(C)C(=O)OCC[N+](C)(C)C
+    M: 172.248
+    charge: 1
+    emc_chemistry: '*CC(*)(C)C(=O)OCC[N+](C)(C)C'
+  M039:
+    name: '[3-(Methacryloylamino)propyl]trimethylammonium chloride'
+    family: Cationic Acrylates
+    smiles: C=C(C)C(=O)NCCC[N+](C)(C)C
+    M: 185.291
+    charge: 1
+    emc_chemistry: '*CC(*)(C)C(=O)NCCC[N+](C)(C)C'
+  M040:
+    name: '[2-(Acryloyloxy)ethyl]dimethylbenzylammonium chloride'
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCC[N+](C)(C)Cc1ccccc1
+    M: 234.319
+    charge: 1
+    emc_chemistry: '*CC(*)C(=O)OCC[N+](C)(C)Cc1ccccc1'
+  M041:
+    name: Vinylbenzyl trimethylammonium chloride
+    family: Cationic Acrylates
+    smiles: C=Cc1ccc(C[N+](C)(C)C)cc1
+    M: 176.283
+    charge: 1
+    emc_chemistry: null
+  DMAEA:
+    name: N,N-Dimethylaminoethyl acrylate
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCCN(C)C
+    M: 143.186
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCN(C)C'
+  M043:
+    name: N,N-Diethylaminoethyl acrylate
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCCN(CC)CC
+    M: 171.24
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCN(CC)CC'
+  M044:
+    name: '[2-(Acryloyloxy)ethyl]triethylammonium chloride'
+    family: Cationic Acrylates
+    smiles: C=CC(=O)OCC[N+](CC)(CC)CC
+    M: 200.302
+    charge: 1
+    emc_chemistry: '*CC(*)C(=O)OCC[N+](CC)(CC)CC'
+  PEA:
+    name: 2-Phenoxyethyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCCOc1ccccc1
+    M: 192.214
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOc1ccccc1'
+  M046:
+    name: Phenyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)Oc1ccccc1
+    M: 148.161
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)Oc1ccccc1'
+  M047:
+    name: 4-Methylbenzyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCc1ccc(C)cc1
+    M: 176.215
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCc1ccc(C)cc1'
+  M048:
+    name: 2-Phenylethyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCCc1ccccc1
+    M: 176.215
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCc1ccccc1'
+  M049:
+    name: 4-tert-Butylphenyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)Oc1ccc(C(C)(C)C)cc1
+    M: 204.269
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)Oc1ccc(C(C)(C)C)cc1'
+  M050:
+    name: 2-(4-Chlorophenoxy)ethyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCCOc1ccc(Cl)cc1
+    M: 226.659
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOc1ccc(Cl)cc1'
+  M051:
+    name: 2-(4-Nitrophenoxy)ethyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCCOc1ccc([N+](=O)[O-])cc1
+    M: 237.211
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOc1ccc([N+](=O)[O-])cc1'
+  M052:
+    name: 2-(4-Methoxyphenoxy)ethyl acrylate
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)OCCOc1ccc(OC)cc1
+    M: 222.24
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)OCCOc1ccc(OC)cc1'
+  M053:
+    name: N-Phenylacrylamide
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)Nc1ccccc1
+    M: 147.177
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)Nc1ccccc1'
+  M054:
+    name: N-Benzylacrylamide
+    family: Aromatic Acrylates
+    smiles: C=CC(=O)NCc1ccccc1
+    M: 161.204
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCc1ccccc1'
+  AAm:
+    name: Acrylamide
+    family: Acrylamides
+    smiles: C=CC(N)=O
+    M: 71.079
+    charge: 0
+    emc_chemistry: '*CC(*)C(N)=O'
+  M056:
+    name: N-Methylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NC
+    M: 85.106
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NC'
+  DMA:
+    name: N,N-Dimethylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)N(C)C
+    M: 99.133
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)N(C)C'
+  M058:
+    name: N-Ethylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NCC
+    M: 99.133
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCC'
+  M059:
+    name: N,N-Diethylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)N(CC)CC
+    M: 127.187
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)N(CC)CC'
+  NIPAM:
+    name: N-Isopropylacrylamide (NIPAM)
+    family: Acrylamides
+    smiles: C=CC(=O)NC(C)C
+    M: 113.16
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NC(C)C'
+  M061:
+    name: N-Propylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NCCC
+    M: 113.16
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCCC'
+  M062:
+    name: N-tert-Butylacrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NC(C)(C)C
+    M: 127.187
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NC(C)(C)C'
+  M063:
+    name: N-(2-Hydroxypropyl) acrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NCC(C)O
+    M: 129.159
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCC(C)O'
+  M064:
+    name: N,N-Dimethylaminopropyl acrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NCCCN(C)C
+    M: 156.229
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCCCN(C)C'

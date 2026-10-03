@@ -1,0 +1,15 @@
+{
+  "name": "G-139",
+  "source": "article",
+  "composition": {
+    "HEA": 0.3697302897478689,
+    "BA": 0.4004017456316553,
+    "CBEA": 0.2298679646204758
+  },
+  "Q": 0.26,
+  "Q_source": "experimental",
+  "Q_std": 0.0,
+  "exp": {
+    "Fa_max": 4.36
+  }
+}

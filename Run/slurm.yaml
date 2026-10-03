@@ -1,0 +1,6 @@
+partition: gpu
+container_image: /shared/images/lammps-emc.sqsh
+cpus_per_task: 8
+# Flags for LAMMPS in MD stage (equil + smd).
+# `-in <file>` is appended automatically; do not include it here.
+md_cmd: "lmp -k on g 1 -sf kk -pk kokkos newton off comm device"

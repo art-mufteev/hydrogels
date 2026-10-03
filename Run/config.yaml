@@ -1,0 +1,20 @@
+# System constants (all candidates share these)
+N:             100
+C0:            2.4
+C_out:         0.154
+rho_solution:  1.004
+K_pack:        0.681
+
+Lx:            80.6296
+Ly:            82.8640
+Lz:            80.0
+Z_film_half:   40.0     # ZHALF in in.comp
+Z_box_half:    160.0    # ZBOX in in.comp; lzz in build.emc = 2 * this
+Z_final_half:  50.0     # change_box z final -Z Z
+
+# Fraction of water/ions placed in the polymer zone (25..105 Å).
+# Rest goes to the bath zone (105..155 Å).
+Z_bath: 50.0
+
+# SMD pulling velocities (Å/ps)
+SMD_velocities: [0.0001, 0.00025, 0.0005, 0.001]

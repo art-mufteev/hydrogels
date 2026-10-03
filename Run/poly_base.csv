@@ -1,0 +1,65 @@
+number,name,family,smiles
+1,Methyl acrylate,Alkyl Acrylates,C=CC(=O)OC
+2,Ethyl acrylate,Alkyl Acrylates,C=CC(=O)OCC
+3,n-Propyl acrylate,Alkyl Acrylates,C=CC(=O)OCCC
+4,iso-Propyl acrylate,Alkyl Acrylates,C=CC(=O)OC(C)C
+5,n-Butyl acrylate,Alkyl Acrylates,C=CC(=O)OCCCC
+6,iso-Butyl acrylate,Alkyl Acrylates,C=CC(=O)OCC(C)C
+7,sec-Butyl acrylate,Alkyl Acrylates,C=CC(=O)OC(C)CC
+8,tert-Butyl acrylate,Alkyl Acrylates,C=CC(=O)OC(C)(C)C
+9,n-Hexyl acrylate,Alkyl Acrylates,C=CC(=O)OCCCCCC
+10,2-Ethylhexyl acrylate,Alkyl Acrylates,C=CC(=O)OCC(CC)CCCC
+11,n-Octyl acrylate,Alkyl Acrylates,C=CC(=O)OCCCCCCCC
+12,Lauryl acrylate,Alkyl Acrylates,C=CC(=O)OCCCCCCCCCCCC
+13,Stearyl acrylate,Alkyl Acrylates,C=CC(=O)OCCCCCCCCCCCCCCCCCC
+14,Benzyl acrylate,Alkyl Acrylates,C=CC(=O)OCC1=CC=CC=C1
+15,Tetrahydrofurfuryl acrylate,Alkyl Acrylates,C=CC(=O)OCC1CCCO1
+16,2-Hydroxyethyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCO
+17,2-Hydroxypropyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(C)O
+18,2-Hydroxybutyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(O)CC
+19,4-Hydroxybutyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCCCO
+20,Poly(ethylene glycol) methyl ether acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC
+21,Poly(ethylene glycol) acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO
+22,Glycerol monomethacrylate,Hydrophilic/Hydroxy Acrylates,C=C(C)C(=O)OCC(O)CO
+23,"2,3-Dihydroxypropyl acrylate",Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(O)CO
+24,N-(2-Hydroxypropyl) methacrylamide,Hydrophilic/Hydroxy Acrylates,C=C(C)C(=O)NCC(C)O
+25,N-(2-hydroxyethyl) acrylamide,Hydrophilic/Hydroxy Acrylates,C=CC(=O)NCCO
+26,Acrylic acid,Carboxylic Acid Acrylates,C=CC(=O)O
+27,Methacrylic acid,Carboxylic Acid Acrylates,C=C(C)C(=O)O
+28,Carboxyethyl acrylate,Carboxylic Acid Acrylates,C=CC(=O)OCCC(=O)O
+29,2-(Acryloyloxy)propanoic acid,Carboxylic Acid Acrylates,C=CC(=O)OC(C)C(=O)O
+30,4-(Acryloyloxy)butanoic acid,Carboxylic Acid Acrylates,C=CC(=O)OCCCC(=O)O
+31,2-Carboxyethyl methacrylate,Carboxylic Acid Acrylates,C=C(C)C(=O)OCCC(=O)O
+32,Maleic anhydride,Carboxylic Acid Acrylates,O=C1OC(=O)C=C1
+33,Itaconic acid,Carboxylic Acid Acrylates,OC(=O)C(=C)CC(=O)O
+34,2-Acrylamido-2-methylpropane sulfonic acid (AMPS),Carboxylic Acid Acrylates,C=CC(=O)NC(C)(C)CS(=O)(=O)O
+35,[2-(Acryloyloxy)ethyl]trimethylammonium chloride,Cationic Acrylates,C=CC(=O)OCC[N+](C)(C)C
+36,[2-(Acryloyloxy)ethyl]trimethylammonium methyl sulfate,Cationic Acrylates,C=CC(=O)OCCC[N+](C)(C)C
+37,[2-(Acryloyloxy)ethyl]trimethylammonium bromide,Cationic Acrylates,C=CC(=O)OCCC[N+](C)(C)C
+38,[2-(Methacryloyloxy)ethyl]trimethylammonium chloride,Cationic Acrylates,C=C(C)C(=O)OCC[N+](C)(C)C
+39,[3-(Methacryloylamino)propyl]trimethylammonium chloride,Cationic Acrylates,C=C(C)C(=O)NCCC[N+](C)(C)C
+40,[2-(Acryloyloxy)ethyl]dimethylbenzylammonium chloride,Cationic Acrylates,C=CC(=O)OCC[N+](C)(C)CC1=CC=CC=C1
+41,Vinylbenzyl trimethylammonium chloride,Cationic Acrylates,C=CC1=CC=C(C[N+](C)(C)C)C=C1
+42,"N,N-Dimethylaminoethyl acrylate",Cationic Acrylates,C=CC(=O)OCCN(C)C
+43,"N,N-Diethylaminoethyl acrylate",Cationic Acrylates,C=CC(=O)OCCN(CC)CC
+44,[2-(Acryloyloxy)ethyl]triethylammonium chloride,Cationic Acrylates,C=CC(=O)OCC[N+](CC)(CC)CC
+45,2-Phenoxyethyl acrylate,Aromatic Acrylates,C=CC(=O)OCCOC1=CC=CC=C1
+46,Phenyl acrylate,Aromatic Acrylates,C=CC(=O)OC1=CC=CC=C1
+47,4-Methylbenzyl acrylate,Aromatic Acrylates,C=CC(=O)OCC1=CC=C(C)C=C1
+48,2-Phenylethyl acrylate,Aromatic Acrylates,C=CC(=O)OCCC1=CC=CC=C1
+49,4-tert-Butylphenyl acrylate,Aromatic Acrylates,C=CC(=O)OC1=CC=C(C(C)(C)C)C=C1
+50,2-(4-Chlorophenoxy)ethyl acrylate,Aromatic Acrylates,C=CC(=O)OCCOC1=CC=C(Cl)C=C1
+51,2-(4-Nitrophenoxy)ethyl acrylate,Aromatic Acrylates,C=CC(=O)OCCOC1=CC=C([N+](=O)[O-])C=C1
+52,2-(4-Methoxyphenoxy)ethyl acrylate,Aromatic Acrylates,C=CC(=O)OCCOC1=CC=C(OC)C=C1
+53,N-Phenylacrylamide,Aromatic Acrylates,C=CC(=O)NC1=CC=CC=C1
+54,N-Benzylacrylamide,Aromatic Acrylates,C=CC(=O)NCC1=CC=CC=C1
+55,Acrylamide,Acrylamides,C=CC(=O)N
+56,N-Methylacrylamide,Acrylamides,C=CC(=O)NC
+57,"N,N-Dimethylacrylamide",Acrylamides,C=CC(=O)N(C)C
+58,N-Ethylacrylamide,Acrylamides,C=CC(=O)NCC
+59,"N,N-Diethylacrylamide",Acrylamides,C=CC(=O)N(CC)CC
+60,N-Isopropylacrylamide (NIPAM),Acrylamides,C=CC(=O)NC(C)C
+61,N-Propylacrylamide,Acrylamides,C=CC(=O)NCCC
+62,N-tert-Butylacrylamide,Acrylamides,C=CC(=O)NC(C)(C)C
+63,N-(2-Hydroxypropyl) acrylamide,Acrylamides,C=CC(=O)NCC(C)O
+64,"N,N-Dimethylaminopropyl acrylamide",Acrylamides,C=CC(=O)NCCCN(C)C

@@ -1,0 +1,18 @@
+{
+  "name": "G-027",
+  "source": "article",
+  "composition": {
+    "HEA": 0.5116229155075327,
+    "BA": 0.22637948600211547,
+    "CBEA": 0.19085958768639258,
+    "ATAC": 0.0711380108039593
+  },
+  "Q": 0.44,
+  "Q_source": "experimental",
+  "Q_std": 0.03,
+  "exp": {
+    "Fa_max": 67.94,
+    "Fa_ave": 61.05,
+    "Fa_ave_std": 5.4
+  }
+}

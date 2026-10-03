@@ -1,0 +1,114 @@
+clear
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify     mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify    every 1 delay 0 check yes one 10000 page 1000000
+
+read_restart    system_equilibrated_{{ name }}.restart
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+group           solvent type 5 6 7 8
+group           ions    type 7 8
+group           water   type 5 6
+group           mobile subtract all lower
+molecule        water_mol water.mol
+
+variable        smd_steps  equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/50)
+
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+
+group           excluded_types type 1 2 3 4 5 6 7 8
+group           polymer subtract all excluded_types
+region          pull_zone block INF INF INF INF 65.0 165.0 units box
+group           atoms_in_zone region pull_zone
+group           pull_layer intersect polymer atoms_in_zone
+group           smd_mobile subtract mobile pull_layer
+group           substrate_atoms type 1 2 3 4
+group           gel_atoms subtract all substrate_atoms
+
+fix             sNVT smd_mobile nvt temp 300.0 300.0 50.0
+fix             sNVE pull_layer nve
+
+compute         pol_rg   polymer gyration
+compute         pol_rmsd polymer msd
+compute         E_int    gel_atoms group/group substrate_atoms
+compute         T_layer  pull_layer temp
+
+variable        z_start  equal xcm(pull_layer,z)
+variable        z_target equal v_z_start+60.0
+
+group2ndx index.ndx pull_layer lower
+
+fix             pull all colvars none output colvars_out_{{ name }}_${i}
+
+fix_modify      pull config """
+indexFile index.ndx
+
+colvar {
+  name distZ
+  distanceZ {
+    main { indexGroup pull_layer }
+    ref  { dummyAtom (0.0, 0.0, 0.0) }
+    axis (0.0, 0.0, 1.0)
+  }
+  outputValue on
+  outputVelocity on
+  outputAppliedForce on
+}
+
+harmonic {
+  name pulling
+  colvars distZ
+  centers ${z_start}
+  targetCenters ${z_target}
+  targetNumSteps ${smd_steps}
+  forceConstant 12.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+"""
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_{{ name }}_$i.lammpstrj.gz id type xu yu zu q fx fy fz
+
+variable        E_bond     equal ebond
+variable        E_angle    equal eangle
+variable        E_dihed    equal edihed
+variable        E_poly_int equal ebond+eangle+edihed
+variable        rg         equal c_pol_rg
+variable        rmsd       equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
+variable        e_inter    equal c_E_int
+variable        t_loc      equal c_T_layer
+
+fix             smd_output all print ${print_freq} "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_{{ name }}_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
+
+thermo          1000
+thermo_style    custom step temp c_E_int pe
+timestep        0.5
+run             ${smd_steps}

@@ -1,0 +1,15 @@
+{
+  "name": "G-083",
+  "source": "article",
+  "composition": {
+    "HEA": 0.4180970139520085,
+    "BA": 0.38635598554315326,
+    "CBEA": 0.19554700050483825
+  },
+  "Q": 0.19,
+  "Q_source": "experimental",
+  "Q_std": 0.02,
+  "exp": {
+    "Fa_max": 9.46
+  }
+}

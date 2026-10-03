@@ -1,0 +1,384 @@
+LAMMPS (22 Jul 2025 - Update 4)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  11712 atoms
+  reading velocities ...
+  11712 velocities
+  scanning bonds ...
+  4 = max bonds/atom
+  scanning angles ...
+  55 = max angles/atom
+  scanning dihedrals ...
+  74 = max dihedrals/atom
+  scanning impropers ...
+  36 = max impropers/atom
+  orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  1 by 1 by 1 MPI processor grid
+  reading bonds ...
+  14944 bonds
+  reading angles ...
+  28880 angles
+  reading dihedrals ...
+  42816 dihedrals
+  reading impropers ...
+  14272 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+     6 = max # of 1-3 neighbors
+     8 = max # of special neighbors
+  special bonds CPU = 0.008 seconds
+  read_data CPU = 0.454 seconds
+Reading data file ...
+  orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  37998 atoms
+  reading velocities ...
+  37998 velocities
+  scanning bonds ...
+  4 = max bonds/atom
+  scanning angles ...
+  18 = max angles/atom
+  scanning dihedrals ...
+  39 = max dihedrals/atom
+  scanning impropers ...
+  16 = max impropers/atom
+  orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  1 by 1 by 1 MPI processor grid
+  reading bonds ...
+  38142 bonds
+  reading angles ...
+  71442 angles
+  reading dihedrals ...
+  100476 dihedrals
+  reading impropers ...
+  43236 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.029 seconds
+  read_data CPU = 10.604 seconds
+Read molecule template water_mol:
+# Water molecule. Original PCFF flexible geometry
+  1 molecules
+  0 fragments
+  0 bodies
+  3 atoms with max type 6
+  2 bonds with max type 4
+  1 angles with max type 6
+  0 dihedrals with max type 0
+  0 impropers with max type 0
+Created 6 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 0.001 seconds
+Created 31 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 0.000 seconds
+Created 41 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 0.000 seconds
+Created 31 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 0.000 seconds
+Created 16662 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 112.786 seconds
+Created 33333 atoms
+  using lattice units in orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  create_atoms CPU = 148.205 seconds
+50104 atoms in group solvent
+109 atoms in group ions
+49995 atoms in group water
+Setting atom values ...
+  37 settings made for charge
+Setting atom values ...
+  72 settings made for charge
+System init for write_data ...
+PPPM Kokkos initialization ...
+WARNING: System is not charge neutral, net charge = 1
+For more information see https://docs.lammps.org/err0029 (src/kspace.cpp:330)
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 10000, page size: 1000000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 14, bins = 6 6 15
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/class2/coul/long/kk, perpetual
+      attributes: half, newton off, kokkos_device
+      pair build: half/bin/newtoff/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+4697 atoms in group lower
+95117 atoms in group mobile
+45013 atoms in group substrate_atoms
+61816 atoms in group excluded_types
+37998 atoms in group polymer
+60619 atoms in group atoms_in_zone
+18513 atoms in group pull_layer
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Setting up cg/kk style minimization ...
+  Unit style    : real
+  Current step  : 0
+WARNING: Fix MINIMIZE/kk not compatible with sending data in Kokkos communication (src/KOKKOS/comm_kokkos.cpp:799)
+WARNING: Fix with atom-based arrays not compatible with sending data in Kokkos communication, switching to classic exchange/border communication (src/KOKKOS/comm_kokkos.cpp:812)
+WARNING: Fix MINIMIZE/kk not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+Per MPI rank memory allocation (min/avg/max) = 657.8 | 657.8 | 657.8 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed        E_impro         PotEng         Press     
+         0   135.49767      91586.593      99698.647     -6948.2249      832.67461      1.5218188e+08  23338588     
+       150   135.49767      37587.35       63568.93      -14753.121      425.45499     -1034480.5      2414.7396    
+       280   135.49767      35661.417      58896.827     -15597.352      300.57722     -1083083.7     -40.743108    
+Loop time of 34.1401 on 1 procs for 280 steps with 99814 atoms
+
+99.1% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+      152181883.781298   -1082989.0633633  -1083083.67853272
+  Force two-norm initial, final = 3.87359e+09 371.73044
+  Force max component initial, final = 2.360026e+09 48.753512
+  Final line search alpha, max atom move = 0.0010972879 0.053496638
+  Iterations, force evaluations = 280 310
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 27.939     | 27.939     | 27.939     |   0.0 | 81.84
+Bond    | 1.4813     | 1.4813     | 1.4813     |   0.0 |  4.34
+Kspace  | 1.7862     | 1.7862     | 1.7862     |   0.0 |  5.23
+Neigh   | 1.2502     | 1.2502     | 1.2502     |   0.0 |  3.66
+Comm    | 0.036078   | 0.036078   | 0.036078   |   0.0 |  0.11
+Output  | 0.0011886  | 0.0011886  | 0.0011886  |   0.0 |  0.00
+Modify  | 0.84756    | 0.84756    | 0.84756    |   0.0 |  2.48
+Other   |            | 0.7982     |            |       |  2.34
+
+Nlocal:          99814 ave       99814 max       99814 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          80287 ave       80287 max       80287 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    6.11111e+07 ave 6.11111e+07 max 6.11111e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 61111126
+Ave neighs/atom = 612.25005
+Ave special neighs/atom = 4.0756407
+Neighbor list builds = 8
+Dangerous builds = 0
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Setting up cg/kk style minimization ...
+  Unit style    : real
+  Current step  : 280
+WARNING: Fix MINIMIZE/kk not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+Per MPI rank memory allocation (min/avg/max) = 668.4 | 668.4 | 668.4 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed        E_impro         PotEng         Press     
+       280   135.49767      35661.417      58896.827     -15597.352      300.57722     -1083083.7     -40.743108    
+       300   135.49767      35559.254      58652.293     -15678.745      296.58138     -1085903.7     -70.606719    
+       450   135.49767      35053.003      57054.106     -16482.486      225.48383     -1106764.8     -321.35099    
+       600   135.49767      35043.253      56879.753     -16769.925      213.14054     -1112117       -511.02788    
+       750   135.49767      35063.426      56851.331     -16897.382      207.18285     -1114437.2     -560.82482    
+       900   135.49767      35093.408      56830.006     -16968.108      203.42008     -1115693.3     -608.46558    
+      1050   135.49767      35100.034      56811.587     -17078.749      199.3342      -1116994.5     -604.7844     
+      1200   135.49767      35121.324      56779.386     -17166.914      197.03331     -1118052.5     -617.70457    
+      1350   135.49767      35120.298      56752.785     -17217.39       194.65186     -1118825.3     -611.72674    
+      1500   135.49767      35135.157      56741.225     -17263.299      193.09806     -1119552.8     -606.83861    
+      1650   135.49767      35138.791      56735.602     -17320.474      192.209       -1120201.3     -592.94971    
+      1800   135.49767      35153.593      56720.022     -17364.799      191.80538     -1120730.3     -557.65782    
+      1950   135.49767      35145.151      56687.45      -17391.03       190.85042     -1121230.4     -545.17324    
+      2100   135.49767      35155.832      56672.989     -17409.333      189.71614     -1121687.5     -508.03263    
+      2250   135.49767      35157.938      56666.196     -17432.07       189.63575     -1122199.7     -473.6292     
+      2400   135.49767      35153.818      56651.351     -17464.288      188.70243     -1122624.8     -440.23513    
+      2550   135.49767      35156.297      56653.642     -17496.051      188.35046     -1122965.2     -420.80367    
+      2700   135.49767      35151.764      56648.37      -17531.118      187.58212     -1123269       -386.88257    
+      2850   135.49767      35158.773      56655.729     -17541.503      187.18602     -1123505.1     -369.32726    
+      3000   135.49767      35163.882      56663.26      -17551.259      187.38488     -1123703.6     -338.82152    
+      3150   135.49767      35166.073      56660.058     -17558.102      187.28787     -1123862.6     -312.09515    
+      3300   135.49767      35170.453      56663.111     -17567.266      187.18013     -1124013.3     -293.42643    
+      3450   135.49767      35170.274      56664.032     -17567.14       187.13791     -1124145.4     -270.48916    
+      3600   135.49767      35177.099      56660.668     -17561.288      187.40407     -1124269.2     -250.1515     
+      3750   135.49767      35181.35       56664.474     -17568.513      187.4748      -1124370.7     -222.14703    
+      3785   135.49767      35184.063      56669.205     -17566.633      187.69593     -1124387.2     -219.60558    
+Loop time of 873.057 on 1 procs for 3505 steps with 99814 atoms
+
+100.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+Minimization stats:
+  Stopping criterion = linesearch alpha is zero
+  Energy initial, next-to-last, final = 
+     -1083083.67853272  -1124387.23825696  -1124387.23825696
+  Force two-norm initial, final = 371.73044 31.965966
+  Force max component initial, final = 48.753512 7.3422829
+  Final line search alpha, max atom move = 1.0871745e-11 7.9823424e-11
+  Iterations, force evaluations = 3505 6997
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 741.39     | 741.39     | 741.39     |   0.0 | 84.92
+Bond    | 39.278     | 39.278     | 39.278     |   0.0 |  4.50
+Kspace  | 44.831     | 44.831     | 44.831     |   0.0 |  5.13
+Neigh   | 18.908     | 18.908     | 18.908     |   0.0 |  2.17
+Comm    | 0.84265    | 0.84265    | 0.84265    |   0.0 |  0.10
+Output  | 0.033466   | 0.033466   | 0.033466   |   0.0 |  0.00
+Modify  | 21.603     | 21.603     | 21.603     |   0.0 |  2.47
+Other   |            | 6.167      |            |       |  0.71
+
+Nlocal:          99814 ave       99814 max       99814 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          80360 ave       80360 max       80360 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    6.24463e+07 ave 6.24463e+07 max 6.24463e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 62446288
+Ave neighs/atom = 625.62655
+Ave special neighs/atom = 4.0756407
+Neighbor list builds = 108
+Dangerous builds = 0
+Setting atom values ...
+  95117 settings made for image
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 3785
+  Time step     : 0.1
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+Per MPI rank memory allocation (min/avg/max) = 655.9 | 655.9 | 655.9 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed        E_impro         PotEng         Press     
+      3785   135.49767      35184.063      56669.205     -17566.633      187.69593     -1124387.2     -219.60558    
+      4000   134.42671      35285.866      56700.296     -17566.386      188.21632     -1124247.9     -224.79072    
+      5000   119.07266      38007.261      57627.629     -17524.016      203.46396     -1120440.8     -259.59839    
+      6000   96.612154      41832.235      59599.429     -17427.732      239.34645     -1114324.1     -438.86542    
+      7000   80.618071      43282.945      62112.57      -17302.98       294.20783     -1109961.2     -883.79783    
+      8000   73.85963       42085.336      64567.881     -17172.609      364.77835     -1108290.6     -1466.7927    
+      9000   69.49439       40771.083      66435.964     -17051.805      445.90763     -1107345.1     -1861.2728    
+     10000   61.780137      41424.089      67389.24      -16951.081      530.72932     -1105394.6     -1818.4271    
+     11000   52.074917      43792.479      67361.343     -16879.651      611.25928     -1102788.5     -1385.8693    
+     12000   47.636903      45561.757      66537.547     -16843.698      679.25305     -1101684.2     -876.43318    
+     13000   54.224237      44568.211      65284.746     -16840.784      727.26084     -1103880.5     -613.06951    
+     13785   64.731914      42188.319      64281.863     -16852.946      747.30533     -1107276.2     -642.64052    
+Loop time of 880.715 on 1 procs for 10000 steps with 99814 atoms
+
+Performance: 0.001 ns/day, 24464.294 hours/ns, 11.354 timesteps/s, 1.133 Matom-step/s
+100.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 6.695      | 6.695      | 6.695      |   0.0 |  0.76
+Bond    | 732.3      | 732.3      | 732.3      |   0.0 | 83.15
+Kspace  | 74.462     | 74.462     | 74.462     |   0.0 |  8.45
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.1136     | 0.1136     | 0.1136     |   0.0 |  0.01
+Output  | 0.0015629  | 0.0015629  | 0.0015629  |   0.0 |  0.00
+Modify  | 66.066     | 66.066     | 66.066     |   0.0 |  7.50
+Other   |            | 1.078      |            |       |  0.12
+
+Nlocal:          99814 ave       99814 max       99814 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          80360 ave       80360 max       80360 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    6.24461e+07 ave 6.24461e+07 max 6.24461e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 62446059
+Ave neighs/atom = 625.62425
+Ave special neighs/atom = 4.0756407
+Neighbor list builds = 0
+Dangerous builds = 0
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.20843643
+  grid = 32 32 160
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.036742077
+  estimated relative force accuracy = 0.00011064767
+  using double precision cuFFT
+  3d grid and FFT values/proc = 221778 163840
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 13785
+  Time step     : 0.1
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+Per MPI rank memory allocation (min/avg/max) = 655.9 | 655.9 | 655.9 Mbytes
+   Step          Temp          E_bond        E_angle        E_dihed        E_impro         PotEng         Press     
+     13785   9.52942        42188.319      64281.863     -16852.946      747.30533     -1107276.2     -1198.9304    
+     14000   31.984293      39059.043      60687.255     -17240.543      618.6311      -1114810.8     -1091.1797    
+     14500   31.34332       37762.659      60209.562     -17286.983      332.14204     -1117122.5     -1544.3858    
+     15000   23.484287      38085.475      59915.649     -17287.834      376.88011     -1117078.2     -1764.1041    
+     15500   20.659001      37687.36       59275.983     -17278.569      359.462       -1118168.6     -1365.9349    
+     16000   18.432394      37237.348      58979.812     -17395.181      316.42139     -1119107.4     -1443.2835    
+     16500   15.920633      36957.425      58782.359     -17353.184      311.1552      -1119667.9     -1629.8663    
+     17000   14.241483      36866.45       58442.646     -17391.988      291.02805     -1120236.1     -1441.5919    
+     17500   12.661634      36689.572      58277.111     -17426.052      284.90693     -1120623.3     -1637.7991    
+     18000   11.595585      36555.099      58096.567     -17411.906      265.05731     -1120996.7     -1632.3999    
+     18500   10.757268      36414.089      58020.458     -17429.573      262.0467      -1121290.8     -1527.0362    
+     19000   10.007202      36360.256      57961.952     -17480.466      259.87497     -1121486.9     -1562.7115    
+     19500   9.5460979      36268.589      57814.317     -17446.471      262.62101     -1121647.4     -1534.107     
+     20000   9.3609912      36242.458      57819.804     -17450.767      255.90241     -1121765.7     -1565.6792    
+     20500   9.323402       36247.797      57788.291     -17478.326      248.982       -1121778.5     -1562.9702    
+     21000   9.539067       36207.75       57862.349     -17449.253      249.20506     -1121733.5     -1560.8974    
+     21500   9.7150314      36237.202      57856.613     -17466.317      252.89938     -1121663.4     -1543.5172    
+     22000   9.7009092      36216.8        57966.003     -17458.415      256.42138     -1121629.8     -1600.8564    
+     22500   9.6779982      36215.755      57871.951     -17484.538      257.89076     -1121708.3     -1516.7013    
+     23000   9.4793771      36229.386      57877.775     -17467.44       247.97904     -1121764.2     -1518.6791    
+     23500   9.3284881      36238.71       57797.544     -17492.388      247.82065     -1121772.9     -1505.2258    
+     23785   9.4084984      36198.386      57864.209     -17476.894      251.15372     -1121785.9     -1530.1045    
+Loop time of 821.645 on 1 procs for 10000 steps with 99814 atoms
+
+Performance: 0.105 ns

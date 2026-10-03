@@ -1,0 +1,15 @@
+{
+  "name": "G-064",
+  "source": "article",
+  "composition": {
+    "HEA": 0.4477508507251353,
+    "BA": 0.4006142559332463,
+    "CBEA": 0.15163489334161834
+  },
+  "Q": 0.18,
+  "Q_source": "experimental",
+  "Q_std": 0.01,
+  "exp": {
+    "Fa_max": 8.49
+  }
+}

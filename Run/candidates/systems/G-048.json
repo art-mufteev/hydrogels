@@ -1,0 +1,17 @@
+{
+  "name": "G-048",
+  "source": "article",
+  "composition": {
+    "HEA": 0.4300821605833393,
+    "BA": 0.4001397606227585,
+    "ATAC": 0.1697780787939022
+  },
+  "Q": 1.73,
+  "Q_source": "experimental",
+  "Q_std": 0.07,
+  "exp": {
+    "Fa_max": 67.94,
+    "Fa_ave": 66.24,
+    "Fa_ave_std": 1.81
+  }
+}
