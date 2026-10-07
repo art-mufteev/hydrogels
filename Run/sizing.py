@@ -35,18 +35,29 @@ def compute_sizing(composition, monomers, cfg):
     V_liq = V_cell - V_pol
     if V_liq <= 0: raise ValueError(f'No liquid phase: V_cell={V_cell:.2e}, V_pol={V_pol:.2e}')
     V_liq_L = V_liq * 1e-3
-    n_pos = sum(composition[n] * monomers[n]['charge'] for n in composition if monomers[n]['charge'] > 0) * N_monomers / NA
-    n_neg = sum(-composition[n] * monomers[n]['charge'] for n in composition if monomers[n]['charge'] < 0) * N_monomers / NA
-    c_net = (n_pos - n_neg) / V_liq_L
+    keys = list(composition.keys())
+    cnt = [round(composition[s] * N) for s in keys]
+    cnt[-1] = N - sum(cnt[:-1])
+    nrepeat = dict(zip(keys, cnt))
+    polymer_charge = N_chains * sum(nrepeat[n] * monomers[n]['charge'] for n in composition)
+    c_net = polymer_charge / NA / V_liq_L
     C_out = cfg['C_out']
     C_na_in = (-c_net + math.sqrt(c_net**2 + 4 * C_out**2)) / 2.0
     C_cl_in = C_na_in + c_net
     N_Na = round(C_na_in * V_liq_L * NA)
-    N_Cl = round(C_cl_in * V_liq_L * NA)
+    N_Cl = N_Na + polymer_charge
+    if N_Cl < 0: raise ValueError(f'N_Cl={N_Cl} < 0; composition too anionic for this cell')
     m_water = V_liq * cfg['rho_solution'] - N_Na * M_NA / NA - N_Cl * M_CL / NA
     if m_water <= 0: raise ValueError('Water mass balance negative')
     N_water = round(m_water / M_WATER * NA)
-    return {'M_avg': M_avg, 'V_w_avg': V_w_avg, 'rho_pol': rho_pol, 'phi_V': phi_V, 'c_net': c_net, 'C_na_in': C_na_in, 'C_cl_in': C_cl_in, 'N_chains': N_chains, 'N_monomers': N_monomers, 'N_water': N_water, 'N_Na': N_Na, 'N_Cl': N_Cl}
+    return {'M_avg': M_avg, 'V_w_avg': V_w_avg, 'rho_pol': rho_pol, 'phi_V': phi_V,
+            'c_net': c_net, 'C_na_in': C_na_in, 'C_cl_in': C_cl_in,
+            'polymer_charge': polymer_charge, 'nrepeat': nrepeat,
+            'N_chains': N_chains, 'N_monomers': N_monomers,
+            'N_water': N_water, 'N_Na': N_Na, 'N_Cl': N_Cl}
 if __name__ == '__main__':
-    monomers = yaml.safe_load((HERE / 'monomers.yaml').read_text())['monomers']; composition = {'HEA': 14/101, 'BA': 59/101, 'CBEA': 8/101, 'ATAC': 10/101, 'PEA': 10/101}; cfg = {'N': 100, 'C0': 2.4, 'Q': 0.42, 'C_out': 0.154, 'rho_solution': 1.004, 'K_pack': 0.681, 'Lx': 80.6296, 'Ly': 82.8640, 'Lz': 80.0}
-    for k, v in compute_sizing(composition, monomers, cfg).items(): print(f'{k:12s} = {v}')
+    monomers = yaml.safe_load((HERE / 'monomers.yaml').read_text())['monomers']
+    composition = {'HEA': 14/101, 'BA': 59/101, 'CBEA': 8/101, 'ATAC': 10/101, 'PEA': 10/101}
+    cfg = {'N': 100, 'C0': 2.4, 'Q': 0.42, 'C_out': 0.154, 'rho_solution': 1.004, 'K_pack': 0.681, 'Lx': 80.6296, 'Ly': 82.8640, 'Lz': 80.0}
+    for k, v in compute_sizing(composition, monomers, cfg).items():
+        print(f'{k:16s} = {v}')

@@ -17,7 +17,7 @@ pair_style      lj/class2/coul/long 12.0
 special_bonds   lj/coul 0.0 0.0 1.0
 pair_modify mix sixthpower
 
-kspace_style    pppm 1.0e-4
+kspace_style    pppm 1.0e-5
 kspace_modify   slab 3.0
 
 neighbor        2.0 bin
@@ -25,11 +25,11 @@ neigh_modify every 1 delay 0 check yes one 10000 page 1000000
 
 read_data       Silico_system.data &
                 {{ extra }} &
-                extra/angle/per/atom 45 &
-                extra/dihedral/per/atom 50 &
-                extra/improper/per/atom 30
+                extra/angle/per/atom 99 &
+                extra/dihedral/per/atom 99 &
+                extra/improper/per/atom 99
 
-read_data       Polymer_{{ name }}.data add append shift 0.0 0.0 65.0 offset 8 4 6 4 3
+read_data       Polymer_{{ name }}_{{ seed }}.data add append shift 0.0 0.0 65.0 offset 8 4 6 4 3
 
 molecule        water_mol water.mol
 
@@ -38,11 +38,11 @@ region          water_zone block INF INF INF INF 105 155 units box
 
 create_atoms    7 random {{ N_Na_poly  }} {{ seed }} poly_zone   # Na+
 create_atoms    7 random {{ N_Na_bath  }} {{ seed }} water_zone  # Na+
-create_atoms    8 random {{ N_Cl_poly  }} {{ seed + 1 }} poly_zone   # Cl-
-create_atoms    8 random {{ N_Cl_bath  }} {{ seed + 1 }} water_zone  # Cl-
+create_atoms    8 random {{ N_Cl_poly  }} {{ seed - 1 }} poly_zone   # Cl-
+create_atoms    8 random {{ N_Cl_bath  }} {{ seed - 1 }} water_zone  # Cl-
 
-create_atoms 0 random {{ N_water_poly }} {{ seed + 2 }} poly_zone  mol water_mol {{ seed + 3 }} overlap 1.33
-create_atoms 0 random {{ N_water_bath }} {{ seed + 2 }} water_zone mol water_mol {{ seed + 3 }} overlap 1.33
+create_atoms 0 random {{ N_water_poly }} {{ seed - 3 }} poly_zone  mol water_mol {{ seed + 3 }} overlap 1.33
+create_atoms 0 random {{ N_water_bath }} {{ seed - 3 }} water_zone mol water_mol {{ seed + 3 }} overlap 1.33
 
 group solvent type 5 6 7 8
 group ions    type 7 8
@@ -50,7 +50,7 @@ group water   type 5 6
 set type 7 charge 1.0
 set type 8 charge -1.0
 
-write_data      system_check_{{ name }}.data
+write_data      system_check_{{ name }}_{{ seed }}.data
 
 region          lower block INF INF INF INF -2 10 units box
 group           lower region lower
@@ -63,11 +63,69 @@ group           polymer subtract all excluded_types
 region          pull_zone block INF INF INF INF 65.0 165.0 units box
 group           atoms_in_zone region pull_zone
 group           pull_layer intersect polymer atoms_in_zone
+group           substrate_atoms_types type 1 2 3 4
+group           gel_atoms subtract all substrate_atoms_types
+#-
+group           interface subtract all water ions
+compute         pe_atom_eq all pe/atom
+compute         stress_eq all stress/atom NULL
+compute         contacts_eq polymer coord/atom cutoff 3.5 group substrate_atoms
+compute         water_eq polymer coord/atom cutoff 3.5 group water
+compute         E_pair_eq gel_atoms group/group substrate_atoms_types kspace no pair yes
+compute         pol_rg_eq     polymer gyration
+compute         pol_msd_eq    polymer msd
+compute         T_mobile      mobile temp
+compute         contacts_sum_eq polymer reduce sum c_contacts_eq
+compute         water_sum_eq  polymer reduce sum c_water_eq
 
-dump            1 all custom 40000 trajectory_stabilization_{{ name }}.lammpstrj.gz id type xu yu zu
+compute  rdf_poly_glass polymer rdf 200 1 substrate_atoms_types &
+    cutoff 12.0
+fix rdf_out all ave/time 1000 10 10000 c_rdf_poly_glass[*] &
+    file rdf_poly_glass_{{name}}_{{ seed }}.txt mode vector
 
-thermo          150
-thermo_style    custom step temp ebond eangle edihed eimp pe press
+compute  rho_poly  polymer chunk/atom bin/1d z lower 0.5 units box
+compute  rho_water water   chunk/atom bin/1d z lower 0.5 units box
+compute  rho_ions  ions    chunk/atom bin/1d z lower 0.5 units box
+fix dens_poly  polymer ave/chunk 1000 100 10000 rho_poly  density/number &
+    file density_poly_{{name}}_{{ seed }}.txt
+fix dens_water water   ave/chunk 1000 100 10000 rho_water density/number &
+    file density_water_{{name}}_{{ seed }}.txt
+fix dens_ions  ions    ave/chunk 1000 100 10000 rho_ions  density/number &
+    file density_ions_{{name}}_{{ seed }}.txt
+
+variable T_mobile_v   equal c_T_mobile
+variable E_int        equal ebond+eangle+edihed+eimp
+variable E_pair_eq_v  equal c_E_pair_eq
+variable tot_cnt_eq   equal c_contacts_sum_eq
+variable wat_cnt_eq   equal c_water_sum_eq
+variable poly_z_eq    equal xcm(polymer,z)
+variable sub_z_eq     equal xcm(substrate_atoms_types,z)
+variable gap_z_eq     equal v_poly_z_eq - v_sub_z_eq
+variable rg_eq        equal c_pol_rg_eq
+variable msd_x_eq     equal c_pol_msd_eq[1]
+variable msd_y_eq     equal c_pol_msd_eq[2]
+variable msd_z_eq     equal c_pol_msd_eq[3]
+variable msd_xy_eq    equal (c_pol_msd_eq[1] + c_pol_msd_eq[2])
+
+fix equil_txt_out all print 500 &
+  "$(step) $(time) $(temp) ${T_mobile_v} $(pe) $(ke) $(etotal) &
+   $(press) $(pxx) $(pyy) $(pzz) &
+   $(evdwl) $(ecoul) $(elong) &
+   $(ebond) $(eangle) $(edihed) $(eimp) &
+   ${E_int} ${E_pair_eq_v} ${tot_cnt_eq} ${wat_cnt_eq} &
+   ${poly_z_eq} ${sub_z_eq} ${gap_z_eq} &
+   ${rg_eq} ${msd_xy_eq} ${msd_z_eq} $(density)" &
+  file metrics_equil_{{ name }}_{{ seed }}.txt screen no &
+  title "Step Time Temp Temp_mobile PotEng KinEng TotEng Press Pxx Pyy Pzz Evdwl Ecoul Elong Ebond Eangle Edihed Eimp E_Internal E_Interface_Pair N_Contacts N_Water Polymer_Z Substrate_Z Gap_Z Rg MSD_xy MSD_z Density"
+
+dump            equil_dense_dump all custom 50000 dump_equil_{{ name }}_{{ seed }}.lammpstrj.gz &
+                id type x y z ix iy iz q fx fy fz c_pe_atom_eq &
+                c_stress_eq[1] c_stress_eq[2] c_stress_eq[3] &
+                c_stress_eq[4] c_stress_eq[5] c_stress_eq[6] &
+                c_contacts_eq c_water_eq
+
+#-
+dump            1 all custom 400000 trajectory_equil_{{ name }}_{{ seed }}.lammpstrj.gz id type x y z ix iy iz
 
 fix WALL_TOP solvent wall/harmonic zhi 157.0 10.0 0.0 2.0
 
@@ -76,13 +134,11 @@ min_style cg/kk
 minimize 1.0e-4 1.0e-5 5000 50000
 min_style cg/kk
 minimize 1.0e-8 1.0e-10 20000 200000
-set group mobile image 0 0 0
 
 timestep        0.1
 fix             1 mobile nve/limit 0.05
 fix             2 mobile viscous 50.0
 fix             3 all dt/reset 1 NULL 0.001 0.1
-thermo          1000
 run             10000
 unfix           1
 unfix           2
@@ -92,37 +148,28 @@ velocity        mobile zero linear
 velocity        mobile zero angular
 velocity        mobile create 10 {{ seed }} mom yes rot yes dist gaussian
 
-timestep        0.1
 fix             rNVT mobile nvt temp 10.0 10.0 50.0
-thermo          500
+timestep        0.1
 run             10000
 timestep        0.25
 run             10000
 timestep        0.5
 run             10000
-
-fix PRESS pull_layer spring tether 15 NULL NULL 0 40
-timestep        0.5
-run             30000
-unfix           PRESS
-run             20000
 unfix           rNVT
 
 fix             tNVT mobile nvt temp 10.0 300.0 200.0
 timestep        0.5
-thermo          1000
 run             500000
 unfix           tNVT
 
 fix             fNVT mobile nvt temp 300.0 300.0 100.0
 timestep        0.5
-thermo          1000
 run             1500000
 
 undump          1
 
-write_data      system_equilibrated_{{ name }}.data
-write_restart   system_equilibrated_{{ name }}.restart
+write_data      system_equilibrated_{{ name }}_{{ seed }}.data
+write_restart   system_equilibrated_{{ name }}_{{ seed }}.restart
 
 
 # -------- SMD loop --------

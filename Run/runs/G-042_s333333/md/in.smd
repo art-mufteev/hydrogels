@@ -54,22 +54,79 @@ group           gel_atoms subtract all substrate_atoms
 
 fix             sNVT smd_mobile nvt temp 300.0 300.0 50.0
 fix             sNVE pull_layer nve
-
+#-
 compute         pol_rg   polymer gyration
-compute         pol_rmsd polymer msd
-compute         E_int    gel_atoms group/group substrate_atoms
 compute         T_layer  pull_layer temp
+compute         E_pair_smd gel_atoms group/group substrate_atoms kspace no pair yes
+group           interface subtract all water ions
+compute         pe_atom_smd all pe/atom
+compute         stress_smd all stress/atom NULL
+compute         contacts_smd polymer coord/atom cutoff 3.5 group substrate_atoms
+compute         water_smd polymer coord/atom cutoff 3.5 group water
+variable        E_pair_smd_v  equal c_E_pair_smd
+variable        E_int equal ebond+eangle+edihed+eimp
+variable        rg_v     equal c_pol_rg
+variable        t_loc      equal c_T_layer
 
+compute  rdf_poly_glass polymer rdf 200 1 substrate_atoms_types &
+    cutoff 12.0
+fix rdf_out all ave/time 1000 10 10000 c_rdf_poly_glass[*] &
+    file rdf_poly_glass_G-042_$i.txt mode vector
+
+compute  rho_poly  polymer chunk/atom bin/1d z lower 1.0 units box
+compute  rho_water water   chunk/atom bin/1d z lower 1.0 units box
+compute  rho_ions  ions    chunk/atom bin/1d z lower 1.0 units box
+
+fix dens_poly  polymer ave/chunk 1000 100 10000 rho_poly  density/number &
+    file density_poly_G-042_$i.txt
+fix dens_water water   ave/chunk 1000 100 10000 rho_water density/number &
+    file density_water_G-042_$i.txt
+fix dens_ions  ions    ave/chunk 1000 100 10000 rho_ions  density/number &
+    file density_ions_G-042_$i.txt
+
+compute T_smd_mobile smd_mobile temp
+compute pol_msd_smd polymer msd
+compute contacts_sum_smd polymer reduce sum c_contacts_smd
+compute water_sum_smd polymer reduce sum c_water_smd
+compute T_mobile      mobile temp
+
+variable T_mob_v     equal c_T_mobile
+variable T_smd_v     equal c_T_smd_mobile
+variable msd_z_v     equal c_pol_msd_smd[3]
+variable msd_xy_v    equal (c_pol_msd_smd[1] + c_pol_msd_smd[2])
+variable wat_cnt_v   equal c_water_sum_smd
+variable poly_z_v    equal xcm(polymer,z)
+variable sub_z_v     equal xcm(substrate_atoms,z)
+variable gap_z_v     equal v_poly_z_v - v_sub_z_v
+variable tot_cnt_smd equal c_contacts_sum_smd
+
+
+fix smd_G-042_$i all print 100 &
+  "$(step) $(time) $(temp) ${T_mob_v} ${T_smd_v} ${t_loc} &
+   $(pe) $(ke) $(etotal) $(press) $(pxx) $(pyy) $(pzz) &
+   $(evdwl) $(ecoul) $(elong) $(ebond) $(eangle) $(edihed) $(eimp) ${E_int} ${E_pair_smd_v} &
+   ${tot_cnt_smd} ${wat_cnt_v} &
+   ${poly_z_v} ${sub_z_v} ${gap_z_v} &
+   ${rg_v} ${msd_xy_v} ${msd_z_v} &
+   $(density)" &
+  file metrics_smd_ultimate_G-042_$i.txt screen no &
+  title "Step Time Temp Temp_mobile Temp_smd_mobile Temp_Local PotEng KinEng TotEng Press Pxx Pyy Pzz Evdwl Ecoul Elong Ebond Eangle Edihed Eimp E_Internal E_Interface_Pair N_Contacts N_Water Polymer_Z Substrate_Z Gap_Z Rg MSD_xy MSD_z Density"
+dump            smd_dense_dump all custom 1000 trajectory_smd_ultimate_{{ name }}_$i.lammpstrj.gz &
+                id type x y z ix iy iz q vx vy vz fx fy fz c_pe_atom_smd &
+                c_stress_smd[1] c_stress_smd[2] c_stress_smd[3] &
+                c_stress_smd[4] c_stress_smd[5] c_stress_smd[6] &
+                c_contacts_smd c_water_smd
+#-
 variable        z_start  equal xcm(pull_layer,z)
 variable        z_target equal v_z_start+60.0
 
 group2ndx index.ndx pull_layer lower
 
-fix             pull all colvars none output colvars_out_G-042_${i}
+fix             pull all colvars none output colvars_G-042_${i}
 
 fix_modify      pull config """
 indexFile index.ndx
-
+colvarsTrajFrequency 100
 colvar {
   name distZ
   distanceZ {
@@ -95,20 +152,6 @@ harmonic {
 }
 """
 
-dump            smd_dump all custom ${dump_freq} trajectory_smd_G-042_$i.lammpstrj.gz id type xu yu zu q fx fy fz
-
-variable        E_bond     equal ebond
-variable        E_angle    equal eangle
-variable        E_dihed    equal edihed
-variable        E_poly_int equal ebond+eangle+edihed
-variable        rg         equal c_pol_rg
-variable        rmsd       equal sqrt(c_pol_rmsd[1]+c_pol_rmsd[2])
-variable        e_inter    equal c_E_int
-variable        t_loc      equal c_T_layer
-
-fix             smd_output all print ${print_freq} "$(step) $(v_rg) $(v_rmsd) $(v_e_inter) $(v_E_poly_int) $(v_t_loc)" file adhesion_data_G-042_$i.txt screen no title "Step Rg RMSD_XY E_Interface E_Poly_Internal T_Local"
-
-thermo          1000
-thermo_style    custom step temp c_E_int pe
+dump            smd_dump all custom ${dump_freq} trajectory_smd_G-042_$i.lammpstrj.gz id type xu yu zu q
 timestep        0.5
 run             ${smd_steps}

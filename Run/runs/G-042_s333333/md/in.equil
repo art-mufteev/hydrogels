@@ -42,10 +42,10 @@ region          water_zone block INF INF INF INF 105 155 units box
 
 create_atoms    7 random 6 333333 poly_zone   # Na+
 create_atoms    7 random 31 333333 water_zone  # Na+
-create_atoms    8 random 41 333334 poly_zone   # Cl-
+create_atoms    8 random 42 333334 poly_zone   # Cl-
 create_atoms    8 random 31 333334 water_zone  # Cl-
 
-create_atoms 0 random 5554 333335 poly_zone  mol water_mol 333336 overlap 1.33
+create_atoms 0 random 5552 333335 poly_zone  mol water_mol 333336 overlap 1.33
 create_atoms 0 random 11111 333335 water_zone mol water_mol 333336 overlap 1.33
 
 group solvent type 5 6 7 8
@@ -67,11 +67,32 @@ group           polymer subtract all excluded_types
 region          pull_zone block INF INF INF INF 65.0 165.0 units box
 group           atoms_in_zone region pull_zone
 group           pull_layer intersect polymer atoms_in_zone
+group           substrate_atoms_types type 1 2 3 4
+group           gel_atoms subtract all substrate_atoms_types
+#-
+group           interface subtract all water ions
+compute         pe_atom_eq all pe/atom
+compute         stress_eq all stress/atom NULL
+compute         contacts_eq polymer coord/atom cutoff 3.5 group substrate_atoms
+compute         water_eq polymer coord/atom cutoff 3.5 group water
+compute         E_pair_eq gel_atoms group/group substrate_atoms_types kspace no pair yes
 
-dump            1 all custom 40000 trajectory_stabilization_G-042.lammpstrj.gz id type xu yu zu
+variable        E_pair_eq   equal c_E_pair_eq
+compute         contacts_sum_eq polymer reduce sum c_contacts_eq
+variable        tot_cnt_eq  equal c_contacts_sum_eq
+variable        poly_z_eq  equal xcm(polymer,z)
 
-thermo          150
-thermo_style    custom step temp ebond eangle edihed eimp pe press
+dump            equil_dense_dump all custom 2000 dump_equil_G42.lammpstrj.gz &
+                id type x y z ix iy iz q fx fy fz c_pe_atom_eq &
+                c_stress_eq[1] c_stress_eq[2] c_stress_eq[3] &
+                c_stress_eq[4] c_stress_eq[5] c_stress_eq[6] &
+                c_contacts_eq c_water_eq
+fix             equil_txt_out all print 500 &
+                "$(step) $(time) $(temp) $(pe) $(press) ${E_pair_eq} ${tot_cnt_eq} ${poly_z_eq}" &
+                file metrics_equil_G42.txt screen no &
+                title "Step Time Temp PotEng Press E_Interface_Pair N_Interface_Contacts Polymer_Z_CM"
+#-
+dump            1 all custom 40000 trajectory_equil_G-042.lammpstrj.gz id type xu yu zu
 
 fix WALL_TOP solvent wall/harmonic zhi 157.0 10.0 0.0 2.0
 
@@ -86,7 +107,6 @@ timestep        0.1
 fix             1 mobile nve/limit 0.05
 fix             2 mobile viscous 50.0
 fix             3 all dt/reset 1 NULL 0.001 0.1
-thermo          1000
 run             10000
 unfix           1
 unfix           2
@@ -98,7 +118,6 @@ velocity        mobile create 10 333333 mom yes rot yes dist gaussian
 
 timestep        0.1
 fix             rNVT mobile nvt temp 10.0 10.0 50.0
-thermo          500
 run             10000
 timestep        0.25
 run             10000
@@ -114,13 +133,11 @@ unfix           rNVT
 
 fix             tNVT mobile nvt temp 10.0 300.0 200.0
 timestep        0.5
-thermo          1000
 run             500000
 unfix           tNVT
 
 fix             fNVT mobile nvt temp 300.0 300.0 100.0
 timestep        0.5
-thermo          1000
 run             1500000
 
 undump          1

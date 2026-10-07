@@ -75,3 +75,32 @@ MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_2.lammpstrj
 MD/runs/R1 (Copy)/trajectory_smd_R1_4.lammpstrj
 MD/runs/R1 (Copy)/trajectory_smd_R1_1.lammpstrj
 MD/runs/R1 (Copy)/lmp
+ML/data/DL/Deep_poly_datasets_Ts.h5
+ML/data/DL/latent_db_all.h5
+ML/data/DL/Deep_poly_datasets_Val.h5
+ML/runs/MTM_DS_mt/events.out.tfevents.1791294633.art-Pulse-GL76-11UEK.364164.70
+ML/runs/MTM_SET_mt/events.out.tfevents.1791284970.art-Pulse-GL76-11UEK.364164.40
+Run/runs/G-042_s333333/md/dump_equil_G42.lammpstrj.gz
+MD/Polymers_EMC_build/R_1_all/R1_3/lmp
+MD/Polymers_EMC_build/R_1_all/R1_1/lmp
+MD/Polymers_EMC_build/R_1_all/R1_2/lmp
+MD/Polymers_EMC_build/G_42_all/G42_2/lmp
+MD/Polymers_EMC_build/G_42_all/G42_3/lmp
+MD/Polymers_EMC_build/G_42_all/G42_1/lmp
+MD/runs/G42_all/G42_2/lmp
+MD/runs/G42_all/G42_3/trajectory_stabilization_G42.lammpstrj.gz
+MD/runs/G42_all/G42_3/lmp
+MD/runs/G42_all/G42_1/trajectory_stabilization_G42.lammpstrj.gz
+MD/runs/G42_all/G42_1/lmp
+MD/runs/R1_all/R1_3/trajectory_smd_R1_4.lammpstrj
+MD/runs/R1_all/R1_3/trajectory_smd_R1_1.lammpstrj
+MD/runs/R1_all/R1_3/lmp
+MD/runs/R1_all/R1_1/lmp
+MD/runs/R1_all/R1_2/lmp
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_1.lammpstrj
+MD/runs/CLSP1_GPU (Copy)/lmp
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_3.lammpstrj
+MD/runs/CLSP1_GPU (Copy)/trajectory_smd_R1_2.lammpstrj
+MD/runs/R1 (Copy)/trajectory_smd_R1_4.lammpstrj
+MD/runs/R1 (Copy)/trajectory_smd_R1_1.lammpstrj
+MD/runs/R1 (Copy)/lmp

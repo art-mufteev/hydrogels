@@ -3,7 +3,7 @@
   "seed": 333333,
   "N_chains": 18,
   "N_monomers": 1800,
-  "N_water": 5554,
+  "N_water": 5552,
   "N_Na": 6,
-  "N_Cl": 41
+  "N_Cl": 42
 }
