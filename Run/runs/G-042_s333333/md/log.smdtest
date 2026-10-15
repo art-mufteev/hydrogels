@@ -1,0 +1,437 @@
+LAMMPS (22 Jul 2025 - Update 4)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton on neigh half
+# Equilibration for G-042
+# Generated: seed=333333, Q=0.42, N_chains=18
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify every 1 delay 0 check yes one 10000 page 1000000
+
+variable v index 0.0001 0.00025 0.0005 0.001
+variable i loop 4
+label smd_loop
+  include in.smd
+clear
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton on neigh half
+
+units           real
+dimension       3
+boundary        p p f
+atom_style      full
+comm_style      brick
+newton          off
+
+bond_style      class2
+angle_style     class2
+dihedral_style  class2
+improper_style  class2
+
+pair_style      lj/class2/coul/long 12.0
+special_bonds   lj/coul 0.0 0.0 1.0
+pair_modify     mix sixthpower
+
+kspace_style    pppm 1.0e-5
+kspace_modify   slab 3.0
+
+neighbor        2.0 bin
+neigh_modify    every 1 delay 0 check yes one 10000 page 1000000
+
+read_restart    system_equilibrated_G-042.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style full/kk from restart
+  orthogonal box = (0 0 -2) to (80.6296 82.864 200)
+  1 by 1 by 1 MPI processor grid
+  restoring pair style lj/class2/coul/long/kk from restart
+  restoring bond style class2/kk from restart
+  restoring angle style class2/kk from restart
+  restoring dihedral style class2/kk from restart
+  restoring improper style class2/kk from restart
+  99809 atoms
+  86412 bonds
+  116985 angles
+  143292 dihedrals
+  57508 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        1       
+  special bond factors coul:  0        0        1       
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.037 seconds
+  read_restart CPU = 0.209 seconds
+newton          off
+comm_style      brick
+pair_modify     mix sixthpower
+kspace_modify   slab 3.0
+reset_timestep 0
+
+region          lower block INF INF INF INF -2 10 units box
+group           lower region lower
+4702 atoms in group lower
+group           solvent type 5 6 7 8
+50099 atoms in group solvent
+group           ions    type 7 8
+110 atoms in group ions
+group           water   type 5 6
+49989 atoms in group water
+group           mobile subtract all lower
+95107 atoms in group mobile
+molecule        water_mol water.mol
+Read molecule template water_mol:
+# Water molecule. Original PCFF flexible geometry
+  1 molecules
+  0 fragments
+  0 bodies
+  3 atoms with max type 6
+  2 bonds with max type 4
+  1 angles with max type 6
+  0 dihedrals with max type 0
+  0 impropers with max type 0
+
+variable        smd_steps  equal round(120.0/v_v)
+variable        print_freq equal round(v_smd_steps/1000)
+variable        dump_freq  equal round(v_smd_steps/50)
+
+fix             FREEZE lower setforce 0.0 0.0 0.0
+velocity        lower set 0.0 0.0 0.0
+
+group           excluded_types type 1 2 3 4 5 6 7 8
+61811 atoms in group excluded_types
+group           polymer subtract all excluded_types
+37998 atoms in group polymer
+region          pull_zone block INF INF INF INF 65.0 165.0 units box
+group           atoms_in_zone region pull_zone
+61751 atoms in group atoms_in_zone
+group           pull_layer intersect polymer atoms_in_zone
+19044 atoms in group pull_layer
+group           smd_mobile subtract mobile pull_layer
+76063 atoms in group smd_mobile
+group           substrate_atoms type 1 2 3 4
+49710 atoms in group substrate_atoms
+group           gel_atoms subtract all substrate_atoms
+50099 atoms in group gel_atoms
+
+fix             sNVT smd_mobile nvt temp 300.0 300.0 50.0
+fix             sNVE pull_layer nve
+#-
+compute         pol_rg   polymer gyration
+compute         T_layer  pull_layer temp
+compute         E_pair_smd gel_atoms group/group substrate_atoms kspace no pair yes
+group           interface subtract all water ions
+49710 atoms in group interface
+compute         pe_atom_smd all pe/atom
+compute         stress_smd all stress/atom NULL
+compute         contacts_smd polymer coord/atom cutoff 3.5 group substrate_atoms
+compute         water_smd polymer coord/atom cutoff 3.5 group water
+variable        E_pair_smd_v  equal c_E_pair_smd
+variable        E_int equal ebond+eangle+edihed+eimp
+variable        rg_v     equal c_pol_rg
+variable        t_loc      equal c_T_layer
+
+compute  rdf_poly_glass  polymer rdf 200 * 1-4 cutoff 12.0
+compute  rdf_water_glass water   rdf 200 * 1-4 cutoff 12.0
+compute  rdf_poly_poly   polymer rdf 200 * *   cutoff 12.0
+compute  rdf_poly_water  polymer rdf 200 * 5-6 cutoff 12.0
+compute  rdf_ions_poly   ions    rdf 200 * 9-* cutoff 12.0
+compute  rdf_ions_water  ions    rdf 200 * 5-6 cutoff 12.0
+
+fix rdf_poly_out all ave/time 1 1 1000     c_rdf_poly_glass[*] c_rdf_poly_poly[*] c_rdf_poly_water[*]     file rdf_polymer_struct_G-042_${i}.txt mode vector
+fix rdf_poly_out all ave/time 1 1 1000     c_rdf_poly_glass[*] c_rdf_poly_poly[*] c_rdf_poly_water[*]     file rdf_polymer_struct_G-042_1.txt mode vector
+fix rdf_env_out all ave/time 1 1 1000     c_rdf_water_glass[*] c_rdf_ions_poly[*] c_rdf_ions_water[*]     file rdf_environment_struct_G-042_${i}.txt mode vector
+fix rdf_env_out all ave/time 1 1 1000     c_rdf_water_glass[*] c_rdf_ions_poly[*] c_rdf_ions_water[*]     file rdf_environment_struct_G-042_1.txt mode vector
+
+
+compute  rho_poly  polymer chunk/atom bin/1d z lower 0.5 units box
+compute  rho_water water   chunk/atom bin/1d z lower 0.5 units box
+compute  rho_ions  ions    chunk/atom bin/1d z lower 0.5 units box
+
+fix dens_poly  polymer ave/chunk 1 1 1000 rho_poly  density/number     file density_poly_G-042_${i}.txt
+fix dens_poly  polymer ave/chunk 1 1 1000 rho_poly  density/number     file density_poly_G-042_1.txt
+fix dens_water water   ave/chunk 1 1 1000 rho_water density/number     file density_water_G-042_${i}.txt
+fix dens_water water   ave/chunk 1 1 1000 rho_water density/number     file density_water_G-042_1.txt
+fix dens_ions  ions    ave/chunk 1 1 1000 rho_ions  density/number     file density_ions_G-042_${i}.txt
+fix dens_ions  ions    ave/chunk 1 1 1000 rho_ions  density/number     file density_ions_G-042_1.txt
+
+compute T_smd_mobile smd_mobile temp
+compute pol_msd_smd polymer msd
+compute contacts_sum_smd polymer reduce sum c_contacts_smd
+compute water_sum_smd polymer reduce sum c_water_smd
+compute T_mobile      mobile temp
+
+variable T_mob_v     equal c_T_mobile
+variable T_smd_v     equal c_T_smd_mobile
+variable msd_z_v     equal c_pol_msd_smd[3]
+variable msd_xy_v    equal (c_pol_msd_smd[1] + c_pol_msd_smd[2])
+variable wat_cnt_v   equal c_water_sum_smd
+variable poly_z_v    equal xcm(polymer,z)
+variable sub_z_v     equal xcm(substrate_atoms,z)
+variable gap_z_v     equal v_poly_z_v - v_sub_z_v
+variable tot_cnt_smd equal c_contacts_sum_smd
+
+
+fix smd_txt_out all print 100   "$(step) $(time) $(temp) ${T_mob_v} ${T_smd_v} ${t_loc}    $(pe) $(ke) $(etotal) $(press) $(pxx) $(pyy) $(pzz)    $(evdwl) $(ecoul) $(elong) $(ebond) $(eangle) $(edihed) $(eimp) ${E_int} ${E_pair_smd_v}    ${tot_cnt_smd} ${wat_cnt_v}    ${poly_z_v} ${sub_z_v} ${gap_z_v}    ${rg_v} ${msd_xy_v} ${msd_z_v}    $(density)"   file metrics_smd_G-042_${i}.txt screen no   title "Step Time Temp Temp_mobile Temp_smd_mobile Temp_Local PotEng KinEng TotEng Press Pxx Pyy Pzz Evdwl Ecoul Elong Ebond Eangle Edihed Eimp E_Internal E_Interface_Pair N_Contacts N_Water Polymer_Z Substrate_Z Gap_Z Rg MSD_xy MSD_z Density"
+fix smd_txt_out all print 100   "$(step) $(time) $(temp) ${T_mob_v} ${T_smd_v} ${t_loc}    $(pe) $(ke) $(etotal) $(press) $(pxx) $(pyy) $(pzz)    $(evdwl) $(ecoul) $(elong) $(ebond) $(eangle) $(edihed) $(eimp) ${E_int} ${E_pair_smd_v}    ${tot_cnt_smd} ${wat_cnt_v}    ${poly_z_v} ${sub_z_v} ${gap_z_v}    ${rg_v} ${msd_xy_v} ${msd_z_v}    $(density)"   file metrics_smd_G-042_1.txt screen no   title "Step Time Temp Temp_mobile Temp_smd_mobile Temp_Local PotEng KinEng TotEng Press Pxx Pyy Pzz Evdwl Ecoul Elong Ebond Eangle Edihed Eimp E_Internal E_Interface_Pair N_Contacts N_Water Polymer_Z Substrate_Z Gap_Z Rg MSD_xy MSD_z Density"
+dump            smd_dense_dump all custom 1000 dump_smd_G-042_${i}.lammpstrj.gz                 id type x y z ix iy iz q vx vy vz fx fy fz c_pe_atom_smd                 c_stress_smd[1] c_stress_smd[2] c_stress_smd[3]                 c_stress_smd[4] c_stress_smd[5] c_stress_smd[6]                 c_contacts_smd c_water_smd
+dump            smd_dense_dump all custom 1000 dump_smd_G-042_1.lammpstrj.gz                 id type x y z ix iy iz q vx vy vz fx fy fz c_pe_atom_smd                 c_stress_smd[1] c_stress_smd[2] c_stress_smd[3]                 c_stress_smd[4] c_stress_smd[5] c_stress_smd[6]                 c_contacts_smd c_water_smd
+#-
+variable        z_start  equal xcm(pull_layer,z)
+variable        z_target equal v_z_start+60.0
+
+group2ndx index.ndx pull_layer lower
+Writing groups to index file index.ndx:
+ writing group pull_layer...done
+ writing group lower...done
+
+fix             pull all colvars none output colvars_G-042_${i}
+fix             pull all colvars none output colvars_G-042_1
+----------------------------------------------------------------------
+Initializing the collective variables module, version 2025-04-30 (patch 1).
+Please cite Fiorin et al, Mol Phys 2013:
+  https://doi.org/10.1080/00268976.2013.813594
+as well as all other papers listed below for individual features used.
+Summary of compile-time features available in this build:
+  - C++ language version: 201703
+  - Multiple replicas: available, but not (yet) enabled
+  - Lepton custom functions: available
+  - Tcl interpreter: not available
+Using LAMMPS interface, version "2025-03-31".
+
+fix_modify      pull config """
+indexFile index.ndx
+colvarsTrajFrequency 100
+colvar {
+  name distZ
+  distanceZ {
+    main { indexGroup pull_layer }
+    ref  { dummyAtom (0.0, 0.0, 0.0) }
+    axis (0.0, 0.0, 1.0)
+  }
+  outputValue on
+  outputVelocity on
+  outputAppliedForce on
+}
+harmonic {
+  name pulling
+  colvars distZ
+  centers ${z_start}
+  targetCenters ${z_target}
+  targetNumSteps ${smd_steps}
+  forceConstant 12.0
+  outputCenters on
+  outputAccumulatedWork on
+  outputEnergy on
+}
+"""
+
+dump            smd_dump all custom ${dump_freq} trajectory_smd_G-042_${i}.lammpstrj.gz id type xu yu zu q
+dump            smd_dump all custom 24000 trajectory_smd_G-042_${i}.lammpstrj.gz id type xu yu zu q
+dump            smd_dump all custom 24000 trajectory_smd_G-042_1.lammpstrj.gz id type xu yu zu q
+timestep        0.5
+run             ${smd_steps}
+run             1200000
+PPPM Kokkos initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.24329192
+  grid = 54 54 250
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.0038060558
+  estimated relative force accuracy = 1.1461824e-05
+  using double precision cuFFT
+  3d grid and FFT values/proc = 937692 729000
+Generated 210 of 210 mixed pair_coeff terms from sixthpower/sixthpower mixing rule
+Unused restart file global fix info:
+  fix style: nvt, fix ID: fNVT
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 10000, page size: 1000000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 14, bins = 6 6 15
+  10 neighbor lists, perpetual/occasional/extra = 1 9 0
+  (1) pair lj/class2/coul/long/kk, perpetual
+      attributes: half, newton off, kokkos_device
+      pair build: half/bin/newtoff/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (2) compute group/group, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (3) compute coord/atom/kk, occasional
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (4) compute coord/atom/kk, occasional
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+  (5) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (6) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (7) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (8) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (9) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+  (10) compute rdf, occasional, copy from (1)
+      attributes: half, newton off
+      pair build: copy/kk/device
+      stencil: none
+      bin: none
+WARNING: Fix STORE/ATOM not compatible with sending data in Kokkos communication (src/KOKKOS/comm_kokkos.cpp:799)
+WARNING: Fix with atom-based arrays not compatible with sending data in Kokkos communication, switching to classic exchange/border communication (src/KOKKOS/comm_kokkos.cpp:812)
+WARNING: Fix STORE/ATOM not compatible with Kokkos sorting on device (src/KOKKOS/atom_kokkos.cpp:213)
+WARNING: Fix with atom-based arrays not compatible with Kokkos sorting on device, switching to classic host sorting (src/KOKKOS/atom_kokkos.cpp:219)
+WARNING: Inconsistent image flags
+For more information see https://docs.lammps.org/err0027 (src/domain.cpp:1052)
+----------------------------------------------------------------------
+Reading new configuration:
+# units = "" [default]
+# indexFile = "index.ndx"
+The following index groups are currently defined:
+  pull_layer (19044 atoms)
+  lower (4702 atoms)
+# smp = "cvcs" [default]
+# colvarsTrajFrequency = 100
+# colvarsRestartFrequency = 0 [default]
+# scriptedColvarForces = off [default]
+# scriptingAfterBiases = off [default]
+----------------------------------------------------------------------
+  Initializing a new collective variable.
+  # name = "distZ"
+    Initializing a new "distanceZ" component.
+    # name = "" [default]
+    # componentCoeff = 1 [default]
+    # componentExp = 1 [default]
+    # period = 0 [default]
+    # wrapAround = 0 [default]
+    # forceNoPBC = off [default]
+    # scalable = on [default]
+      Initializing atom group "main".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "pull_layer"
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 ) [default]
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "main" defined with 19044 atoms requested.
+      Initializing atom group "ref".
+      # name = "" [default]
+      # centerToOrigin = off [default]
+      # centerToReference = off [default]
+      # rotateToReference = off [default]
+      # atomsOfGroup = "" [default]
+      # indexGroup = "" [default]
+      # psfSegID =  [default]
+      # atomsFile = "" [default]
+      # dummyAtom = ( 0 , 0 , 0 )
+      # enableFitGradients = on [default]
+      # printAtomIDs = off [default]
+      Atom group "ref" defined with 0 atoms requested.
+    # axis = ( 0 , 0 , 1 )
+    # oneSiteSystemForce = off [default]
+    # oneSiteTotalForce = off [default]
+  All components initialized.
+  # timeStepFactor = 1 [default]
+  # width = 1 [default]
+  # lowerBoundary = 0 [default]
+  # upperBoundary = 1 [default]
+  # hardLowerBoundary = off [default]
+  # hardUpperBoundary = off [default]
+  # expandBoundaries = off [default]
+  # extendedLagrangian = off [default]
+  # outputValue = on
+  # outputVelocity = on
+  # outputTotalForce = off [default]
+  # outputAppliedForce = on
+  # subtractAppliedForce = off [default]
+  # runAve = off [default]
+  # corrFunc = off [default]
+----------------------------------------------------------------------
+Collective variables initialized, 1 in total.
+----------------------------------------------------------------------
+  Initializing a new "harmonic" instance.
+  # name = "pulling"
+  # colvars = { distZ }
+  # stepZeroData = off [default]
+  # outputEnergy = on
+  # outputFreq = 0 [default]
+  # timeStepFactor = 1 [default]
+  # writeTISamples = off [default]
+  # writeTIPMF = off [default]
+  # centers = { 83.4877 }
+  # targetCenters = { 143.488 }
+  Initial step for restraint change: 0
+  # targetNumSteps = 1200000
+  # targetNumStages = 0 [default]
+  # outputAccumulatedWork = on
+  # outputCenters = on
+  # forceConstant = 12
+  # decoupling = off [default]
+  # targetForceConstant = -1 [default]
+  The force constant for colvar "distZ" will be rescaled to 12 according to the specified width (1).
+----------------------------------------------------------------------
+Collective variables biases initialized, 1 in total.
+----------------------------------------------------------------------
+Collective variables module (re)initialized.
+----------------------------------------------------------------------
+Current simulation parameters: initial step = 0, integration timestep = 0.5
+Updating atomic parameters (masses, charges, etc).
+Re-initialized atom group for variable "distZ":0/0. 19044 atoms: total mass = 122993, total charge = 26.0985.
+Re-initialized atom group for variable "distZ":0/1. 0 atoms: total mass = 1, total charge = 0.
+The final output state file will be "colvars_G-042_1.colvars.state".
+Per MPI rank memory allocation (min/avg/max) = 2533 | 2533 | 2533 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   284.62302     -1161535.9      120969.08     -955888.97     -287.81905    
+ERROR on proc 0: Bond atoms missing at step 530988
+For more information see https://docs.lammps.org/err0005 (src/KOKKOS/neigh_bond_kokkos.cpp:262)

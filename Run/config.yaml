@@ -16,5 +16,5 @@ Z_final_half:  50.0     # change_box z final -Z Z
 # Rest goes to the bath zone (105..155 Å).
 Z_bath: 50.0
 
-# SMD pulling velocities (Å/ps)
-SMD_velocities: [0.0001, 0.00025, 0.0005, 0.001]
+# SMD pulling velocities (Å/fs)
+SMD_velocities: [0.0000025, 0.000005, 0.0000075, 0.00001, 0.00005, 0.0001]

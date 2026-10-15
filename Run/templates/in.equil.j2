@@ -78,19 +78,28 @@ compute         T_mobile      mobile temp
 compute         contacts_sum_eq polymer reduce sum c_contacts_eq
 compute         water_sum_eq  polymer reduce sum c_water_eq
 
-compute  rdf_poly_glass polymer rdf 200 1 substrate_atoms_types &
-    cutoff 12.0
-fix rdf_out all ave/time 1000 10 10000 c_rdf_poly_glass[*] &
-    file rdf_poly_glass_{{name}}_{{ seed }}.txt mode vector
+compute  rdf_poly_glass  polymer rdf 200 * 1-4 cutoff 12.0
+compute  rdf_water_glass water   rdf 200 * 1-4 cutoff 12.0
+compute  rdf_poly_poly   polymer rdf 200 * *   cutoff 12.0
+compute  rdf_poly_water  polymer rdf 200 * 5-6 cutoff 12.0
+compute  rdf_ions_poly   ions    rdf 200 * 9-* cutoff 12.0
+compute  rdf_ions_water  ions    rdf 200 * 5-6 cutoff 12.0
+
+fix rdf_poly_out all ave/time 1000 10 10000 &
+    c_rdf_poly_glass[*] c_rdf_poly_poly[*] c_rdf_poly_water[*] &
+    file rdf_polymer_struct_{{name}}_{{ seed }}.txt mode vector
+fix rdf_env_out all ave/time 1000 10 10000 &
+    c_rdf_water_glass[*] c_rdf_ions_poly[*] c_rdf_ions_water[*] &
+    file rdf_environment_struct_{{name}}_{{ seed }}.txt mode vector
 
 compute  rho_poly  polymer chunk/atom bin/1d z lower 0.5 units box
 compute  rho_water water   chunk/atom bin/1d z lower 0.5 units box
 compute  rho_ions  ions    chunk/atom bin/1d z lower 0.5 units box
-fix dens_poly  polymer ave/chunk 1000 100 10000 rho_poly  density/number &
+fix dens_poly  polymer ave/chunk 100 100 10000 rho_poly  density/number &
     file density_poly_{{name}}_{{ seed }}.txt
-fix dens_water water   ave/chunk 1000 100 10000 rho_water density/number &
+fix dens_water water   ave/chunk 100 100 10000 rho_water density/number &
     file density_water_{{name}}_{{ seed }}.txt
-fix dens_ions  ions    ave/chunk 1000 100 10000 rho_ions  density/number &
+fix dens_ions  ions    ave/chunk 100 100 10000 rho_ions  density/number &
     file density_ions_{{name}}_{{ seed }}.txt
 
 variable T_mobile_v   equal c_T_mobile

@@ -18,8 +18,8 @@ number,name,family,smiles
 17,2-Hydroxypropyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(C)O
 18,2-Hydroxybutyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(O)CC
 19,4-Hydroxybutyl acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCCCO
-20,Poly(ethylene glycol) methyl ether acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC
-21,Poly(ethylene glycol) acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO
+20,Poly(ethylene glycol) methyl ether acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOC
+21,Poly(ethylene glycol) acrylate,Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCO
 22,Glycerol monomethacrylate,Hydrophilic/Hydroxy Acrylates,C=C(C)C(=O)OCC(O)CO
 23,"2,3-Dihydroxypropyl acrylate",Hydrophilic/Hydroxy Acrylates,C=CC(=O)OCC(O)CO
 24,N-(2-Hydroxypropyl) methacrylamide,Hydrophilic/Hydroxy Acrylates,C=C(C)C(=O)NCC(C)O
@@ -33,9 +33,9 @@ number,name,family,smiles
 32,Maleic anhydride,Carboxylic Acid Acrylates,O=C1OC(=O)C=C1
 33,Itaconic acid,Carboxylic Acid Acrylates,OC(=O)C(=C)CC(=O)O
 34,2-Acrylamido-2-methylpropane sulfonic acid (AMPS),Carboxylic Acid Acrylates,C=CC(=O)NC(C)(C)CS(=O)(=O)O
-35,[2-(Acryloyloxy)ethyl]trimethylammonium chloride,Cationic Acrylates,C=CC(=O)OCC[N+](C)(C)C
-36,[2-(Acryloyloxy)ethyl]trimethylammonium methyl sulfate,Cationic Acrylates,C=CC(=O)OCCC[N+](C)(C)C
-37,[2-(Acryloyloxy)ethyl]trimethylammonium bromide,Cationic Acrylates,C=CC(=O)OCCC[N+](C)(C)C
+35,[2-(Acryloyloxy)ethyl]trimethylammonium,Cationic Acrylates,C=CC(=O)OCC[N+](C)(C)C
+36,[3-(Acryloyloxy)propyl]trimethylammonium,Cationic Acrylates,C=CC(=O)OCCC[N+](C)(C)C
+37,N-(3 4-dihydroxyphenethyl)acrylamide,Acrylamides,C=CC(=O)NCCC1=CC=C(O)C(O)=C1
 38,[2-(Methacryloyloxy)ethyl]trimethylammonium chloride,Cationic Acrylates,C=C(C)C(=O)OCC[N+](C)(C)C
 39,[3-(Methacryloylamino)propyl]trimethylammonium chloride,Cationic Acrylates,C=C(C)C(=O)NCCC[N+](C)(C)C
 40,[2-(Acryloyloxy)ethyl]dimethylbenzylammonium chloride,Cationic Acrylates,C=CC(=O)OCC[N+](C)(C)CC1=CC=CC=C1
