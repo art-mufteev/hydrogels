@@ -1,0 +1,4 @@
+Architecture,N_syn,N_exp,Isotropy_syn,Isotropy_exp,MMD2_common_sigma,MMD2_over_sigma2,Maha_median,Maha_p95,Maha_max,L2latent_vs_L1comp_Pearson,L2latent_vs_L1comp_Spearman
+CLS,9984,347,15.237,31.178,0.1635,0.004,17.48,20.91,24.32,0.898,0.905
+SET,9984,347,11.728,36.703,0.2781,0.0068,25.56,32.97,35.35,0.609,0.634
+DS,9984,347,12.41,40.538,0.1814,0.0044,24.55,28.01,34.14,0.886,0.889
