@@ -1,0 +1,124 @@
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "start", "mode": "build", "n_candidates": 10, "n_seeds": 3, "total_runs": 30, "dry_run": true}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-042.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-042.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-042.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-140.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-140.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-140.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-140", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-069.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-069.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-069.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-069", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-086.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-086.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-086.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-086", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-173.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-173.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-173.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-173", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-177.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-177.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/G-177.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "G-177", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-GP-EI10.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-GP-EI10.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-GP-EI10.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-GP-EI10", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R3-GP-KB-EI7.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R3-GP-KB-EI7.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R3-GP-KB-EI7.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R3-GP-KB-EI7", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI3.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI3.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI3.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI3", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI10.json", "seed": 333333}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 333333, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 666666, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 666666, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI10.json", "seed": 666666}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 666666, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 999999, "stage": "build_start"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "dry_run_build", "candidate": "/home/art/Documents/GitHub/hydrogels/Run/selected/systems/ML-R1-RFR-RFR-EI10.json", "seed": 999999}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "progress", "name": "ML-R1-RFR-RFR-EI10", "seed": 999999, "stage": "build_ok"}
+{"ts": "2026-10-20T18:53:50+00:00", "level": "INFO", "event": "summary", "built": 0, "skipped_build": 0, "failed_build": 0, "submitted": 0, "skipped_submit": 0, "failed_submit": 0, "local_md_ok": 0, "local_md_fail": 0, "rerendered": 0, "failed_rerender": 0, "polled": 0, "validated_ok": 0, "validated_fail": 0}
+
+=== Summary ===

@@ -1,0 +1,206 @@
+nohup: ignoring input
+{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "start", "mode": "build", "n_candidates": 10, "n_seeds": 3, "total_runs": 30, "dry_run": false}
+{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "build_start"}
+[G-042] validate: checking config, candidate, templates
+[G-042] sizing: computing V_w, chain and ion counts
+[G-042] sizing: N_chains=18 N_water=5552 N_Na=6 N_Cl=42
+[G-042] emc: rendering build.emc
+[G-042] emc: running EMC
+(* EMC: Enhanced Monte Carlo simulations *)
+
+version 9.4.4, build Jun 30 2026 09:51:48, date Tue Oct 20 21:56:52 2026
+
+valid until Jul 1, 2027
+
+Info: script v1.0 started at Tue Oct 20 21:56:52 2026
+Info: variables = {seed -> 333333, ntotal -> 10000, fshape -> 1, output ->
+        "setup", field -> "cff/pcff/pcff", location1 -> "~/Apps/EMC/field/", 
+        nav -> 0.6022141179, temperature -> 300, radius -> 3.5, nrelax ->
+        4000, weight_nonbond -> 0.0001, weight_bond -> 0.0001, weight_focus ->
+        1, cutoff -> 12, charge_cutoff -> 12, kappa -> 1, density1 -> 1, 
+        lprevious -> 0, lphase -> 0, f_Gmax -> 18, chem_hea ->
+        "*CC(*)C(=O)OCCO", chem_ba -> "*CC(*)C(=O)OCCCC", chem_cbea ->
+        "*CC(*)C(=O)OCCC(=O)[O-]", chem_atac -> "*CC(*)C(=O)OCC[N+](C)(C)C", 
+        chem_pea -> "*CC(*)C(=O)OCCOc1ccccc1", chem_t -> "*C"}
+Info: output = 
+      {detail -> 3, wide -> false, expand -> false, math -> true, reduced ->
+        false, info -> true, strict -> true, warning -> true, message -> true,
+        debug -> false, exit -> true, ignore -> false}
+Info: field = {id -> cff/pcff/pcff, mode -> cff, style -> none, name ->
+        {"~/Apps/EMC/field/cff/pcff/pcff.frc", 
+          "~/Apps/EMC/field/cff/pcff/pcff_templates.dat"}, compress -> false, 
+        error -> true, debug -> false, check -> {atomistic -> true, charge ->
+          true}}
+Info: importing '~/Apps/EMC/field/cff/pcff/pcff.frc'
+Warning: duplicate field.bond entry 40 [c:c] omitted.
+Warning: duplicate field.bond entry 51 [c:h] omitted.
+Warning: duplicate field.bond entry 62 [c:o_2] omitted.
+Warning: duplicate field.bond entry 176 [c=:c=1] omitted.
+Warning: duplicate field.bond entry 328 [c_1:o_1] omitted.
+Warning: duplicate field.bond entry 364 [cp:cp] omitted.
+Warning: duplicate field.bond entry 365 [cp:cp] omitted.
+Warning: duplicate field.bond entry 367 [cp:h] omitted.
+Warning: duplicate field.bond entry 689 [o:p] omitted.
+Info: groups = {ngroups -> 6, group -> {
+          {id -> hea, chemistry -> "*CC(*)C(=O)OCCO", depth -> 8, charges ->
+            field, charge -> 0, terminator -> false, nconnects -> 12, connects
+            -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> t, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> t, site -> $end1}}}}, 
+          {id -> ba, chemistry -> "*CC(*)C(=O)OCCCC", depth -> 8, charges ->
+            field, charge -> 0, terminator -> false, nconnects -> 12, connects
+            -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> t, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> t, site -> $end1}}}}, 
+          {id -> cbea, chemistry -> "*CC(*)C(=O)OCCC(=O)[O-]", depth -> 8, 
+            charges -> field, charge -> 0, terminator -> false, nconnects ->
+            12, connects -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> t, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> t, site -> $end1}}}}, 
+          {id -> atac, chemistry -> "*CC(*)C(=O)OCC[N+](C)(C)C", depth -> 8, 
+            charges -> field, charge -> 0, terminator -> false, nconnects ->
+            12, connects -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> t, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> t, site -> $end1}}}}, 
+          {id -> pea, chemistry -> "*CC(*)C(=O)OCCOc1ccccc1", depth -> 8, 
+            charges -> field, charge -> 0, terminator -> false, nconnects ->
+            12, connects -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> t, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end2, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end2, destination -> {index -> t, site -> $end1}}}}, 
+          {id -> t, chemistry -> "*C", depth -> 8, charges -> field, charge ->
+            0, terminator -> false, nconnects -> 10, connects -> {
+              {source -> $end1, destination -> {index -> hea, site -> $end1}}, 
+              {source -> $end1, destination -> {index -> hea, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end1}}, 
+              {source -> $end1, destination -> {index -> ba, site -> $end2}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end1}}, 
+              {source -> $end1, destination -> {index -> cbea, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end1}}, 
+              {source -> $end1, destination -> {index -> atac, site ->
+                  $end2}}, 
+              {source -> $end1, destination -> {index -> pea, site -> $end1}}, 
+              {source -> $end1, destination -> {index -> pea, site ->
+                  $end2}}}}}, ndeletes -> 0, npolymers -> 0}
+Info: field = {mode -> apply, style -> none, error -> true, debug -> false, 
+        check -> {atomistic -> true, charge -> true}}
+Info: applying '~/Apps/EMC/field/cff/pcff/pcff.frc'
+Info: variables = {lg_hea -> 16, lg_ba -> 21, lg_cbea -> 17, lg_atac -> 27, 
+        lg_pea -> 26, lg_t -> 4, norm_Gmax -> 1, l_Gmax -> 2111, mg_hea ->
+        116.11771, mg_ba -> 128.17249, mg_cbea -> 143.12029, mg_atac ->
+        158.22222, mg_pea -> 192.21649, mg_t -> 15.03506, m_Gmax ->
+        13675.0279, n_Gmax -> 18, ntotal -> 0, mtotal -> 0}
+Info: simulation = {units -> {permittivity -> 1, seed -> seed}, types -> {
+          coulomb -> {pair -> {active -> true, cutoff -> charge_cutoff}}}}
+Info: clusters = {progress -> none, nbodys -> 0, nclusters -> 0, ngrafts -> 0,
+        npolymers -> 1, 
+        polymer -> 
+        {id -> Gmax, system -> main, type -> random, niterations -> 1000, n ->
+          18, groups -> {hea, ba, cbea, atac, pea, t}, weights -> {1, 1, 1, 1,
+            1, 1}, nrepeat -> {14, 59, 8, 10, 9, 0}}}
+      delta = {systems -> 1, bodies -> 0, clusters -> 18, sites -> 37998}
+Info: field = {mode -> apply, style -> none, error -> true, debug -> false, 
+        check -> {atomistic -> true, charge -> false}}
+Info: applying '~/Apps/EMC/field/cff/pcff/pcff.frc'
+Info: types = {cff -> {pair -> {active -> true, mode -> repulsive}}}
+Info: variables = {nphase1 -> 37998, mphase1 -> 246150.5022, vphase1 ->
+        408742.496869, lbox -> 74.2135599093, lphase1 -> 74.2135599093, lxx ->
+        80.6296, lyy -> 82.864, lzz -> 80, lzy -> 0, lzx -> 0, lyx -> 0, 
+        lphase -> 80.6296, ntotal -> 37998, mtotal -> 246150.5022, vtotal ->
+        534503.293952}
+Info: build = {
+        system -> {id -> main, temperature -> 300, density -> 0.764714645342, 
+          split -> false, flag -> {charge -> false, map -> true, pbc -> true, 
+            geometry -> true}, periodic -> {x -> true, y -> true, z -> true}, 
+          geometry -> {xx -> 80.6296, yy -> 82.864, zz -> 80, zy -> 0, zx ->
+            0, yx -> 0}, deform -> {xx -> 1, yy -> 1, zz -> 1, zy -> 0, zx ->
+            0, yx -> 0}}, 
+        select -> {progress -> list, frequency -> 1, message -> nkt, center ->
+          false, origin -> {x -> 0, y -> 0, z -> 0}, order -> random, check ->
+          true, nclusters -> 1, cluster -> Gmax, 
+          relax -> {ncycles -> 4000, radius -> 3.5}, name -> "error", type ->
+          xyz, compress -> false, 
+          grow -> {check -> all, method -> energetic, cutoff -> 0, focus ->
+            all, 
+            weight -> {nonbonded -> 0.0001, bonded -> 0.0001, focus -> 1}, 
+            theta -> 0, dphi -> 1, nbonded -> 15, ntrials -> 300, niterations
+            -> 5000}}}
+Info: building 37998 sites.
+
+   progress/%      E[0]/nkT
+---------------------------
+            0             0
+            1      2.338329
