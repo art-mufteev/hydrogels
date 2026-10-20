@@ -40,3 +40,23 @@ echo "PID: $!"
 
 watch -n 60 'find runs -name .done | wc -l'
 grep '"event": "failed_build"' runs/orchestrator.log 2>/dev/null | tail
+
+find runs -name .done | wc -l
+find runs -name manifest.json | wc -l
+grep -l "Lost atoms\|ERROR" runs/*/compress/log.lammps 2>/dev/null || echo "compress logs clean"
+
+python3 - <<'EOF'
+import json, pathlib, sys
+bad = []
+for line in pathlib.Path('selected/index.jsonl').read_text().splitlines():
+    e = json.loads(line)
+    for seed in (333333, 666666, 999999):
+        md = pathlib.Path('runs') / f"{e['name']}_s{seed}" / 'md'
+        for f in ('in.equil', 'in.smd', f'Polymer_{e["name"]}_{seed}.data',
+                  'Silico_system.data', 'water.mol', 'counts.json'):
+            if not (md / f).exists():
+                bad.append(str(md / f))
+if bad:
+    print(f"MISSING {len(bad)}:"); [print(' ', b) for b in bad[:10]]; sys.exit(1)
+print("All 30 md/ dirs complete")
+EOF
