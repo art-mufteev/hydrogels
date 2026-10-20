@@ -1,0 +1,17 @@
+{
+  "name": "ML-R1-RFR-GP-EI10",
+  "source": "article-ml",
+  "composition": {
+    "BA": 0.68,
+    "ATAC": 0.1,
+    "PEA": 0.22
+  },
+  "Q": 0.65,
+  "Q_source": "experimental",
+  "Q_std": 0.02,
+  "exp": {
+    "Fa_max": 321.19,
+    "Fa_ave": 296.2,
+    "Fa_ave_std": 18.62
+  }
+}

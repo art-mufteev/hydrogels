@@ -64,7 +64,7 @@ srun --mpi=pmi2 \\
 """
 def submit_md(run_dir: Path, name: str, seed: int, cfg: dict) -> str:
     md_dir = run_dir / 'md'; md_dir.mkdir(parents=True, exist_ok=True)
-    required = list(REQUIRED_MD_FILES) + [f'Polymer_{name}.data']
+    required = list(REQUIRED_MD_FILES) + [f'Polymer_{name}_{seed}.data']
     missing = [f for f in required if not (md_dir / f).exists()]
     if missing: raise RuntimeError(f'{md_dir}: missing {missing}; run_dir may be partially built -- rerun pipeline')
     sbatch_path = md_dir / 'job.sbatch'; sbatch_path.write_text(render_sbatch(name, seed, cfg), encoding='utf-8')
