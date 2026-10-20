@@ -132,7 +132,7 @@ def resolve_candidate_path(candidates_dir: Path, rel: str) -> Path:
 
 
 def run_dir_for(out_root: Path, name: str, seed: int) -> Path:
-    return out_root / f'{name}_s{seed}'
+    return out_root / name / f'{name}_s{seed}'
 
 
 def is_built(run_dir: Path) -> bool:

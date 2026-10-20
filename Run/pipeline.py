@@ -157,7 +157,7 @@ if __name__ == '__main__':
     try: validate_registry(registry, args.registry)
     except ValueError as e: print(f'ERROR: {e}', file=sys.stderr); sys.exit(1)
     emc_cmd = shlex.split(args.emc_cmd) if args.emc_cmd else None; lmp_cmd = shlex.split(args.lmp_cmd) if args.lmp_cmd else None
-    run_dir = args.out / f"{candidate['name']}_s{args.seed}"
+    run_dir = args.out / candidate['name'] / f"{candidate['name']}_s{args.seed}"
     try: build_system(run_dir, candidate, args.seed, cfg, registry, emc_cmd=emc_cmd, lmp_cmd=lmp_cmd)
     except (Exception, SystemExit) as e: print(f'ERROR: {e}', file=sys.stderr); sys.exit(1)
     print(f'Built: {run_dir}')

@@ -45,18 +45,29 @@ find runs -name .done | wc -l
 find runs -name manifest.json | wc -l
 grep -l "Lost atoms\|ERROR" runs/*/compress/log.lammps 2>/dev/null || echo "compress logs clean"
 
-python3 - <<'EOF'
-import json, pathlib, sys
-bad = []
-for line in pathlib.Path('selected/index.jsonl').read_text().splitlines():
-    e = json.loads(line)
-    for seed in (333333, 666666, 999999):
-        md = pathlib.Path('runs') / f"{e['name']}_s{seed}" / 'md'
-        for f in ('in.equil', 'in.smd', f'Polymer_{e["name"]}_{seed}.data',
-                  'Silico_system.data', 'water.mol', 'counts.json'):
-            if not (md / f).exists():
-                bad.append(str(md / f))
-if bad:
-    print(f"MISSING {len(bad)}:"); [print(' ', b) for b in bad[:10]]; sys.exit(1)
-print("All 30 md/ dirs complete")
-EOF
+cd ~/Documents/GitHub/hydrogels/Run
+mkdir -p logs
+
+
+rm -rf runs runs_s333333 runs_s666666 runs_s999999 runs_seq_backup
+pkill -f "pipeline.py" 2>/dev/null
+pkill -f "emc_linux" 2>/dev/null
+pkill -f "lmp -k on" 2>/dev/null
+sleep 2
+
+for s in 333333 666666 999999; do
+    nohup python3 orchestrator.py \
+        --mode build \
+        --candidates selected --index selected/index.jsonl \
+        --out runs --seeds $s \
+        --emc-cmd "emc_linux_x86_64 build.emc" \
+        --compress-cmd "lmp -k on g 1 -sf kk -pk kokkos newton off comm device -in in.comp -log log.lammps -screen screen.txt" \
+        > logs/build_s$s.log 2>&1 &
+    echo "seed $s: PID $!"
+done
+
+watch -n 60 'find runs -name .done 2>/dev/null | wc -l'
+
+find runs -name .done 2>/dev/null | sed 's|runs/||; s|/.done||' | sort
+
+pgrep -fa "orchestrator.py.*seeds" | wc -l   # → 3

@@ -1,7 +1,7 @@
 nohup: ignoring input
-{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "start", "mode": "build", "n_candidates": 10, "n_seeds": 3, "total_runs": 30, "dry_run": false}
-{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "start", "last_event": null}
-{"ts": "2026-10-20T18:56:47+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 333333, "stage": "build_start"}
+{"ts": "2026-10-20T19:13:22+00:00", "level": "INFO", "event": "start", "mode": "build", "n_candidates": 10, "n_seeds": 1, "total_runs": 10, "dry_run": false}
+{"ts": "2026-10-20T19:13:22+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 999999, "stage": "start", "last_event": null}
+{"ts": "2026-10-20T19:13:22+00:00", "level": "INFO", "event": "progress", "name": "G-042", "seed": 999999, "stage": "build_start"}
 [G-042] validate: checking config, candidate, templates
 [G-042] sizing: computing V_w, chain and ion counts
 [G-042] sizing: N_chains=18 N_water=5552 N_Na=6 N_Cl=42
@@ -9,12 +9,12 @@ nohup: ignoring input
 [G-042] emc: running EMC
 (* EMC: Enhanced Monte Carlo simulations *)
 
-version 9.4.4, build Jun 30 2026 09:51:48, date Tue Oct 20 21:56:52 2026
+version 9.4.4, build Jun 30 2026 09:51:48, date Tue Oct 20 22:13:29 2026
 
 valid until Jul 1, 2027
 
-Info: script v1.0 started at Tue Oct 20 21:56:52 2026
-Info: variables = {seed -> 333333, ntotal -> 10000, fshape -> 1, output ->
+Info: script v1.0 started at Tue Oct 20 22:13:29 2026
+Info: variables = {seed -> 999999, ntotal -> 10000, fshape -> 1, output ->
         "setup", field -> "cff/pcff/pcff", location1 -> "~/Apps/EMC/field/", 
         nav -> 0.6022141179, temperature -> 300, radius -> 3.5, nrelax ->
         4000, weight_nonbond -> 0.0001, weight_bond -> 0.0001, weight_focus ->
@@ -203,4 +203,3 @@ Info: building 37998 sites.
    progress/%      E[0]/nkT
 ---------------------------
             0             0
-            1      2.338329
