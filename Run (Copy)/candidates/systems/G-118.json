@@ -1,0 +1,18 @@
+{
+  "name": "G-118",
+  "source": "article",
+  "composition": {
+    "HEA": 0.5498863026281411,
+    "BA": 0.2874712177830317,
+    "CBEA": 0.07708836340657559,
+    "ATAC": 0.08555411618225164
+  },
+  "Q": 0.8,
+  "Q_source": "experimental",
+  "Q_std": 0.02,
+  "exp": {
+    "Fa_max": 21.68,
+    "Fa_ave": 18.66,
+    "Fa_ave_std": 3.03
+  }
+}

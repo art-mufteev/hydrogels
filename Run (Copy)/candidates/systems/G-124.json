@@ -1,0 +1,15 @@
+{
+  "name": "G-124",
+  "source": "article",
+  "composition": {
+    "HEA": 0.44395709506135683,
+    "BA": 0.18949018686979524,
+    "PEA": 0.3665527180688479
+  },
+  "Q": 0.39,
+  "Q_source": "experimental",
+  "Q_std": 0.02,
+  "exp": {
+    "Fa_max": 11.83
+  }
+}

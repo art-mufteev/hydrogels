@@ -1,0 +1,17 @@
+{
+  "name": "G-117",
+  "source": "article",
+  "composition": {
+    "HEA": 0.4910678828200969,
+    "BA": 0.36829612699284403,
+    "ATAC": 0.14063599018705916
+  },
+  "Q": 1.1,
+  "Q_source": "experimental",
+  "Q_std": 0.03,
+  "exp": {
+    "Fa_max": 62.28,
+    "Fa_ave": 60.3,
+    "Fa_ave_std": 1.98
+  }
+}

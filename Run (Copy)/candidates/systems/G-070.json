@@ -1,0 +1,17 @@
+{
+  "name": "G-070",
+  "source": "article",
+  "composition": {
+    "HEA": 0.47358519647598435,
+    "BA": 0.37069604448298665,
+    "ATAC": 0.15571875904102894
+  },
+  "Q": 1.38,
+  "Q_source": "experimental",
+  "Q_std": 0.03,
+  "exp": {
+    "Fa_max": 49.99,
+    "Fa_ave": 45.69,
+    "Fa_ave_std": 4.3
+  }
+}

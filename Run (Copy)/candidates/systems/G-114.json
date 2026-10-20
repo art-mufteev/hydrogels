@@ -1,0 +1,15 @@
+{
+  "name": "G-114",
+  "source": "article",
+  "composition": {
+    "HEA": 0.37838672894125835,
+    "BA": 0.3650971598554051,
+    "PEA": 0.25651611120333656
+  },
+  "Q": 0.29,
+  "Q_source": "experimental",
+  "Q_std": 0.0,
+  "exp": {
+    "Fa_max": 11.15
+  }
+}

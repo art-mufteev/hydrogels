@@ -1,0 +1,18 @@
+{
+  "name": "G-110",
+  "source": "article",
+  "composition": {
+    "HEA": 0.2345760655408179,
+    "BA": 0.4938766423590441,
+    "CBEA": 0.1785339376587476,
+    "ATAC": 0.09301335444139049
+  },
+  "Q": 0.33,
+  "Q_source": "experimental",
+  "Q_std": 0.01,
+  "exp": {
+    "Fa_max": 71.34,
+    "Fa_ave": 66.02,
+    "Fa_ave_std": 4.44
+  }
+}

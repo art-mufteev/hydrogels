@@ -1,0 +1,15 @@
+{
+  "name": "G-161",
+  "source": "article",
+  "composition": {
+    "HEA": 0.4685729616022154,
+    "BA": 0.36054520892009984,
+    "AAm": 0.1708818294776847
+  },
+  "Q": 0.18,
+  "Q_source": "experimental",
+  "Q_std": 0.0,
+  "exp": {
+    "Fa_max": 13.14
+  }
+}

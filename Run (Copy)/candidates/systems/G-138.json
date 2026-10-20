@@ -1,0 +1,18 @@
+{
+  "name": "G-138",
+  "source": "article",
+  "composition": {
+    "HEA": 0.5653235172852439,
+    "BA": 0.1982604624709135,
+    "CBEA": 0.16581075047776173,
+    "ATAC": 0.070605269766081
+  },
+  "Q": 0.46,
+  "Q_source": "experimental",
+  "Q_std": 0.02,
+  "exp": {
+    "Fa_max": 41.95,
+    "Fa_ave": 38.33,
+    "Fa_ave_std": 3.62
+  }
+}
