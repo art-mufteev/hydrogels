@@ -104,7 +104,7 @@ def build_system(run_dir: Path, candidate: dict, seed: int, cfg: dict, registry:
     log(name, 'compress', 'rendering in.comp')
     comp_dir = run_dir / 'compress'; comp_dir.mkdir(exist_ok=True)
     shutil.copy(emc_dir / 'setup.data', comp_dir / 'setup.data'); shutil.copy(emc_dir / 'setup.params', comp_dir / 'setup.params')
-    render('in.comp.j2', comp_dir / 'in.comp', {'name': name, 'Z_film_half': cfg['Z_film_half'], 'Z_box_half': cfg['Z_box_half'], 'Z_final_half': cfg['Z_final_half']})
+    render('in.comp.j2', comp_dir / 'in.comp', {'name': name, 'seed': seed, 'Z_film_half': cfg['Z_film_half'], 'Z_box_half': cfg['Z_box_half'], 'Z_final_half': cfg['Z_final_half']})
     log(name, 'compress', 'running LAMMPS (pair_style soft)')
     lmp_cmd = lmp_cmd or [
     'lmp',
@@ -115,7 +115,7 @@ def build_system(run_dir: Path, candidate: dict, seed: int, cfg: dict, registry:
     '-screen', 'screen.txt',
     ]
     run_cmd(lmp_cmd, comp_dir, stage='compress')
-    polymer_data = comp_dir / f'Polymer_{name}.data'
+    polymer_data = comp_dir / f'Polymer_{name}_{seed}.data'
     if not polymer_data.exists(): raise FileNotFoundError(f'Expected {polymer_data} after compress, but it is missing. Check templates/in.comp.j2 -- the write_data line must produce exactly this filename.')
     log(name, 'counts', f'parsing {polymer_data.name}')
     counts = read_data_counts(polymer_data)

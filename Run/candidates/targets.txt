@@ -1,0 +1,13 @@
+# Anchors from Table 1 (MOESM5) — most informative in the 180-row screen
+G-042    # top Fa of Table 1, tight CI (138.41 ± 7.36)
+G-140    # all 6 monomers ≈ equal → multi-monomer sanity
+G-069    # PEA-only (ATAC=0), low Fa (3.34)
+G-086    # max ATAC (0.48), very low Fa (1.19)
+G-173    # low Fa with confirmed CI (2.21 ± 0.45)
+G-177    # HEA=0, CBEA+ATAC high, Q=3.24
+
+# ML hits from Table 2 (MOESM6) — experimentally confirmed EI blocks
+ML-R1-RFR-GP-EI10       # Round 1, ML=RFR-GP, Rank=EI, No=10  (Fa 321.19)
+ML-R3-GP-KB-EI7         # Round 3, ML=GP_KB,  Rank=EI, No=7   (Fa 250.98)
+ML-R1-RFR-RFR-EI3       # Round 1, ML=RFR-RFR, Rank=EI, No=3  (Fa 149.58)
+ML-R1-RFR-RFR-EI10      # Round 1, ML=RFR-RFR, Rank=EI, No=10 (Fa 123.14)

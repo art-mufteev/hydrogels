@@ -66,29 +66,31 @@ RUN git clone -b ${LMP_TAG} --depth 1 \
 WORKDIR /opt/lammps/build
 
 RUN cmake \
-        -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_INSTALL_PREFIX=/opt/lammps/install \
-        -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
-        -D CMAKE_C_COMPILER=gcc \
-        -D CMAKE_CXX_FLAGS="-march=icelake-server -O3" \
-        -D BUILD_MPI=ON \
-        -D BUILD_OMP=ON \
-        -D PKG_KOKKOS=ON \
-        -D Kokkos_ENABLE_CUDA=ON \
-        -D Kokkos_ARCH_AMPERE80=ON \
-        -D Kokkos_ARCH_ICX=ON \
-        -D Kokkos_ENABLE_OPENMP=ON \
-        -D Kokkos_ENABLE_SERIAL=ON \
-        -D FFT_KOKKOS=CUFFT \
-        -D PKG_KSPACE=ON \
-        -D PKG_CLASS2=ON \
-        -D PKG_MOLECULE=ON \
-        -D PKG_RIGID=ON \
-        -D PKG_COLVARS=ON \
-        -D PKG_EXTRA-PAIR=ON \
-        -D PKG_EXTRA-FIX=ON \
-        -D PKG_MISC=ON \
-        .. \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/opt/lammps/install \
+    -D CMAKE_CXX_COMPILER=/opt/lammps/lib/kokkos/bin/nvcc_wrapper \
+    -D CMAKE_C_COMPILER=gcc \
+    -D CMAKE_CXX_FLAGS="-march=icelake-server -O3" \
+    -D BUILD_MPI=ON \
+    -D BUILD_OMP=ON \
+    -D PKG_KOKKOS=ON \
+    -D Kokkos_ENABLE_CUDA=ON \
+    -D Kokkos_ARCH_AMPERE80=ON \
+    -D Kokkos_ARCH_ICX=ON \
+    -D Kokkos_ENABLE_OPENMP=ON \
+    -D Kokkos_ENABLE_SERIAL=ON \
+    -D FFT_KOKKOS=CUFFT \
+    -D PKG_KSPACE=ON \
+    -D PKG_CLASS2=ON \
+    -D PKG_MOLECULE=ON \
+    -D PKG_RIGID=ON \
+    -D PKG_COLVARS=ON \
+    -D PKG_WALL=ON \
+    -D PKG_EXTRA_PAIR=ON \
+    -D PKG_EXTRA_FIX=ON \
+    -D PKG_EXTRA_COMMAND=ON \
+    -D PKG_MISC=ON \
+    .. \
  && make -j$(nproc) \
  && make install
 
