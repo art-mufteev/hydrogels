@@ -1,0 +1,42 @@
+cd ~/Documents/GitHub/hydrogels/Run
+mkdir -p logs
+
+which emc_linux_x86_64 && which lmp
+python3 -c "import yaml, jinja2; from pipeline import compute_bath; from read_data_counts import format_extra_flags; print('imports OK')"
+ls templates/{in.equil.j2,in.smd.j2,build.emc.j2,in.comp.j2,Silico_system.data,water.mol}
+
+rm -rf selected
+python3 pick_systems.py \
+    --table1 41586_2025_9269_MOESM5_ESM.xlsx \
+    --table2 41586_2025_9269_MOESM6_ESM.xlsx \
+    --wishlist targets.txt --out selected --validate-only
+
+python3 pick_systems.py \
+    --table1 41586_2025_9269_MOESM5_ESM.xlsx \
+    --table2 41586_2025_9269_MOESM6_ESM.xlsx \
+    --wishlist targets.txt --out selected
+
+wc -l selected/index.jsonl   # → 10
+
+python3 orchestrator.py \
+    --mode build \
+    --candidates selected --index selected/index.jsonl \
+    --out runs --seeds 333333 666666 999999 \
+    --emc-cmd "emc_linux_x86_64 build.emc" \
+    --compress-cmd "lmp -k on g 1 -sf kk -pk kokkos newton off comm device -in in.comp -log log.lammps -screen screen.txt" \
+    --dry-run 2>&1 | tee logs/dryrun.log
+    
+ls runs/state.jsonl 2>&1 || echo "OK: no state created"
+
+nohup python3 orchestrator.py \
+    --mode build \
+    --candidates selected --index selected/index.jsonl \
+    --out runs --seeds 333333 666666 999999 \
+    --emc-cmd "emc_linux_x86_64 build.emc" \
+    --compress-cmd "lmp -k on g 1 -sf kk -pk kokkos newton off comm device -in in.comp -log log.lammps -screen screen.txt" \
+    > logs/build_all.log 2>&1 &
+
+echo "PID: $!"
+
+watch -n 60 'find runs -name .done | wc -l'
+grep '"event": "failed_build"' runs/orchestrator.log 2>/dev/null | tail
