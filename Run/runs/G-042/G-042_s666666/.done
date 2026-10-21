@@ -1,0 +1,9 @@
+{
+  "name": "G-042",
+  "seed": 666666,
+  "N_chains": 18,
+  "N_monomers": 1800,
+  "N_water": 5552,
+  "N_Na": 6,
+  "N_Cl": 42
+}

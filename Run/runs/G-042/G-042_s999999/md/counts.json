@@ -1,0 +1,12 @@
+{
+  "atoms": 37998,
+  "atom_types": 13,
+  "bonds": 38142,
+  "bond_types": 17,
+  "angles": 71442,
+  "angle_types": 32,
+  "dihedrals": 100476,
+  "dihedral_types": 45,
+  "impropers": 43236,
+  "improper_types": 24
+}
