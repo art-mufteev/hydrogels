@@ -25,7 +25,7 @@ number,name,family,smiles
 24,N-(2-Hydroxypropyl) methacrylamide,Hydrophilic/Hydroxy Acrylates,C=C(C)C(=O)NCC(C)O
 25,N-(2-hydroxyethyl) acrylamide,Hydrophilic/Hydroxy Acrylates,C=CC(=O)NCCO
 26,Acrylic acid,Carboxylic Acid Acrylates,C=CC(=O)O
-27,Methacrylic acid,Carboxylic Acid Acrylates,C=C(C)C(=O)O
+27,10-Methacryloyloxydecyl dihydrogen phosphate,Alkyl Acrylates,CC(=C)C(=O)OCCCCCCCCCCOP(=O)(O)O
 28,Carboxyethyl acrylate,Carboxylic Acid Acrylates,C=CC(=O)OCCC(=O)O
 29,2-(Acryloyloxy)propanoic acid,Carboxylic Acid Acrylates,C=CC(=O)OC(C)C(=O)O
 30,4-(Acryloyloxy)butanoic acid,Carboxylic Acid Acrylates,C=CC(=O)OCCCC(=O)O

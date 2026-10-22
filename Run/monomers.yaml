@@ -135,17 +135,17 @@ monomers:
   M020:
     name: Poly(ethylene glycol) methyl ether acrylate
     family: Hydrophilic/Hydroxy Acrylates
-    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC
-    M: 1099.309
+    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOC
+    M: 438.514
     charge: 0
-    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOC'
+    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCOC'
   M021:
     name: Poly(ethylene glycol) acrylate
     family: Hydrophilic/Hydroxy Acrylates
-    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO
-    M: 1085.282
+    smiles: C=CC(=O)OCCOCCOCCOCCOCCOCCOCCOCCO
+    M: 424.487
     charge: 0
-    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCOCCO'
+    emc_chemistry: '*CC(*)C(=O)OCCOCCOCCOCCOCCOCCOCCOCCO'
   M022:
     name: Glycerol monomethacrylate
     family: Hydrophilic/Hydroxy Acrylates
@@ -238,26 +238,26 @@ monomers:
     charge: 0
     emc_chemistry: '*CC(*)C(=O)NC(C)(C)CS(=O)(=O)O'
   ATAC:
-    name: '[2-(Acryloyloxy)ethyl]trimethylammonium chloride'
+    name: '[2-(Acryloyloxy)ethyl]trimethylammonium'
     family: Cationic Acrylates
     smiles: C=CC(=O)OCC[N+](C)(C)C
     M: 158.221
     charge: 1
     emc_chemistry: '*CC(*)C(=O)OCC[N+](C)(C)C'
   M036:
-    name: '[2-(Acryloyloxy)ethyl]trimethylammonium methyl sulfate'
+    name: '[3-(Acryloyloxy)propyl]trimethylammonium'
     family: Cationic Acrylates
     smiles: C=CC(=O)OCCC[N+](C)(C)C
     M: 172.248
     charge: 1
     emc_chemistry: '*CC(*)C(=O)OCCC[N+](C)(C)C'
   M037:
-    name: '[2-(Acryloyloxy)ethyl]trimethylammonium bromide'
-    family: Cationic Acrylates
-    smiles: C=CC(=O)OCCC[N+](C)(C)C
-    M: 172.248
-    charge: 1
-    emc_chemistry: '*CC(*)C(=O)OCCC[N+](C)(C)C'
+    name: N-(3 4-dihydroxyphenethyl)acrylamide
+    family: Acrylamides
+    smiles: C=CC(=O)NCCc1ccc(O)c(O)c1
+    M: 207.229
+    charge: 0
+    emc_chemistry: '*CC(*)C(=O)NCCc1ccc(O)c(O)c1'
   M038:
     name: '[2-(Methacryloyloxy)ethyl]trimethylammonium chloride'
     family: Cationic Acrylates

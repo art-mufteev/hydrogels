@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse, json, shlex, shutil, subprocess, sys; from pathlib import Path; import yaml; from jinja2 import Template
-from sizing import compute_sizing; from box_patch import patch_data_box; from read_data_counts import read_data_counts, format_extra_flags
+from sizing import compute_sizing, nrepeat; from box_patch import patch_data_box; from read_data_counts import read_data_counts, format_extra_flags
 HERE = Path(__file__).resolve().parent; TPL = HERE / 'templates'
 REQUIRED_TEMPLATES = ['build.emc.j2', 'in.comp.j2', 'in.equil.j2', 'in.smd.j2']
 REQUIRED_CFG_KEYS = ['N', 'C0', 'C_out', 'rho_solution', 'K_pack',
@@ -20,8 +20,6 @@ def validate_config(cfg: dict):
     if cfg['C_out'] < 0: raise ValueError(f"C_out must be non-negative, got {cfg['C_out']}")
     if cfg['Z_film_half'] > cfg['Z_box_half']: raise ValueError(f"Z_film_half ({cfg['Z_film_half']}) > Z_box_half ({cfg['Z_box_half']}): film does not fit in box")
     if cfg['Z_final_half'] > cfg['Z_box_half']: raise ValueError(f"Z_final_half ({cfg['Z_final_half']}) > Z_box_half ({cfg['Z_box_half']}): soft-compress would expand")
-    fp = cfg.get('frac_poly', 0.5)
-    if not isinstance(fp, (int, float)) or not (0.0 <= fp <= 1.0): raise ValueError(f"frac_poly must be in [0, 1], got {fp!r}")
     smd = cfg['SMD_velocities']
     if not isinstance(smd, list) or not smd: raise ValueError(f"SMD_velocities must be a non-empty list, got {smd!r}")
 def validate_registry(registry: dict, path: Path):
@@ -52,12 +50,6 @@ def validate_templates():
             raise FileNotFoundError(f'Missing asset in {TPL}: {asset}')
 def render(tpl_name: str, out_path: Path, ctx: dict):
     tpl = Template((TPL / tpl_name).read_text(encoding='utf-8')); out_path.write_text(tpl.render(**ctx), encoding='utf-8')
-def nrepeat(composition: dict, N: int) -> dict:
-    shorts = list(composition.keys()); counts = [round(composition[s] * N) for s in shorts]; counts[-1] = N - sum(counts[:-1])
-    if counts[-1] < 0: raise ValueError(f'nrepeat rounding underflow for {shorts[-1]}: {counts}')
-    for s, c, f in zip(shorts, counts, composition.values()):
-        if f > 0 and c == 0: raise ValueError(f'nrepeat for {s} rounded to 0 with f={f}; check composition granularity (N={N})')
-    return {s: c for s, c in zip(shorts, counts)}
 def monomers_for_template(composition: dict, N: int, registry: dict) -> list:
     nrep = nrepeat(composition, N)
     return [{'short': s, 'emc_chemistry': registry[s]['emc_chemistry'], 'nrepeat': nrep[s]} for s in composition]

@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
 import math; from pathlib import Path; import yaml; from rdkit import Chem; from rdkit.Chem import AllChem
 NA=6.02214076e23; M_WATER=18.015; M_NA=22.99; M_CL=35.45; R_KCAL=0.0019872041; T=298.15; N_CONF=20; PRUNE=0.5; HERE=Path(__file__).resolve().parent
+
+def nrepeat(composition: dict, N: int) -> dict:
+    keys = list(composition.keys())
+    quotas = [composition[k] * N for k in keys]
+    floors = [int(q) for q in quotas]
+    remainders = [q - f for q, f in zip(quotas, floors)]
+    deficit = N - sum(floors)
+    order = sorted(range(len(keys)), key=lambda i: (-remainders[i], i))
+    for i in order[:deficit]:
+        floors[i] += 1
+    for k, c, f in zip(keys, floors, composition.values()):
+        if f > 0 and c == 0:
+            raise ValueError(f'nrepeat: {k} rounds to 0 with f={f:.4f}; N={N} too small')
+    return dict(zip(keys, floors))
+
 def compute_Vw(smiles: str) -> float:
     mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
     props = AllChem.MMFFGetMoleculeProperties(mol)
@@ -20,6 +35,7 @@ def compute_Vw(smiles: str) -> float:
     wsum = sum(w)
     v_mean = sum(vi * wi for vi, wi in zip(volumes, w)) / wsum
     return v_mean * 1e-24 * NA
+
 def compute_sizing(composition, monomers, cfg):
     M_avg = sum(f * monomers[n]['M'] for n, f in composition.items())
     V_w_avg = sum(f * compute_Vw(monomers[n]['smiles']) for n, f in composition.items())
@@ -35,11 +51,8 @@ def compute_sizing(composition, monomers, cfg):
     V_liq = V_cell - V_pol
     if V_liq <= 0: raise ValueError(f'No liquid phase: V_cell={V_cell:.2e}, V_pol={V_pol:.2e}')
     V_liq_L = V_liq * 1e-3
-    keys = list(composition.keys())
-    cnt = [round(composition[s] * N) for s in keys]
-    cnt[-1] = N - sum(cnt[:-1])
-    nrepeat = dict(zip(keys, cnt))
-    polymer_charge = N_chains * sum(nrepeat[n] * monomers[n]['charge'] for n in composition)
+    nrep = nrepeat(composition, N)
+    polymer_charge = N_chains * sum(nrep[n] * monomers[n]['charge'] for n in composition)
     c_net = polymer_charge / NA / V_liq_L
     C_out = cfg['C_out']
     C_na_in = (-c_net + math.sqrt(c_net**2 + 4 * C_out**2)) / 2.0
@@ -52,9 +65,10 @@ def compute_sizing(composition, monomers, cfg):
     N_water = round(m_water / M_WATER * NA)
     return {'M_avg': M_avg, 'V_w_avg': V_w_avg, 'rho_pol': rho_pol, 'phi_V': phi_V,
             'c_net': c_net, 'C_na_in': C_na_in, 'C_cl_in': C_cl_in,
-            'polymer_charge': polymer_charge, 'nrepeat': nrepeat,
+            'polymer_charge': polymer_charge, 'nrepeat': nrep,
             'N_chains': N_chains, 'N_monomers': N_monomers,
             'N_water': N_water, 'N_Na': N_Na, 'N_Cl': N_Cl}
+
 if __name__ == '__main__':
     monomers = yaml.safe_load((HERE / 'monomers.yaml').read_text())['monomers']
     composition = {'HEA': 14/101, 'BA': 59/101, 'CBEA': 8/101, 'ATAC': 10/101, 'PEA': 10/101}

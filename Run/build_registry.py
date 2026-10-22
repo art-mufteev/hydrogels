@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import csv; from pathlib import Path; import yaml; from rdkit import Chem; from rdkit.Chem import Descriptors
-SHORT_NAMES = {'C=CC(=O)OCCO':'HEA','C=CC(=O)OCCCC':'BA','C=CC(=O)OCCC(=O)[O-]':'CBEA','C=CC(=O)OCC[N+](C)(C)C':'ATAC','C=CC(=O)OCCOc1ccccc1':'PEA','C=CC(=O)N':'AAm','C=CC(=O)[O-]':'AA','C=C(C)C(=O)[O-]':'MAA','C=CC(=O)OC':'MA','C=CC(=O)OCC':'EA','C=C(C)C(=O)OC':'MMA','C=CC(=O)NC(C)C':'NIPAM','C=CC(=O)N(C)C':'DMA','C=CC(=O)OCCN(C)C':'DMAEA','C=CC1=CC=CC=C1':'Sty'}
-MANUAL_EMC = {}
+MANUAL_EMC = {'C=C(CC(=O)[O-])C(=O)[O-]': '*CC(*)(CC(=O)[O-])C(=O)[O-]', 'C=Cc1ccc(C[N+](C)(C)C)cc1': '*CC(*)c1ccc(C[N+](C)(C)C)cc1',}
 _CARBOXYL = Chem.MolFromSmarts('[CX3](=O)[OX2H1]')
 def strip_counter_ions(smiles: str) -> str:
     keep = []
@@ -43,7 +42,7 @@ def process_row(row):
     normalized = deprotonate_carboxyls(stripped)
     canonical = Chem.MolToSmiles(Chem.MolFromSmiles(normalized))
     mol = Chem.MolFromSmiles(canonical)
-    short = SHORT_NAMES.get(canonical) or SHORT_NAMES.get(stripped) or f'M{number:03d}'
+    short = f'M{number:03d}'
     return {'short': short, 'name': name, 'family': family, 'smiles': canonical, 'M': compute_M(mol), 'charge': compute_charge(mol), 'emc_chemistry': infer_emc_chemistry(canonical)}
 def main(csv_path: Path, out_path: Path):
     records = []
