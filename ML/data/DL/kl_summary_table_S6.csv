@@ -1,4 +1,0 @@
-Architecture,Active_syn,SumKL_syn,Top1_syn,Top5_syn,Top10_syn,Dims90_syn,Active_exp,SumKL_exp,Dims90_exp
-CLS,19/64,16.717,2.493,1.661,1.315,13,17/64,10.645,10
-SET,64/64,43.238,2.699,2.406,2.19,26,50/64,26.437,20
-DS,64/64,87.793,1.935,1.859,1.815,54,64/64,67.847,52

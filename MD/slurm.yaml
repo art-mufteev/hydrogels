@@ -1,0 +1,9 @@
+partition: gpu
+container_image: /shared/images/lammps-emc.sqsh
+md_cmd: "lmp -k on g 1 -sf kk -pk kokkos newton off comm device"
+time: "272:00:00"
+mem: "80G"
+cpus_per_task: 8
+mpi: pmi2
+lammps_version: "stable_22Jul2025_update5"
+emc_version: "9.4.4"

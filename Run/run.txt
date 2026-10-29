@@ -1,1 +1,0 @@
-python3 build_registry.py poly_base.csv --out monomers.yaml

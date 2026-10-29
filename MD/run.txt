@@ -1,0 +1,41 @@
+
+python3 build_registry.py poly_base.csv --out monomers.yaml
+
+python3 test_emc_monomers.py --all --jobs 6
+
+python3 pick_systems.py \
+    --table1 41586_2025_9269_MOESM5_ESM.xlsx \
+    --table2 41586_2025_9269_MOESM6_ESM.xlsx \
+    --wishlist targets.txt --out selected
+
+wc -l selected/index.jsonl
+
+mkdir -p logs
+
+for s in 333333 666666 999999; do
+    nohup python3 orchestrator.py \
+        --mode build \
+        --candidates selected --index selected/index.jsonl \
+        --out runs --seeds $s \
+        --name G-042 G-025 G-069 G-081 G-104 \
+        --emc-cmd "emc_linux_x86_64 build.emc" \
+        --compress-cmd "lmp -k on g 1 -sf kk -pk kokkos newton off comm device -in in.comp -log log.lammps -screen screen.txt" \
+        > logs/build_s${s}_A.log 2>&1 &
+    echo "seed $s Group A: PID $!"
+done
+
+for s in 333333 666666 999999; do
+    nohup python3 orchestrator.py \
+        --mode build \
+        --candidates selected --index selected/index.jsonl \
+        --out runs --seeds $s \
+        --name G-022 ML-R1-RFR-GP-EI10 ML-R3-GP-KB-EI7 ML-R1-RFR-GP-EI4 ML-R3-RFR-GP-EI6 \
+        --emc-cmd "emc_linux_x86_64 build.emc" \
+        --compress-cmd "lmp -k on g 1 -sf kk -pk kokkos newton off comm device -in in.comp -log log.lammps -screen screen.txt" \
+        > logs/build_s${s}_B.log 2>&1 &
+    echo "seed $s Group B: PID $!"
+done
+
+sleep 15
+echo "Running: $(pgrep -fc 'orchestrator.py.*--seeds') / 6"
+
